@@ -1,5 +1,8 @@
 import { grainTextureEffect } from '../ported/fragments/post/grainTextureEffect.js';
 import { vignetteEffect } from '../ported/fragments/post/vignetteEffect.js';
+import { pixellationEffect } from '../ported/fragments/post/pixellationEffect.js';
+import { lcdEffect } from '../ported/fragments/post/lcdEffect.js';
+import { speckedNoiseEffect } from '../ported/fragments/post/speckledNoiseEffect.js';
 
 export interface PostEffectDescriptor {
   readonly name: string;
@@ -31,6 +34,27 @@ registerEffect({
   node: vignetteEffect,
 });
 
+registerEffect({
+  name: 'pixellationEffect',
+  provenance:
+    'RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/post_processing/pixellation_effect.ts',
+  node: pixellationEffect,
+});
+
+registerEffect({
+  name: 'lcdEffect',
+  provenance:
+    'RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/post_processing/lcd_effect.ts',
+  node: lcdEffect,
+});
+
+registerEffect({
+  name: 'speckedNoiseEffect',
+  provenance:
+    'RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/post_processing/speckled_noise_effect.ts',
+  node: speckedNoiseEffect,
+});
+
 export interface PostPassConfig {
   readonly name: string;
   readonly params: Record<string, unknown>;
@@ -60,4 +84,10 @@ export function makePostChain(passes: readonly PostPassConfig[]): PostChainHandl
   };
 }
 
-export { grainTextureEffect, vignetteEffect };
+export {
+  grainTextureEffect,
+  vignetteEffect,
+  pixellationEffect,
+  lcdEffect,
+  speckedNoiseEffect,
+};

@@ -1,10 +1,10 @@
 import { createRadialParticleInitializer } from '../ported/fragments/compute/radialParticleInitializer.js';
-import type { RadialParticleInitializer } from '../ported/fragments/compute/radialParticleInitializer.js';
+import { createInstancedParticleField } from '../ported/examples/compute/instancedParticleField.js';
 
-export interface ComputeBlueprintDescriptor {
+export interface ComputeBlueprintDescriptor<TResources = unknown> {
   readonly name: string;
   readonly provenance: string;
-  readonly create: (count: number) => RadialParticleInitializer;
+  readonly create: (count: number) => TResources;
 }
 
 const computeRegistry = new Map<string, ComputeBlueprintDescriptor>();
@@ -24,9 +24,16 @@ registerBlueprint({
   create: (count: number) => createRadialParticleInitializer(count),
 });
 
-export interface ComputeSimulationHandle {
+registerBlueprint({
+  name: 'instancedParticleField',
+  provenance:
+    'RESOURCES/REPOSITORIES/TSLwebgpuExamples/tsl-compute-particles/src/script.js',
+  create: (count: number) => createInstancedParticleField(count),
+});
+
+export interface ComputeSimulationHandle<TResources = unknown> {
   readonly id: string;
-  readonly computeNode: RadialParticleInitializer['computeNode'];
+  readonly resources: TResources;
   readonly dispose: () => void;
 }
 
@@ -35,8 +42,12 @@ export interface InstantiateComputeOptions {
   readonly count: number;
 }
 
-export function instantiateCompute(options: InstantiateComputeOptions): ComputeSimulationHandle {
-  const descriptor = computeRegistry.get(options.blueprint);
+export function instantiateCompute<TResources = unknown>(
+  options: InstantiateComputeOptions,
+): ComputeSimulationHandle<TResources> {
+  const descriptor = computeRegistry.get(options.blueprint) as
+    | ComputeBlueprintDescriptor<TResources>
+    | undefined;
   if (!descriptor) {
     throw new Error(`Unknown compute blueprint: ${options.blueprint}`);
   }
@@ -45,7 +56,7 @@ export function instantiateCompute(options: InstantiateComputeOptions): ComputeS
 
   return {
     id: `compute:${descriptor.name}:${options.count}`,
-    computeNode: resources.computeNode,
+    resources,
     dispose: () => {
       // buffers auto garbage collected with node graph; hook for manual cleanup later
     },
@@ -57,3 +68,4 @@ export function listComputeBlueprints(): readonly ComputeBlueprintDescriptor[] {
 }
 
 export { createRadialParticleInitializer };
+export { createInstancedParticleField };

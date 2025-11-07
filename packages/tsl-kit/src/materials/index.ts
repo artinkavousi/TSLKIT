@@ -38,3 +38,4 @@ export function listMaterials(): readonly MaterialDescriptor[] {
 }
 
 export { CustomNodeMaterial };
+export * from './lighting.js';

@@ -1,15 +1,19 @@
 declare module 'three/tsl' {
   export type ShaderNodeObject<T = any> = any;
   export const Fn: any;
+  export const If: any;
+  export const Loop: any;
   export const vec2: any;
   export const vec3: any;
   export const vec4: any;
   export const float: any;
   export const floor: any;
+  export const min: any;
   export const fract: any;
   export const abs: any;
   export const dot: any;
   export const mul: any;
+  export const div: any;
   export const sub: any;
   export const add: any;
   export const mix: any;
@@ -18,6 +22,10 @@ declare module 'three/tsl' {
   export const pow: any;
   export const sin: any;
   export const cos: any;
+  export const cross: any;
+  export const normalize: any;
+  export const reflect: any;
+  export const distance: any;
   export const atan: any;
   export const PI: any;
   export const max: any;
@@ -26,6 +34,14 @@ declare module 'three/tsl' {
   export const lessThan: any;
   export const overloadingFn: any;
   export const mod: any;
+  export const int: any;
+  export const mat2: any;
+  export const mat3: any;
+  export const mat4: any;
+  export const select: any;
+  export const screenSize: any;
+  export const EPSILON: any;
+  export const hash: any;
   export const instancedArray: any;
   export const instanceIndex: any;
   export const wgslFn: any;

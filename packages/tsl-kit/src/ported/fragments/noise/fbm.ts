@@ -1,0 +1,105 @@
+import { Fn, float, vec3, Loop, mul, add, div } from 'three/tsl';
+import { simplexNoise3d } from './simplexNoise3d.js';
+
+/**
+ * Fractal Brownian Motion (FBM) using 3D simplex noise.
+ * Combines multiple octaves of noise at different frequencies and amplitudes.
+ * @param {vec3} p - Input 3D position.
+ * @param {float} octaves - Number of noise octaves (default: 4.0).
+ * @param {float} frequency - Base frequency (default: 1.0).
+ * @param {float} amplitude - Base amplitude (default: 1.0).
+ * @param {float} lacunarity - Frequency multiplier between octaves (default: 2.0).
+ * @param {float} gain - Amplitude multiplier between octaves (default: 0.5).
+ * @returns {float} FBM noise value.
+ */
+export const fbm = Fn(
+  ([p, octaves = 4.0, frequency = 1.0, amplitude = 1.0, lacunarity = 2.0, gain = 0.5]: [any, any?, any?, any?, any?, any?]) => {
+  const value = float(0.0).toVar();
+  const currentAmplitude = float(amplitude).toVar();
+  const currentFrequency = float(frequency).toVar();
+  const maxValue = float(0.0).toVar();
+
+  // @ts-ignore
+  Loop({ start: 0.0, end: octaves, type: 'float' }, () => {
+    const noiseValue = simplexNoise3d(mul(p, currentFrequency));
+
+    value.addAssign(mul(noiseValue, currentAmplitude));
+
+    maxValue.addAssign(currentAmplitude);
+
+    currentFrequency.mulAssign(lacunarity);
+    currentAmplitude.mulAssign(gain);
+  });
+
+  return div(value, maxValue);
+  },
+);
+
+/**
+ * Ridged FBM variant that creates sharp ridges.
+ * @param {vec3} p - Input 3D position.
+ * @param {float} octaves - Number of noise octaves (default: 4.0).
+ * @param {float} frequency - Base frequency (default: 1.0).
+ * @param {float} amplitude - Base amplitude (default: 1.0).
+ * @param {float} lacunarity - Frequency multiplier between octaves (default: 2.0).
+ * @param {float} gain - Amplitude multiplier between octaves (default: 0.5).
+ * @returns {float} Ridged FBM noise value.
+ */
+export const ridgedFbm = Fn(
+  ([p, octaves = 4.0, frequency = 1.0, amplitude = 1.0, lacunarity = 2.0, gain = 0.5]: [any, any?, any?, any?, any?, any?]) => {
+  const value = float(0.0).toVar();
+  const currentAmplitude = float(amplitude).toVar();
+  const currentFrequency = float(frequency).toVar();
+  const maxValue = float(0.0).toVar();
+
+  // @ts-ignore
+  Loop({ start: 0.0, end: octaves, type: 'float' }, () => {
+    const noiseValue = simplexNoise3d(mul(p, currentFrequency));
+    const ridgedValue = float(1.0).sub(noiseValue.abs());
+
+    const sharpRidges = ridgedValue.mul(ridgedValue);
+
+    value.addAssign(mul(sharpRidges, currentAmplitude));
+
+    maxValue.addAssign(currentAmplitude);
+
+    currentFrequency.mulAssign(lacunarity);
+    currentAmplitude.mulAssign(gain);
+  });
+
+  return div(value, maxValue);
+  },
+);
+
+/**
+ * Domain warped FBM that uses FBM to warp the input coordinates.
+ * @param {vec3} p - Input 3D position.
+ * @param {float} octaves - Number of noise octaves (default: 4.0).
+ * @param {float} frequency - Base frequency (default: 1.0).
+ * @param {float} amplitude - Base amplitude (default: 1.0).
+ * @param {float} lacunarity - Frequency multiplier between octaves (default: 2.0).
+ * @param {float} gain - Amplitude multiplier between octaves (default: 0.5).
+ * @param {float} warpStrength - Strength of domain warping (default: 0.1).
+ * @returns {float} Domain warped FBM noise value.
+ */
+export const domainWarpedFbm = Fn(
+  ([
+    p,
+    octaves = 4.0,
+    frequency = 1.0,
+    amplitude = 1.0,
+    lacunarity = 2.0,
+    gain = 0.5,
+    warpStrength = 0.1,
+  ]: [any, any?, any?, any?, any?, any?, any?]) => {
+    const warpOffset = vec3(
+      fbm(p, octaves, frequency, amplitude, lacunarity, gain),
+      fbm(add(p, vec3(100.0)), octaves, frequency, amplitude, lacunarity, gain),
+      fbm(add(p, vec3(200.0)), octaves, frequency, amplitude, lacunarity, gain),
+    );
+
+    const warpedP = add(p, mul(warpOffset, warpStrength));
+
+    return fbm(warpedP, octaves, frequency, amplitude, lacunarity, gain);
+  },
+);

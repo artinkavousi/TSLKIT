@@ -6,7 +6,12 @@ currently exposes:
 
 - a JSON schema describing Codex automation tasks (`src/schema/codexTask.schema.json`)
 - TypeScript utilities for validating Codex tasks at runtime
-- scaffolding for materials, noise, post-processing, compute, presets, and utility modules
+- a growing library of direct ports:
+  - noise nodes (`perlin`, `simplex3d/4d`, `curl`, `fbm`, `turbulence`)
+  - lighting helpers (ambient, diffuse, directional, fresnel, hemisphere)
+  - post-processing effects (grain, vignette, pixellation, LCD, speckled noise)
+  - compute blueprints (radial initializer, instanced particle field)
+  - utility helpers (screen-aspect UV transforms, signed distance shapes, smoothing)
 
-Future commits will populate the placeholders with direct ports from the
-referenced resource repositories.
+Future commits will continue to port the remaining modules referenced in the
+PRD with provenance preserved in registry descriptors.
