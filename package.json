@@ -1,0 +1,15 @@
+{
+  "name": "tslstudio-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TSLStudio WebGPU toolkit monorepo",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "lint": "echo \"lint not yet configured\"",
+    "test": "npm run test --workspaces"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

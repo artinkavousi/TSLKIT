@@ -1,0 +1,24 @@
+{
+  "name": "@tslstudio/tsl-kit",
+  "version": "0.1.0",
+  "description": "Core TSL/WebGPU toolkit for TSLStudio",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema/codex-task.json": "./src/schema/codexTask.schema.json"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf dist",
+    "test": "echo 'tests not yet implemented'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "rimraf": "^5.0.0"
+  }
+}
