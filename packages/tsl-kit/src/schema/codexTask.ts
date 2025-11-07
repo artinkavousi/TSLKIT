@@ -1,4 +1,4 @@
-import schema from './codexTask.schema.json' assert { type: 'json' };
+import schema from './codexTask.schema.json' with { type: 'json' };
 
 type ImmutableArray<T> = readonly T[];
 

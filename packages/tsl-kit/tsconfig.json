@@ -6,13 +6,16 @@
     "declarationMap": true,
     "outDir": "dist",
     "rootDir": "src",
-    "module": "ESNext",
+    "module": "NodeNext",
     "target": "ES2022",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*",
+    "src/schema/codexTask.schema.json"
+  ],
   "references": []
 }

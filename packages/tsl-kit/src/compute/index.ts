@@ -1,30 +1,59 @@
-export interface ComputePass {
+import { createRadialParticleInitializer } from '../ported/fragments/compute/radialParticleInitializer.js';
+import type { RadialParticleInitializer } from '../ported/fragments/compute/radialParticleInitializer.js';
+
+export interface ComputeBlueprintDescriptor {
   readonly name: string;
-  readonly workgroupCount: [number, number, number];
+  readonly provenance: string;
+  readonly create: (count: number) => RadialParticleInitializer;
 }
+
+const computeRegistry = new Map<string, ComputeBlueprintDescriptor>();
+
+function registerBlueprint(descriptor: ComputeBlueprintDescriptor): void {
+  if (computeRegistry.has(descriptor.name)) {
+    throw new Error(`Compute blueprint "${descriptor.name}" already registered`);
+  }
+
+  computeRegistry.set(descriptor.name, descriptor);
+}
+
+registerBlueprint({
+  name: 'radialParticleInitializer',
+  provenance:
+    'RESOURCES/REPOSITORIES/portfolio examples/blog.maximeheckel.com-main/core/components/MDX/Widgets/TSLWebGPU/particleInit.ts',
+  create: (count: number) => createRadialParticleInitializer(count),
+});
 
 export interface ComputeSimulationHandle {
   readonly id: string;
-  readonly passes: readonly ComputePass[];
-  readonly update: (deltaTime: number) => void;
+  readonly computeNode: RadialParticleInitializer['computeNode'];
   readonly dispose: () => void;
 }
 
-export interface ComputeSimulationOptions {
-  readonly name: string;
-  readonly passes: readonly ComputePass[];
+export interface InstantiateComputeOptions {
+  readonly blueprint: string;
+  readonly count: number;
 }
 
-export function createComputeSimulation(options: ComputeSimulationOptions): ComputeSimulationHandle {
-  const { name, passes } = options;
+export function instantiateCompute(options: InstantiateComputeOptions): ComputeSimulationHandle {
+  const descriptor = computeRegistry.get(options.blueprint);
+  if (!descriptor) {
+    throw new Error(`Unknown compute blueprint: ${options.blueprint}`);
+  }
+
+  const resources = descriptor.create(options.count);
+
   return {
-    id: `compute:${name}`,
-    passes,
-    update: () => {
-      /* simulation tick placeholder */
-    },
+    id: `compute:${descriptor.name}:${options.count}`,
+    computeNode: resources.computeNode,
     dispose: () => {
-      /* release GPU resources placeholder */
-    }
+      // buffers auto garbage collected with node graph; hook for manual cleanup later
+    },
   };
 }
+
+export function listComputeBlueprints(): readonly ComputeBlueprintDescriptor[] {
+  return Array.from(computeRegistry.values());
+}
+
+export { createRadialParticleInitializer };
