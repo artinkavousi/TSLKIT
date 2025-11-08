@@ -5,27 +5,38 @@ I'll rewrite this prompt to be clearer, more structured, and actionable:
 # Refined Prompt: TSLStudio WebGPU Engine Development Plan
 
 ## Objective
-Analyze existing resources and create comprehensive PRD + planning documentation for building a **self-contained, plug-and-play TSL/WebGPU engine** on Three.js r181+ with pre-built modules ready for production use.
+Analyze existing resources and create comprehensive PRD + planning documentation for building a **self-contained, plug-and-play TSL/WebGPU/matrrialx engine** on Three.js r181+ with pre-built modules ready for production use.
 
 ---
 
 ## Core Requirements
 
 ### 1. Resource Analysis & Port Strategy
-**Analyze these resource directories:**
+**Analyze these resource directories:** (all folders/subfolders/projects/files)
 - `RESOURCES/REPOSITORIES/portfolio examples/` (priority)
 - `RESOURCES/REPOSITORIES/TSLwebgpuExamples/`
-- `RESOURCES/three.js-r181/examples/`
+- `RESOURCES/three.js-r181/examples/`(webgpu examples)
 
 **Task:** Identify and catalog:
 - Working WebGPU pipelines
-- TSL nodes and modules (noise, materials, post-FX, compute)
+- TSL nodes and modules .passes(noise, materials, post-FX, compute)
 - Utility functions and helpers
 - Effect implementations
 - Complete component systems
+-materialx and advance materials 
+-shaders
+-physics/sims/rendering/systems tsl/webgpu modules
+-raymarching/sdf
+-lighting/shadows
+-effects /transitions
+and any other related items 
+
 
 **Port Philosophy:** Direct port existing working code—do NOT rewrite or reinvent. Adopt and adapt only (imports, types, paths). Minimize new bugs by keeping proven implementations intact.
 
+
+ Resource Inventory
+> **Purpose**: Complete catalog of available modules a detailed inventory of all modules, utilities, and systems available for porting from example repositories.
 ---
 
 ### 2. Engine Scope & Features
@@ -98,8 +109,10 @@ For each resource folder:
 5. **Flag risks** (API changes, missing deps, performance)
 
 ### B. Best Approach Determination
-Compare approaches from:
+Compare web-gpu pipeline approaches from:
 - Maxime Heckel's portfolio examples (clean, modern TSL)
+-RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main
+-RESOURCES/REPOSITORIES/portfolio examples/portfolio-main
 - TSL sandbox projects (variety of techniques)
 - Official Three.js examples (canonical patterns)
 
@@ -117,15 +130,16 @@ Research and document:
 
 ## Output Format
 
-**Two comprehensive markdown documents:**
+** comprehensive markdown documents:**
 
-1. **`TSLStudio_PRD_v2.md`**
+
+`TSLStudio engine PRD`
    - Technical specification
    - Architecture decisions
    - API contracts
    - Quality gates
 
-2. **`TSLStudio_Implementation_Plan_v2.md`**
+`TSLStudio_Implementation_Plan`
    - Actionable task lists
    - Sprint planning
    - Resource mapping
