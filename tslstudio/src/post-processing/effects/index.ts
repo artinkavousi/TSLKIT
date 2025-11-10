@@ -11,4 +11,6 @@ export * from './vignette'
 export * from './chromatic-aberration'
 export * from './fxaa'
 export * from './dof'
+export * from './motion-blur'
+export * from './tone-mapping'
 
