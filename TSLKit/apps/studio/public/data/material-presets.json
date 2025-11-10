@@ -1,88 +1,166 @@
 [
   {
-    "id": "material.holographic",
-    "name": "Holographic Surface",
+    "id": "tsl.material.concrete",
+    "name": "Layered Concrete",
     "kind": "material",
-    "description": "Multi-layer interference material showcasing vibrant color shifts.",
-    "tags": ["spectral", "iridescent", "premium"],
-    "previewColor": "#5eead4",
+    "description": "Neutral concrete base with controllable accent aggregate and subtle sheen.",
+    "tags": ["surface", "architectural", "procedural"],
+    "previewColor": "#949494",
     "parameters": [
+      { "name": "baseColor", "label": "Base Color", "type": "color", "defaultValue": "#949494" },
+      { "name": "accentColor", "label": "Accent Color", "type": "color", "defaultValue": "#7a7a7a" },
+      { "name": "accentWeight", "label": "Accent Mix", "type": "number", "defaultValue": 0.25, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "roughness", "label": "Roughness", "type": "number", "defaultValue": 0.85, "min": 0, "max": 1, "step": 0.01 },
       {
-        "name": "metalness",
-        "label": "Metalness",
+        "name": "specularIntensity",
+        "label": "Specular Intensity",
         "type": "number",
-        "defaultValue": 0.85,
+        "defaultValue": 0.1,
         "min": 0,
         "max": 1,
         "step": 0.01
-      },
-      {
-        "name": "roughness",
-        "label": "Roughness",
-        "type": "number",
-        "defaultValue": 0.12,
-        "min": 0,
-        "max": 1,
-        "step": 0.01
-      },
-      {
-        "name": "tint",
-        "label": "Tint",
-        "type": "color",
-        "defaultValue": "#60a5fa"
       }
     ],
-    "noiseSpec": {
-      "type": "domainWarp",
-      "frequency": 3.2,
-      "amplitude": 0.8,
-      "warp": 1.4,
-      "seed": 42,
-      "octaves": 4
-    },
-    "documentation": "https://docs.tsl.studio/presets/holographic-surface"
+    "noiseSpec": { "type": "fbm", "frequency": 2.5, "amplitude": 0.35, "warp": 0.1, "seed": 12, "octaves": 4 },
+    "documentation": "https://docs.tsl.studio/presets/concrete"
   },
   {
-    "id": "material.ceramic",
-    "name": "Ceramic Glaze",
+    "id": "tsl.material.bricks",
+    "name": "Weathered Bricks",
     "kind": "material",
-    "description": "Smooth ceramic shader with micro-crazing using layered FBM noise.",
-    "tags": ["ceramic", "product", "clean"],
-    "previewColor": "#facc15",
+    "description": "Sun-baked brick pattern that blends warm bricks with soft mortar.",
+    "tags": ["surface", "procedural", "architectural"],
+    "previewColor": "#b84d3a",
     "parameters": [
+      { "name": "brickColor", "label": "Brick Color", "type": "color", "defaultValue": "#b84d3a" },
+      { "name": "mortarColor", "label": "Mortar Color", "type": "color", "defaultValue": "#d8d1c7" },
+      { "name": "brickWeight", "label": "Brick Coverage", "type": "number", "defaultValue": 0.82, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "brickRoughness", "label": "Brick Roughness", "type": "number", "defaultValue": 0.78, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "mortarRoughness", "label": "Mortar Roughness", "type": "number", "defaultValue": 0.9, "min": 0, "max": 1, "step": 0.01 },
       {
-        "name": "roughness",
-        "label": "Roughness",
+        "name": "specularIntensity",
+        "label": "Specular Intensity",
         "type": "number",
-        "defaultValue": 0.35,
+        "defaultValue": 0.22,
         "min": 0,
         "max": 1,
         "step": 0.01
-      },
-      {
-        "name": "metalness",
-        "label": "Metalness",
-        "type": "number",
-        "defaultValue": 0.05,
-        "min": 0,
-        "max": 1,
-        "step": 0.01
-      },
-      {
-        "name": "tint",
-        "label": "Tint",
-        "type": "color",
-        "defaultValue": "#fde68a"
       }
     ],
-    "noiseSpec": {
-      "type": "fbm",
-      "frequency": 1.4,
-      "amplitude": 0.45,
-      "warp": 0.2,
-      "seed": 8,
-      "octaves": 5
-    },
-    "documentation": "https://docs.tsl.studio/presets/ceramic-glaze"
+    "noiseSpec": { "type": "brick", "rows": 8, "columns": 16, "seed": 3, "offset": 0.25 },
+    "documentation": "https://docs.tsl.studio/presets/weathered-bricks"
+  },
+  {
+    "id": "tsl.material.wood",
+    "name": "Polished Wood",
+    "kind": "material",
+    "description": "Rich hardwood grain with adjustable ring contrast and satin sheen.",
+    "tags": ["surface", "organic", "procedural"],
+    "previewColor": "#a3612e",
+    "parameters": [
+      { "name": "baseColor", "label": "Base Color", "type": "color", "defaultValue": "#a3612e" },
+      { "name": "ringColor", "label": "Ring Color", "type": "color", "defaultValue": "#cc8c4c" },
+      { "name": "ringWeight", "label": "Ring Mix", "type": "number", "defaultValue": 0.35, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "roughness", "label": "Roughness", "type": "number", "defaultValue": 0.6, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "sheenColor", "label": "Sheen Tint", "type": "color", "defaultValue": "#ffd899" },
+      {
+        "name": "sheenIntensity",
+        "label": "Sheen Intensity",
+        "type": "number",
+        "defaultValue": 0.25,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      }
+    ],
+    "noiseSpec": { "type": "rings", "frequency": 1.2, "warp": 0.4, "seed": 9, "octaves": 5 },
+    "documentation": "https://docs.tsl.studio/presets/polished-wood"
+  },
+  {
+    "id": "tsl.material.marble",
+    "name": "Translucent Marble",
+    "kind": "material",
+    "description": "Luxurious marble slab with translucent veins and controlled scattering.",
+    "tags": ["surface", "stone", "premium"],
+    "previewColor": "#f2f2f2",
+    "parameters": [
+      { "name": "baseColor", "label": "Base Color", "type": "color", "defaultValue": "#f2f2f2" },
+      { "name": "veinColor", "label": "Vein Color", "type": "color", "defaultValue": "#b2b2bf" },
+      { "name": "veinWeight", "label": "Vein Mix", "type": "number", "defaultValue": 0.25, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "roughness", "label": "Roughness", "type": "number", "defaultValue": 0.2, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "transmissionColor", "label": "Transmission Color", "type": "color", "defaultValue": "#e6e6ff" },
+      {
+        "name": "transmissionIntensity",
+        "label": "Transmission",
+        "type": "number",
+        "defaultValue": 0.2,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      },
+      { "name": "thickness", "label": "Thickness", "type": "number", "defaultValue": 0.5, "min": 0, "max": 5, "step": 0.01 }
+    ],
+    "noiseSpec": { "type": "veins", "frequency": 2.1, "amplitude": 0.5, "warp": 0.45, "seed": 5 },
+    "documentation": "https://docs.tsl.studio/presets/translucent-marble"
+  },
+  {
+    "id": "tsl.material.satin",
+    "name": "Satin Fabric",
+    "kind": "material",
+    "description": "Shimmering textile with layered sheen, clearcoat sparkle, and soft folds.",
+    "tags": ["surface", "fabric", "stylized"],
+    "previewColor": "#d83fa5",
+    "parameters": [
+      { "name": "baseColor", "label": "Base Color", "type": "color", "defaultValue": "#d83fa5" },
+      { "name": "sheenColor", "label": "Sheen Color", "type": "color", "defaultValue": "#ffccf2" },
+      { "name": "sheenIntensity", "label": "Sheen", "type": "number", "defaultValue": 0.6, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "roughness", "label": "Roughness", "type": "number", "defaultValue": 0.35, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "clearcoatIntensity", "label": "Clearcoat", "type": "number", "defaultValue": 0.25, "min": 0, "max": 1, "step": 0.01 },
+      {
+        "name": "clearcoatRoughness",
+        "label": "Clearcoat Roughness",
+        "type": "number",
+        "defaultValue": 0.1,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      }
+    ],
+    "noiseSpec": { "type": "fbm", "frequency": 6.5, "amplitude": 0.2, "warp": 0.35, "seed": 27 },
+    "documentation": "https://docs.tsl.studio/presets/satin-fabric"
+  },
+  {
+    "id": "tsl.material.rust",
+    "name": "Oxidized Metal",
+    "kind": "material",
+    "description": "Pitted metal that blends raw substrate with orange patina and varnish.",
+    "tags": ["surface", "industrial", "procedural"],
+    "previewColor": "#945635",
+    "parameters": [
+      { "name": "baseColor", "label": "Base Color", "type": "color", "defaultValue": "#562e1c" },
+      { "name": "oxidizedColor", "label": "Oxidized Color", "type": "color", "defaultValue": "#945635" },
+      { "name": "oxidation", "label": "Oxidation", "type": "number", "defaultValue": 0.6, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "roughness", "label": "Roughness", "type": "number", "defaultValue": 0.75, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "clearcoat", "label": "Clearcoat", "type": "number", "defaultValue": 0.1, "min": 0, "max": 1, "step": 0.01 }
+    ],
+    "noiseSpec": { "type": "fbm", "frequency": 3.6, "amplitude": 0.75, "warp": 0.55, "seed": 44 },
+    "documentation": "https://docs.tsl.studio/presets/oxidized-metal"
+  },
+  {
+    "id": "tsl.material.waterDrops",
+    "name": "Water Drops",
+    "kind": "material",
+    "description": "Beaded water droplets with controllable depth tint and refraction.",
+    "tags": ["effects", "transmission", "procedural"],
+    "previewColor": "#2e5173",
+    "parameters": [
+      { "name": "surfaceColor", "label": "Surface Color", "type": "color", "defaultValue": "#2e5173" },
+      { "name": "depthColor", "label": "Depth Color", "type": "color", "defaultValue": "#0a1424" },
+      { "name": "transmission", "label": "Transmission", "type": "number", "defaultValue": 0.85, "min": 0, "max": 1, "step": 0.01 },
+      { "name": "thickness", "label": "Thickness", "type": "number", "defaultValue": 0.35, "min": 0, "max": 5, "step": 0.01 },
+      { "name": "roughness", "label": "Surface Roughness", "type": "number", "defaultValue": 0.05, "min": 0, "max": 1, "step": 0.01 }
+    ],
+    "noiseSpec": { "type": "droplets", "frequency": 12, "amplitude": 0.7, "seed": 19 },
+    "documentation": "https://docs.tsl.studio/presets/water-drops"
   }
 ]
