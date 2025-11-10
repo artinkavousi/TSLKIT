@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { float, mat3, vec2, vec3 } from 'three/tsl';
+import { Fn, float, mat3, vec2, vec3 } from 'three/tsl';
 
 import { composeMatrix, remap, smoothMin, smoothMod } from './utils.js';
 import {
@@ -15,7 +15,18 @@ import {
   sdSphere,
   sdTriangle
 } from './shapes.js';
-import { smoothSubtraction, smoothUnion } from './operations.js';
+import {
+  bend,
+  distanceDifference,
+  distanceIntersection,
+  distanceUnion,
+  repeat,
+  smoothIntersection,
+  smoothSubtraction,
+  smoothUnion,
+  twist
+} from './operations.js';
+import { raymarchScene, type RaymarchDistanceFunction } from './scene.js';
 
 describe('sdf utils', () => {
   it('composes transform matrices', () => {
@@ -55,5 +66,49 @@ describe('sdf operations', () => {
   it('combines distances smoothly', () => {
     expect(smoothUnion(float(0.3), float(0.5), float(0.1))).toBeDefined();
     expect(smoothSubtraction(float(0.5), float(0.3), float(0.1))).toBeDefined();
+    expect(smoothIntersection(float(0.2), float(0.4), float(0.05))).toBeDefined();
+  });
+
+  it('evaluates distance compositors', () => {
+    const a = float(0.2);
+    const b = float(0.4);
+    expect(distanceUnion(a, b)).toBeDefined();
+    expect(distanceIntersection(a, b)).toBeDefined();
+    expect(distanceDifference(a, b)).toBeDefined();
+  });
+});
+
+describe('sdf transformations', () => {
+  const samplePoint = vec3(0.1, 0.2, 0.3);
+
+  it('repeats coordinates across a cell size', () => {
+    expect(repeat(samplePoint, vec3(1.0, 2.0, 3.0))).toBeDefined();
+  });
+
+  it('twists coordinates around the Y axis', () => {
+    expect(twist(samplePoint, float(0.5))).toBeDefined();
+  });
+
+  it('bends coordinates around a radius', () => {
+    expect(bend(samplePoint, float(2.5))).toBeDefined();
+  });
+});
+
+describe('raymarch scene helper', () => {
+  it('builds a raymarch scene graph with shading', () => {
+    const sdf = Fn(([pos]) => {
+      const repeated = repeat(vec3(pos), vec3(1.5));
+      const twisted = twist(repeated, float(0.25));
+      return sdSphere(twisted, 0.45);
+    }) as unknown as RaymarchDistanceFunction;
+
+    const scene = raymarchScene({
+      sdf,
+      shading: ({ normal, hitMask }) => vec3(normal.abs()).mul(hitMask.add(0.1))
+    });
+
+    expect(scene.color).toBeDefined();
+    expect(scene.normal).toBeDefined();
+    expect(scene.position).toBeDefined();
   });
 });

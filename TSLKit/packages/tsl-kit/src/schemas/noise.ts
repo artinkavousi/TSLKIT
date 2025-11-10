@@ -1,6 +1,17 @@
 import { z } from 'zod';
 
-export const noiseTypeSchema = z.enum(['simplex', 'curl', 'fbm', 'voronoi', 'domainWarp']);
+export const noiseTypeSchema = z.enum([
+  'simplex',
+  'simplex2d',
+  'simplex4d',
+  'curl',
+  'curl4d',
+  'fbm',
+  'perlin',
+  'voronoi',
+  'turbulence',
+  'domainWarp'
+]);
 
 export const noiseSpecSchema = z.object({
   type: noiseTypeSchema,

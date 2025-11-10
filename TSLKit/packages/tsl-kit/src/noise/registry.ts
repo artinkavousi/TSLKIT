@@ -17,6 +17,22 @@ const NOISE_DEFAULTS: Record<NoiseType, NormalizedNoiseSpec> = {
     octaves: 1,
     warp: 0
   },
+  simplex2d: {
+    type: 'simplex2d',
+    frequency: 1,
+    amplitude: 1,
+    seed: 0,
+    octaves: 1,
+    warp: 0
+  },
+  simplex4d: {
+    type: 'simplex4d',
+    frequency: 1,
+    amplitude: 1,
+    seed: 0,
+    octaves: 1,
+    warp: 0.5
+  },
   curl: {
     type: 'curl',
     frequency: 1,
@@ -24,6 +40,14 @@ const NOISE_DEFAULTS: Record<NoiseType, NormalizedNoiseSpec> = {
     seed: 0,
     octaves: 1,
     warp: 0.5
+  },
+  curl4d: {
+    type: 'curl4d',
+    frequency: 1,
+    amplitude: 1,
+    seed: 0,
+    octaves: 1,
+    warp: 0.75
   },
   fbm: {
     type: 'fbm',
@@ -33,6 +57,14 @@ const NOISE_DEFAULTS: Record<NoiseType, NormalizedNoiseSpec> = {
     octaves: 4,
     warp: 0.75
   },
+  perlin: {
+    type: 'perlin',
+    frequency: 1,
+    amplitude: 1,
+    seed: 0,
+    octaves: 1,
+    warp: 0
+  },
   voronoi: {
     type: 'voronoi',
     frequency: 1,
@@ -40,6 +72,14 @@ const NOISE_DEFAULTS: Record<NoiseType, NormalizedNoiseSpec> = {
     seed: 0,
     octaves: 2,
     warp: 0
+  },
+  turbulence: {
+    type: 'turbulence',
+    frequency: 1,
+    amplitude: 1,
+    seed: 0,
+    octaves: 6,
+    warp: 0.3
   },
   domainWarp: {
     type: 'domainWarp',
@@ -114,6 +154,36 @@ const NOISE_METADATA: Record<NoiseType, NoiseMetadata> = {
     parameters: COMMON_PARAMETERS,
     tags: ['procedural', 'foundation', 'animated']
   },
+  simplex2d: {
+    id: 'tsl.noise.simplex2d',
+    label: 'Simplex Noise 2D',
+    description: 'Planar simplex noise ideal for heightmaps and UV-space masks.',
+    parameters: COMMON_PARAMETERS.map((parameter) =>
+      parameter.name === 'warp'
+        ? {
+            ...parameter,
+            description: 'Unused for the 2D variant; preserved for schema compatibility.',
+            defaultValue: 0
+          }
+        : parameter
+    ),
+    tags: ['procedural', '2d', 'foundation']
+  },
+  simplex4d: {
+    id: 'tsl.noise.simplex4d',
+    label: 'Simplex Noise 4D',
+    description: 'Time-aware simplex noise using a fourth dimension for animation.',
+    parameters: COMMON_PARAMETERS.map((parameter) =>
+      parameter.name === 'warp'
+        ? {
+            ...parameter,
+            defaultValue: 0.5,
+            description: 'Fourth-axis phase offset typically mapped to animation time.'
+          }
+        : parameter
+    ),
+    tags: ['procedural', 'animated', '4d']
+  },
   curl: {
     id: 'tsl.noise.curl',
     label: 'Curl Noise',
@@ -130,6 +200,22 @@ const NOISE_METADATA: Record<NoiseType, NoiseMetadata> = {
     ),
     tags: ['vector', 'simulation', 'flow']
   },
+  curl4d: {
+    id: 'tsl.noise.curl4d',
+    label: 'Curl Noise 4D',
+    description:
+      'Animated curl noise computed in 4D space, perfect for looping vector fields.',
+    parameters: COMMON_PARAMETERS.map((parameter) =>
+      parameter.name === 'warp'
+        ? {
+            ...parameter,
+            defaultValue: 0.75,
+            description: 'Temporal warp applied to the 4D curl evaluation.'
+          }
+        : parameter
+    ),
+    tags: ['vector', 'simulation', 'animated']
+  },
   fbm: {
     id: 'tsl.noise.fbm',
     label: 'Fractal Brownian Motion',
@@ -144,6 +230,13 @@ const NOISE_METADATA: Record<NoiseType, NoiseMetadata> = {
     ),
     tags: ['procedural', 'terrain', 'organic']
   },
+  perlin: {
+    id: 'tsl.noise.perlin',
+    label: 'Perlin Noise',
+    description: 'Classic gradient noise for soft clouds and organic breakup patterns.',
+    parameters: COMMON_PARAMETERS,
+    tags: ['procedural', 'classic', 'organic']
+  },
   voronoi: {
     id: 'tsl.noise.voronoi',
     label: 'Voronoi Noise',
@@ -153,6 +246,45 @@ const NOISE_METADATA: Record<NoiseType, NoiseMetadata> = {
       parameter.name === 'warp' ? { ...parameter, max: 1 } : parameter
     ),
     tags: ['cells', 'masking', 'stylized']
+  },
+  turbulence: {
+    id: 'tsl.noise.turbulence',
+    label: 'Turbulence Warp',
+    description:
+      'Iterative sine-based turbulence inspired by XorDev’s shader, ideal for wispy distortion.',
+    parameters: COMMON_PARAMETERS.map((parameter) => {
+      if (parameter.name === 'warp') {
+        return {
+          ...parameter,
+          label: 'Scroll Speed',
+          defaultValue: 0.3,
+          max: 2,
+          description: 'Temporal scroll rate applied to each turbulence octave.'
+        };
+      }
+
+      if (parameter.name === 'octaves') {
+        return { ...parameter, defaultValue: 6, max: 12 };
+      }
+
+      if (parameter.name === 'seed') {
+        return {
+          ...parameter,
+          label: 'Phase Offset',
+          description: 'Phase offset interpreted as the turbulence time input.'
+        };
+      }
+
+      if (parameter.name === 'amplitude') {
+        return {
+          ...parameter,
+          description: 'Strength multiplier applied to the returned turbulence displacement.'
+        };
+      }
+
+      return parameter;
+    }),
+    tags: ['warp', 'distortion', 'animated']
   },
   domainWarp: {
     id: 'tsl.noise.domainWarp',
@@ -194,20 +326,45 @@ const BUILT_IN_DEFINITIONS: Record<NoiseType, NoiseNodeDefinition> = {
     metadata: NOISE_METADATA.simplex,
     build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'simplex' }))
   },
+  simplex2d: {
+    type: 'simplex2d',
+    metadata: NOISE_METADATA.simplex2d,
+    build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'simplex2d' }))
+  },
+  simplex4d: {
+    type: 'simplex4d',
+    metadata: NOISE_METADATA.simplex4d,
+    build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'simplex4d' }))
+  },
   curl: {
     type: 'curl',
     metadata: NOISE_METADATA.curl,
     build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'curl' }))
+  },
+  curl4d: {
+    type: 'curl4d',
+    metadata: NOISE_METADATA.curl4d,
+    build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'curl4d' }))
   },
   fbm: {
     type: 'fbm',
     metadata: NOISE_METADATA.fbm,
     build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'fbm' }))
   },
+  perlin: {
+    type: 'perlin',
+    metadata: NOISE_METADATA.perlin,
+    build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'perlin' }))
+  },
   voronoi: {
     type: 'voronoi',
     metadata: NOISE_METADATA.voronoi,
     build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'voronoi' }))
+  },
+  turbulence: {
+    type: 'turbulence',
+    metadata: NOISE_METADATA.turbulence,
+    build: ({ normalize }, spec) => createRuntimeNode(normalize({ ...spec, type: 'turbulence' }))
   },
   domainWarp: {
     type: 'domainWarp',

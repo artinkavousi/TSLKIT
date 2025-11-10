@@ -33,6 +33,21 @@ describe('buildNoiseNode', () => {
       warp: 1.25
     });
   });
+
+  it('supports additional noise families', () => {
+    const simplex4d = buildNoiseNode({ type: 'simplex4d', seed: 8 });
+    expect(simplex4d.node.spec).toMatchObject({
+      type: 'simplex4d',
+      warp: 0.5
+    });
+
+    const turbulence = buildNoiseNode({ type: 'turbulence', warp: 0.4 });
+    expect(turbulence.node.spec).toMatchObject({
+      type: 'turbulence',
+      octaves: 6,
+      warp: 0.4
+    });
+  });
 });
 
 describe('getNoiseMetadata', () => {
@@ -40,7 +55,7 @@ describe('getNoiseMetadata', () => {
     const metadata = getNoiseMetadata();
 
     expect(Array.isArray(metadata)).toBe(true);
-    expect((metadata as unknown[]).length).toBeGreaterThanOrEqual(5);
+    expect((metadata as unknown[]).length).toBeGreaterThanOrEqual(10);
   });
 
   it('returns metadata for a specific type', () => {
@@ -48,5 +63,12 @@ describe('getNoiseMetadata', () => {
 
     expect(metadata.id).toBe('tsl.noise.curl');
     expect(metadata.tags).toContain('flow');
+  });
+
+  it('returns metadata for newly registered types', () => {
+    const metadata = getNoiseMetadata('turbulence');
+
+    expect(metadata.id).toBe('tsl.noise.turbulence');
+    expect(metadata.tags).toContain('distortion');
   });
 });

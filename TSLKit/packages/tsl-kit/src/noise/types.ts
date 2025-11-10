@@ -1,4 +1,14 @@
-export type NoiseType = 'simplex' | 'curl' | 'fbm' | 'voronoi' | 'domainWarp';
+export type NoiseType =
+  | 'simplex'
+  | 'simplex2d'
+  | 'simplex4d'
+  | 'curl'
+  | 'curl4d'
+  | 'fbm'
+  | 'perlin'
+  | 'voronoi'
+  | 'turbulence'
+  | 'domainWarp';
 
 export interface NoiseSpec {
   type: NoiseType;
