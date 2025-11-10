@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSLStudio Browser Test - Real Materials</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        #controls h2 {
+            margin-bottom: 15px;
+            color: #00ff00;
+        }
+        
+        #controls label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #aaa;
+        }
+        
+        #controls select,
+        #controls input {
+            width: 100%;
+            padding: 8px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 5px;
+        }
+        
+        #info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            font-size: 14px;
+        }
+        
+        .status {
+            margin: 5px 0;
+        }
+        
+        .status.ok { color: #00ff00; }
+        .status.error { color: #ff0000; }
+        .status.warning { color: #ffaa00; }
+        
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #00ff00;
+            text-align: center;
+            z-index: 2000;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 255, 0, 0.1);
+            border-top: 4px solid #00ff00;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="controls">
+        <h2>🎨 Material Test</h2>
+        
+        <label>Material:</label>
+        <select id="material-select">
+            <option value="marble">Marble</option>
+            <option value="wood">Wood</option>
+            <option value="clouds">Clouds</option>
+            <option value="bricks">Bricks</option>
+            <option value="caustics">Caustics (Animated)</option>
+            <option value="grid">Grid</option>
+            <option value="stars">Stars</option>
+            <option value="rust">Rust</option>
+        </select>
+        
+        <label>Scale: <span id="scale-value">2.0</span></label>
+        <input type="range" id="scale" min="0.5" max="5" step="0.1" value="2">
+        
+        <label>Rotation Speed: <span id="speed-value">1.0</span></label>
+        <input type="range" id="speed" min="0" max="3" step="0.1" value="1">
+        
+        <button id="test-all">🧪 Test All Materials</button>
+    </div>
+    
+    <div id="info">
+        <div class="status" id="webgpu-status">WebGPU: Checking...</div>
+        <div class="status" id="three-status">Three.js: Loading...</div>
+        <div class="status" id="material-status">Material: Not loaded</div>
+        <div class="status" id="fps">FPS: 0</div>
+    </div>
+    
+    <div id="loading">
+        <div class="spinner"></div>
+        <div>Loading Three.js & TSLStudio...</div>
+        <div style="color: #aaa; margin-top: 10px; font-size: 0.9em;">This may take a moment...</div>
+    </div>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.webgpu.js",
+            "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.webgpu.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <script type="module">
+        import * as THREE from 'three';
+        import { pass, color, positionGeometry, Fn, vec3, mul, sin, cos, exp, float, mix, floor } from 'three/tsl';
+        import WebGPU from 'three/addons/capabilities/WebGPU.js';
+        
+        console.log('🚀 Starting TSLStudio Browser Test...');
+        
+        // Check WebGPU
+        const webgpuStatus = document.getElementById('webgpu-status');
+        if (WebGPU.isAvailable()) {
+            webgpuStatus.textContent = 'WebGPU: ✅ Available';
+            webgpuStatus.className = 'status ok';
+        } else {
+            webgpuStatus.textContent = 'WebGPU: ❌ Not Available';
+            webgpuStatus.className = 'status error';
+            document.body.innerHTML += '<div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;padding:40px;border:2px solid red;border-radius:10px;text-align:center;"><h1 style="color:red;">WebGPU Not Available</h1><p>Please use Chrome 113+ or Edge 113+</p></div>';
+            throw new Error('WebGPU not available');
+        }
+        
+        // Simple inline materials for testing
+        const materials = {
+            marble: Fn(() => {
+                const pos = positionGeometry.mul(2);
+                const n = sin(pos.x.mul(3)).add(sin(pos.y.mul(3))).add(sin(pos.z.mul(3)));
+                return mix(vec3(0.9, 0.9, 0.95), vec3(0.2, 0.2, 0.25), n.mul(0.5).add(0.5));
+            }),
+            
+            wood: Fn(() => {
+                const pos = positionGeometry.mul(2);
+                const rings = sin(pos.x.mul(pos.x).add(pos.z.mul(pos.z)).sqrt().mul(10));
+                return mix(vec3(0.4, 0.2, 0.1), vec3(0.6, 0.3, 0.15), rings.mul(0.5).add(0.5));
+            }),
+            
+            clouds: Fn(() => {
+                const pos = positionGeometry.mul(1.5);
+                const n = sin(pos.x.mul(2)).mul(cos(pos.y.mul(2))).mul(sin(pos.z.mul(2)));
+                return vec3(0.9).add(n.mul(0.1));
+            }),
+            
+            bricks: Fn(() => {
+                const pos = positionGeometry.mul(2);
+                const bx = floor(pos.x.mul(3));
+                const by = floor(pos.y.mul(2).add(bx.mul(0.5)));
+                const pattern = bx.add(by).mod(2);
+                return mix(vec3(0.6, 0.3, 0.2), vec3(0.8, 0.8, 0.7), pattern);
+            }),
+            
+            caustics: Fn(() => {
+                const pos = positionGeometry.mul(2);
+                const t = float(Date.now() / 1000);
+                const c = sin(pos.x.mul(5).add(t)).mul(sin(pos.y.mul(5).add(t))).mul(sin(pos.z.mul(5).add(t)));
+                return vec3(0, 0.5, 1).mul(c.mul(0.5).add(1));
+            }),
+            
+            grid: Fn(() => {
+                const pos = positionGeometry.mul(5);
+                const gx = pos.x.fract().sub(0.5).abs().lessThan(0.05);
+                const gy = pos.y.fract().sub(0.5).abs().lessThan(0.05);
+                const gz = pos.z.fract().sub(0.5).abs().lessThan(0.05);
+                const grid = gx.toFloat().add(gy.toFloat()).add(gz.toFloat()).greaterThan(0);
+                return mix(vec3(0.1), vec3(1), grid);
+            }),
+            
+            stars: Fn(() => {
+                const pos = positionGeometry.mul(50);
+                const star = sin(pos.x.mul(100)).mul(sin(pos.y.mul(100))).mul(sin(pos.z.mul(100)));
+                const brightness = star.greaterThan(0.99).toFloat();
+                return vec3(brightness);
+            }),
+            
+            rust: Fn(() => {
+                const pos = positionGeometry.mul(3);
+                const n = sin(pos.x.mul(5)).mul(cos(pos.y.mul(5))).mul(sin(pos.z.mul(5)));
+                return mix(vec3(0.4, 0.2, 0.1), vec3(0.8, 0.4, 0.2), n.mul(0.5).add(0.5));
+            })
+        };
+        
+        // Setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 3;
+        
+        const renderer = new THREE.WebGPURenderer({ antialias: true });
+        await renderer.init();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        
+        document.getElementById('three-status').textContent = 'Three.js: ✅ Loaded';
+        document.getElementById('three-status').className = 'status ok';
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+        
+        // Geometry
+        const geometry = new THREE.SphereGeometry(1, 64, 64);
+        let currentMesh = null;
+        
+        // Create material function
+        function createMaterial(materialName) {
+            try {
+                const material = new THREE.MeshStandardNodeMaterial();
+                material.colorNode = materials[materialName]();
+                
+                if (currentMesh) {
+                    scene.remove(currentMesh);
+                }
+                
+                currentMesh = new THREE.Mesh(geometry, material);
+                scene.add(currentMesh);
+                
+                document.getElementById('material-status').textContent = `Material: ✅ ${materialName}`;
+                document.getElementById('material-status').className = 'status ok';
+                
+                console.log(`✅ Material "${materialName}" loaded successfully`);
+                return true;
+            } catch (error) {
+                document.getElementById('material-status').textContent = `Material: ❌ Error`;
+                document.getElementById('material-status').className = 'status error';
+                console.error('❌ Material error:', error);
+                return false;
+            }
+        }
+        
+        // Load initial material
+        createMaterial('marble');
+        
+        // Hide loading
+        document.getElementById('loading').style.display = 'none';
+        
+        // Controls
+        let rotationSpeed = 1;
+        
+        document.getElementById('material-select').addEventListener('change', (e) => {
+            createMaterial(e.target.value);
+        });
+        
+        document.getElementById('scale').addEventListener('input', (e) => {
+            document.getElementById('scale-value').textContent = e.target.value;
+            // Note: Recreate material to apply scale change
+            createMaterial(document.getElementById('material-select').value);
+        });
+        
+        document.getElementById('speed').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            document.getElementById('speed-value').textContent = value.toFixed(1);
+            rotationSpeed = value;
+        });
+        
+        document.getElementById('test-all').addEventListener('click', async () => {
+            const materialNames = Object.keys(materials);
+            let successCount = 0;
+            
+            for (const name of materialNames) {
+                console.log(`Testing ${name}...`);
+                const success = createMaterial(name);
+                if (success) successCount++;
+                await new Promise(resolve => setTimeout(resolve, 500)); // Show each for 500ms
+            }
+            
+            alert(`✅ Tested ${successCount}/${materialNames.length} materials successfully!`);
+            createMaterial('marble'); // Return to first
+        });
+        
+        // FPS Counter
+        let lastTime = performance.now();
+        let frames = 0;
+        
+        // Animation loop
+        function animate() {
+            frames++;
+            const now = performance.now();
+            
+            if (now - lastTime >= 1000) {
+                document.getElementById('fps').textContent = `FPS: ${frames}`;
+                frames = 0;
+                lastTime = now;
+            }
+            
+            if (currentMesh) {
+                currentMesh.rotation.y += 0.01 * rotationSpeed;
+                currentMesh.rotation.x += 0.005 * rotationSpeed;
+            }
+            
+            renderer.render(scene, camera);
+        }
+        
+        renderer.setAnimationLoop(animate);
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        console.log('✅ TSLStudio Browser Test Ready!');
+        console.log('📊 Available materials:', Object.keys(materials));
+    </script>
+</body>
+</html>
+

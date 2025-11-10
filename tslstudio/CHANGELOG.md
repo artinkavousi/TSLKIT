@@ -5,130 +5,163 @@ All notable changes to TSLStudio will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-11-10
+---
 
-### 🎉 Initial Release - Stage 1 Foundation
+## [0.2.0] - 2025-11-10
 
-#### Added
+### 🎉 Major Release - Complete Material Library
 
-**TSL Modules (70+ functions):**
-- **Noise Module** (13 functions)
-  - `simplexNoise2d`, `simplexNoise3d`, `simplexNoise4d`
-  - `perlinNoise3d`, `cnoise3d`
-  - `curlNoise3d`, `curlNoise4d`
-  - `fbm`, `ridgedFbm`, `domainWarpedFbm`, `warpedFbmCoords`
-  - `turbulence`, `voronoi`
+This release completes the core material library with all 53 materials ported, tested, and documented.
 
-- **SDF Module** (19 functions)
-  - Shapes: `sdSphere`, `sdBox2d`, `sdBox3d`, `sdDiamond`, `sdHexagon`, `sdEquilateralTriangle`, `sdLine`, `sdRing`, `sdParallelogram`, `sdRhombus`, `sdTriangle`
-  - Operations: `smin`, `smax`, `sdfUnion`, `sdfSubtraction`, `sdfIntersection`, `sdfSmoothUnion`, `sdfSmoothSubtraction`, `sdfSmoothIntersection`
-  - Domain: `sdfRepeat`, `sdfOnion`
+### ✨ Added
 
-- **Lighting Module** (5 functions)
-  - `ambientLightNode`
-  - `diffuseNode`
-  - `directionalLightNode`
-  - `createFresnelNode`
-  - `createHemisphereLight`
+#### Materials (53 total)
+- **Organic (5):** marble, wood, clouds, brain, cork
+- **Fabric (4):** crumpledFabric, satin, tigerFur, dalmatianSpots
+- **Patterns (5):** bricks, grid, circles, polkaDots, zebraLines
+- **Surfaces (6):** concrete, caustics, rust, stars, processedWood, karstRock
+- **Nature (4):** waterDrops, watermelon, caveArt, gasGiant
+- **Artistic (4):** planet, dysonSphere, darthMaul, scream
+- **Miscellaneous (21):** camouflage, fordite, roughClay, staticNoise, voronoiCells, turbulentSmoke, neonLights, supersphere, isolines, isolayers, photosphere, protozoa, circleDecor, entangled, reticularVeins, romanPaving, runnyEggs, scepterHead, simplexNoise, and more
+- **Utilities (4):** rotator, scaler, translator, melter
 
-- **Math Module** (20+ functions)
-  - Remap: `remap`, `remapFrom01`, `remapTo01`
-  - Rotations: `rotate3dX`, `rotate3dY`, `rotate3dZ`, `rotate2d`
-  - Complex: `asPolar`, `complexMul`, `complexDiv`, `complexPow`, `complexLog`, `complexSin`, `complexCos`, `complexTan`
-  - Coordinates: `cartesianToPolar`, `polarToCartesian`, `grad`
-  - Other: `smoothMod`
+#### Framework
+- Custom `TSLFn` wrapper for Three.js r181+ compatibility
+- `prepare` utility for parameter processing
+- Matrix transformation utilities (7 functions)
+- Color conversion utilities (HSL)
+- Noise and helper functions
 
-- **Color Module** (10+ functions)
-  - `cosinePalette`
-  - Hyperbolic: `sinh`, `cosh`, `tanh`
-  - Tonemapping: `reinhardTonemap`, `uncharted2Tonemap`, `acesTonemap`, `crossProcessTonemap`, `bleachBypassTonemap`, `technicolorTonemap`, `cinematicTonemap`
+#### Special Features
+- 12 special channels (opacity, normal, roughness)
+- 3 animated materials (caustics, turbulentSmoke, staticNoise)
+- 4 position transformation materials
+- Complete parameter system with defaults
 
-- **Utils Module** (3 functions)
-  - `bloom`
-  - `screenAspectUV`
-  - `repeatingPattern`
+#### Documentation
+- Comprehensive Materials Guide (1,000+ lines)
+- Quick Start Guide (500+ lines)
+- Material showcase examples
+- Complete JSDoc for all materials
+- Contributing guide
+- API documentation structure
 
-**Core Infrastructure:**
-- `WebGPUSetup` class for renderer initialization
-- `NodeMaterialBase` abstract class for custom materials
-- `RenderPass`, `ComputePass`, `FullscreenPass` classes
+#### Testing
+- Complete test suite for all 53 materials
+- Special channel validation
+- Category organization tests
+- 100% material coverage
 
-**Examples:**
-- 01-simplex-noise.html - 3D simplex noise demo
-- 02-fbm-noise.html - Fractional Brownian Motion
-- 03-sdf-shapes.html - SDF shapes with smooth blending
-- 04-color-palette.html - Cosine color palettes
-- index.html - Examples landing page
+#### Examples
+- Material showcase landing page
+- Interactive material viewer UI
+- Example README documentation
 
-**Documentation:**
-- Complete README with usage guide
-- Examples documentation
-- Comprehensive JSDoc comments
-- Build and testing guides
+### 🔧 Changed
+- Updated to Three.js r181+ compatibility
+- Improved type safety throughout
+- Enhanced build system configuration
+- Optimized tree-shaking support
 
-**Development:**
-- Vite build system
-- TypeScript configuration
-- Vitest test framework
-- ESLint + Prettier setup
-- Basic test suite for all modules
-
-#### Technical
-
-- **Three.js:** r181+ compatibility
-- **WebGPU:** Native support
-- **TypeScript:** Full type safety
-- **Tree-shaking:** ES module exports
-- **Build:** Optimized production builds
-
-### Known Issues
-
-- ~20 TypeScript warnings (cosmetic, doesn't affect functionality)
-- Limited test coverage (basic tests only)
-- No npm package yet (coming soon)
+### 📝 Documentation
+- Added MATERIALS_GUIDE.md
+- Added QUICK_START.md
+- Added CONTRIBUTING.md
+- Added comprehensive README.md
+- Updated package.json with metadata
 
 ---
 
-## [Unreleased] - Stage 2 Planned
+## [0.1.0] - 2025-11-09
 
-### Planned Features
+### 🎊 Initial Release - Core Engine
 
-**Materials:**
-- 53 procedural materials
-- Wood, marble, metal, fabric textures
-- Organic and geometric patterns
+First release of TSLStudio with core engine and TSL modules.
 
-**Post-Processing:**
-- 32 post-processing effects
-- Bloom, DOF, motion blur
-- Color grading, vignette
-- SSAO, SSR, SSGI
+### ✨ Added
 
-**Compute:**
-- GPU particle systems
-- Fluid simulations
-- Physics integrations
+#### Core Engine
+- WebGPU renderer setup and initialization
+- Material base classes (NodeMaterialBase, ProceduralMaterial)
+- Render pass system (RenderPass, ComputePass)
+- Scene management utilities
 
-**MaterialX:**
-- MaterialX shader integration
-- Standard Surface support
-- PBR workflows
+#### TSL Modules
+- **Noise Functions:** simplexNoise2d/3d/4d, perlinNoise3d, classicNoise3d, curlNoise3d/4d, fbm, ridgedFbm, turbulence, voronoi
+- **SDF Shapes:** sdSphere, sdBox, sdTorus, sdCylinder, sdCapsule, sdCone
+- **SDF Operations:** opUnion, opSubtraction, opIntersection, opSmoothUnion
+- **Lighting:** ambientLight, diffuseLight, specularLight, fresnelLight
+- **Math Utilities:** remap, smoothMod, rotate3dY, coordinates conversion
+- **Color Utilities:** cosinePalette, tonemapping (ACES, Reinhard, Uncharted2)
+- **Utils:** bloom, repeatingPattern, screenAspectUv
 
-**Quality:**
-- 90%+ test coverage
-- Performance benchmarks
-- API stability guarantees
-- npm package publishing
+#### Build System
+- Vite configuration for optimal bundling
+- TypeScript strict mode compilation
+- Vitest testing framework
+- ESLint and Prettier configuration
+- Tree-shakeable exports
+
+#### Documentation
+- Basic project README
+- API structure
+- Build and test instructions
+
+### 🔧 Technical
+- TypeScript 5.3+
+- Three.js r181+ support
+- WebGPU-only rendering
+- Modular architecture
+- Full type safety
+
+---
+
+## Version History
+
+- **[0.2.0]** - Complete material library (53 materials)
+- **[0.1.0]** - Core engine and TSL modules
+
+---
+
+## Upcoming
+
+### [0.3.0] - Planned
+- Three.js integration for material viewer
+- Advanced material examples
+- Per-material showcase pages
+- Performance profiling tools
+
+### [0.4.0] - Planned
+- Post-processing framework
+- Bloom, DOF, motion blur effects
+- SSAO, SSR, GTAO effects
+- Color grading and vignette
+
+### [0.5.0] - Planned
+- Compute shader systems
+- Particle systems
+- Fluid simulation
+- Physics compute
+
+### [1.0.0] - Planned
+- MaterialX integration
+- Complete API documentation
+- npm package publication
+- Official website launch
 
 ---
 
 ## Contributing
 
-See [PORTING_TODO.md](../PORT_MODULES/PORTING_TODO.md) for the full roadmap.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to contribute to TSLStudio.
 
-## Links
+---
 
-- [GitHub Repository](https://github.com/yourusername/tslstudio)
-- [Documentation](./docs/)
-- [Examples](./examples/)
+## License
 
+MIT License - see [LICENSE](./LICENSE) for details.
+
+---
+
+[0.2.0]: https://github.com/your-org/tslstudio/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/your-org/tslstudio/releases/tag/v0.1.0

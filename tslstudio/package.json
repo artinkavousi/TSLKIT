@@ -1,8 +1,29 @@
 {
   "name": "@tslstudio/core",
-  "version": "0.1.0",
-  "description": "Complete TSL/WebGPU engine for Three.js r181+",
+  "version": "0.2.0",
+  "description": "53 production-ready procedural materials for Three.js WebGPU/TSL",
   "type": "module",
+  "keywords": [
+    "threejs",
+    "webgpu",
+    "tsl",
+    "materials",
+    "procedural",
+    "shaders",
+    "graphics",
+    "3d",
+    "typescript"
+  ],
+  "author": "TSLStudio Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/tslstudio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/tslstudio/issues"
+  },
+  "homepage": "https://github.com/your-org/tslstudio#readme",
   "main": "./dist/tslstudio.js",
   "module": "./dist/tslstudio.js",
   "types": "./dist/index.d.ts",
@@ -57,24 +78,6 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,json}\"",
     "typecheck": "tsc --noEmit",
     "docs": "typedoc src/index.ts"
-  },
-  "keywords": [
-    "three.js",
-    "webgpu",
-    "tsl",
-    "shaders",
-    "3d",
-    "graphics",
-    "procedural",
-    "materials",
-    "postprocessing",
-    "compute"
-  ],
-  "author": "TSLStudio",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tslstudio/core"
   },
   "peerDependencies": {
     "three": "^0.181.0"

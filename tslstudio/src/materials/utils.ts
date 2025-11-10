@@ -19,6 +19,12 @@ import {
   select,
   If,
   mx_noise_float,
+  remap,
+  pow,
+  mul,
+  log2,
+  mat4,
+  smoothstep,
   type Node,
 } from 'three/tsl'
 import { Color, Vector3 } from 'three'
@@ -107,6 +113,26 @@ export const spherical = /*#__PURE__*/ Fn(([phi, theta]) => {
 })
 
 /**
+ * Apply Euler-like transformation
+ * 
+ * @param vec - Input vector
+ * @param angles - Transformation angles
+ * @returns Transformed vector
+ */
+export const applyEuler = /*#__PURE__*/ Fn(([vec, angles]) => {
+  const c = cos(angles)
+  const s = sin(angles)
+  
+  // Rotate around Y then X
+  const x = vec.x.mul(c.z).sub(vec.z.mul(s.z))
+  const z = vec.x.mul(s.z).add(vec.z.mul(c.z))
+  const y = vec.y.mul(c.x).sub(z.mul(s.x))
+  const z2 = vec.y.mul(s.x).add(z.mul(c.x))
+  
+  return vec3(x, y, z2)
+})
+
+/**
  * Simple vector noise
  * 
  * @param v - Input vector
@@ -142,6 +168,23 @@ export function noised(pos: Node, scale: Node | number = 1, octave: Node | numbe
  * Base noise function (MaterialX noise)
  */
 export const noise = mx_noise_float
+
+/**
+ * Exponential remap
+ * 
+ * Maps value from one range to another with exponential scaling
+ * 
+ * @param x - Input value
+ * @param fromMin - Input range minimum
+ * @param fromMax - Input range maximum
+ * @param toMin - Output range minimum
+ * @param toMax - Output range maximum
+ * @returns Remapped value with exponential scale
+ */
+export const remapExp = /*#__PURE__*/ Fn(([x, fromMin, fromMax, toMin, toMax]) => {
+  const remapped = remap(x, fromMin, fromMax, 0, 1)
+  return pow(2, mul(remapped, log2(toMax.div(toMin))).add(log2(toMin)))
+})
 
 /**
  * Prepare material parameters

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSLStudio Materials Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .category-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-desc {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .materials-list {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .material-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 0.8rem;
+            margin: 0.2rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .features {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+        }
+        
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cta {
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.7;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 TSLStudio Materials</h1>
+        <p class="subtitle">Production-Ready Procedural Materials for Three.js WebGPU</p>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">53</div>
+                <div class="stat-label">Materials</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">11</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Special Channels</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">WebGPU</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="categories">
+            <div class="category-card" onclick="location.href='organic.html'">
+                <div class="category-icon">🌿</div>
+                <div class="category-name">Organic</div>
+                <div class="category-count">5 Materials</div>
+                <div class="category-desc">Natural organic patterns</div>
+                <div class="materials-list">
+                    <span class="material-tag">marble</span>
+                    <span class="material-tag">wood</span>
+                    <span class="material-tag">clouds</span>
+                    <span class="material-tag">brain</span>
+                    <span class="material-tag">cork</span>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="location.href='fabric.html'">
+                <div class="category-icon">🧵</div>
+                <div class="category-name">Fabric</div>
+                <div class="category-count">4 Materials</div>
+                <div class="category-desc">Textile and fur patterns</div>
+                <div class="materials-list">
+                    <span class="material-tag">crumpledFabric</span>
+                    <span class="material-tag">satin</span>
+                    <span class="material-tag">tigerFur</span>
+                    <span class="material-tag">dalmatianSpots</span>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="location.href='patterns.html'">
+                <div class="category-icon">🔲</div>
+                <div class="category-name">Patterns</div>
+                <div class="category-count">5 Materials</div>
+                <div class="category-desc">Geometric patterns</div>
+                <div class="materials-list">
+                    <span class="material-tag">bricks</span>
+                    <span class="material-tag">grid</span>
+                    <span class="material-tag">circles</span>
+                    <span class="material-tag">polkaDots</span>
+                    <span class="material-tag">zebraLines</span>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="location.href='surfaces.html'">
+                <div class="category-icon">🏔️</div>
+                <div class="category-name">Surfaces</div>
+                <div class="category-count">6 Materials</div>
+                <div class="category-desc">Surface textures</div>
+                <div class="materials-list">
+                    <span class="material-tag">concrete</span>
+                    <span class="material-tag">caustics</span>
+                    <span class="material-tag">rust</span>
+                    <span class="material-tag">stars</span>
+                    <span class="material-tag">processedWood</span>
+                    <span class="material-tag">karstRock</span>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="location.href='nature.html'">
+                <div class="category-icon">🌊</div>
+                <div class="category-name">Nature</div>
+                <div class="category-count">4 Materials</div>
+                <div class="category-desc">Natural phenomena</div>
+                <div class="materials-list">
+                    <span class="material-tag">waterDrops</span>
+                    <span class="material-tag">watermelon</span>
+                    <span class="material-tag">caveArt</span>
+                    <span class="material-tag">gasGiant</span>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="location.href='artistic.html'">
+                <div class="category-icon">🎨</div>
+                <div class="category-name">Artistic</div>
+                <div class="category-count">4 Materials</div>
+                <div class="category-desc">Artistic effects</div>
+                <div class="materials-list">
+                    <span class="material-tag">planet</span>
+                    <span class="material-tag">dysonSphere</span>
+                    <span class="material-tag">darthMaul</span>
+                    <span class="material-tag">scream</span>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="location.href='misc.html'">
+                <div class="category-icon">✨</div>
+                <div class="category-name">Miscellaneous</div>
+                <div class="category-count">21 Materials</div>
+                <div class="category-desc">Various procedural effects</div>
+                <div class="materials-list">
+                    <span class="material-tag">camouflage</span>
+                    <span class="material-tag">fordite</span>
+                    <span class="material-tag">neonLights</span>
+                    <span class="material-tag">turbulentSmoke</span>
+                    <span class="material-tag">+17 more</span>
+                </div>
+            </div>
+            
+            <div class="category-card" onclick="location.href='utilities.html'">
+                <div class="category-icon">🔧</div>
+                <div class="category-name">Utilities</div>
+                <div class="category-count">4 Materials</div>
+                <div class="category-desc">Transformation effects</div>
+                <div class="materials-list">
+                    <span class="material-tag">rotator</span>
+                    <span class="material-tag">scaler</span>
+                    <span class="material-tag">translator</span>
+                    <span class="material-tag">melter</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>✨ Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">WebGPU Accelerated</div>
+                    <div class="feature-desc">All materials use WebGPU for maximum performance</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">🎛️</div>
+                    <div class="feature-title">Fully Parametric</div>
+                    <div class="feature-desc">Every parameter is adjustable in real-time</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">📝</div>
+                    <div class="feature-title">TypeScript</div>
+                    <div class="feature-desc">100% TypeScript with full type safety</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">📚</div>
+                    <div class="feature-title">Documented</div>
+                    <div class="feature-desc">Complete JSDoc documentation for every material</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">🌳</div>
+                    <div class="feature-title">Tree-Shakeable</div>
+                    <div class="feature-desc">Import only what you need</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-title">Special Channels</div>
+                    <div class="feature-desc">Opacity, normal, and roughness support</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta">
+            <a href="./viewer.html" class="btn">🚀 Launch Interactive Viewer</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>TSLStudio Materials v0.2.0</p>
+        <p>Built with Three.js r181+ WebGPU & TSL</p>
+    </div>
+</body>
+</html>
+

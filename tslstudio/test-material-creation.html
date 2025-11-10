@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSLStudio - Material Creation Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #1a1a2e;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #00ffff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .test-section {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-section h2 {
+            color: #ffff00;
+            margin-bottom: 15px;
+        }
+        
+        .test-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 3px solid transparent;
+        }
+        
+        .test-item.pass {
+            border-left-color: #00ff00;
+            background: rgba(0, 255, 0, 0.1);
+        }
+        
+        .test-item.fail {
+            border-left-color: #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6666;
+        }
+        
+        .summary {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .summary h2 {
+            color: #00ffff;
+            margin-bottom: 15px;
+        }
+        
+        .stat {
+            display: inline-block;
+            margin: 10px 20px 10px 0;
+            font-size: 1.2em;
+        }
+        
+        .stat.pass { color: #00ff00; }
+        .stat.fail { color: #ff0000; }
+        .stat.total { color: #ffff00; }
+        
+        #console {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 255, 0, 0.3);
+            border-top-color: #00ff00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 TSLStudio Material Creation Test</h1>
+        
+        <div class="test-section">
+            <h2>📦 Module Loading Tests</h2>
+            <div id="module-tests"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🎨 Material Creation Tests</h2>
+            <div id="material-tests"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔧 Utility Function Tests</h2>
+            <div id="utility-tests"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>✨ Special Channel Tests</h2>
+            <div id="special-tests"></div>
+        </div>
+        
+        <div class="summary">
+            <h2>📊 Test Summary</h2>
+            <div id="summary">
+                <div class="spinner"></div> Running tests...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>💻 Console Output</h2>
+            <div id="console"></div>
+        </div>
+    </div>
+    
+    <script type="module">
+        // Test Results
+        const results = {
+            pass: 0,
+            fail: 0,
+            total: 0
+        }
+        
+        // Logging
+        const consoleDiv = document.getElementById('console')
+        function log(msg, type = 'info') {
+            const color = type === 'error' ? '#ff6666' : type === 'success' ? '#00ff00' : '#00ffff'
+            consoleDiv.innerHTML += `<div style="color: ${color}">[${new Date().toLocaleTimeString()}] ${msg}</div>`
+            consoleDiv.scrollTop = consoleDiv.scrollHeight
+            console.log(msg)
+        }
+        
+        function addTest(containerId, name, passed, details = '') {
+            results.total++
+            if (passed) results.pass++
+            else results.fail++
+            
+            const container = document.getElementById(containerId)
+            const div = document.createElement('div')
+            div.className = `test-item ${passed ? 'pass' : 'fail'}`
+            div.innerHTML = `${passed ? '✅' : '❌'} ${name}${details ? ': ' + details : ''}`
+            container.appendChild(div)
+        }
+        
+        async function runTests() {
+            log('Starting TSLStudio tests...', 'info')
+            
+            // Test 1: Module Loading
+            log('Testing module imports...')
+            try {
+                const Materials = await import('./dist/index.js')
+                addTest('module-tests', 'Import main module', true, `${Object.keys(Materials).length} exports`)
+                log(`✅ Loaded ${Object.keys(Materials).length} exports`, 'success')
+                
+                // Test 2: Check specific materials exist
+                const materialList = [
+                    'marble', 'wood', 'clouds', 'brain', 'cork',
+                    'bricks', 'grid', 'caustics', 'rust',
+                    'planet', 'dysonSphere', 'neonLights',
+                    'rotator', 'scaler', 'translator', 'melter'
+                ]
+                
+                log('Testing individual materials...')
+                materialList.forEach(name => {
+                    const exists = !!Materials[name]
+                    addTest('material-tests', name, exists, exists ? 'callable' : 'NOT FOUND')
+                    if (exists) {
+                        log(`  ✅ ${name} found`, 'success')
+                    } else {
+                        log(`  ❌ ${name} NOT FOUND`, 'error')
+                    }
+                })
+                
+                // Test 3: Check utilities
+                log('Testing utility functions...')
+                const utilities = ['TSLFn', 'prepare', 'hsl', 'toHsl', 'matRotX', 'matRotY', 'matRotZ']
+                utilities.forEach(name => {
+                    const exists = !!Materials[name]
+                    addTest('utility-tests', name, exists, exists ? 'available' : 'NOT FOUND')
+                    if (exists) {
+                        log(`  ✅ ${name} found`, 'success')
+                    } else {
+                        log(`  ❌ ${name} NOT FOUND`, 'error')
+                    }
+                })
+                
+                // Test 4: Special channels
+                log('Testing special channels...')
+                
+                // Opacity channels
+                const opacityMaterials = ['clouds', 'rust']
+                opacityMaterials.forEach(name => {
+                    const hasOpacity = Materials[name] && Materials[name].opacity
+                    addTest('special-tests', `${name}.opacity`, hasOpacity, hasOpacity ? 'available' : 'missing')
+                    if (hasOpacity) {
+                        log(`  ✅ ${name}.opacity found`, 'success')
+                    } else {
+                        log(`  ❌ ${name}.opacity missing`, 'error')
+                    }
+                })
+                
+                // Normal channels
+                const normalMaterials = ['brain', 'concrete', 'roughClay', 'rotator']
+                normalMaterials.forEach(name => {
+                    const hasNormal = Materials[name] && Materials[name].normal
+                    addTest('special-tests', `${name}.normal`, hasNormal, hasNormal ? 'available' : 'missing')
+                    if (hasNormal) {
+                        log(`  ✅ ${name}.normal found`, 'success')
+                    } else {
+                        log(`  ❌ ${name}.normal missing`, 'error')
+                    }
+                })
+                
+                // Roughness channel
+                const hasRoughness = Materials.runnyEggs && Materials.runnyEggs.roughness
+                addTest('special-tests', 'runnyEggs.roughness', hasRoughness, hasRoughness ? 'available' : 'missing')
+                if (hasRoughness) {
+                    log(`  ✅ runnyEggs.roughness found`, 'success')
+                } else {
+                    log(`  ❌ runnyEggs.roughness missing`, 'error')
+                }
+                
+                log('All tests completed!', 'success')
+                
+            } catch (error) {
+                addTest('module-tests', 'Import main module', false, error.message)
+                log(`❌ Error: ${error.message}`, 'error')
+                console.error(error)
+            }
+            
+            // Update summary
+            const summaryDiv = document.getElementById('summary')
+            const passRate = ((results.pass / results.total) * 100).toFixed(1)
+            summaryDiv.innerHTML = `
+                <div class="stat pass">✅ Passed: ${results.pass}</div>
+                <div class="stat fail">❌ Failed: ${results.fail}</div>
+                <div class="stat total">📊 Total: ${results.total}</div>
+                <div class="stat total">📈 Pass Rate: ${passRate}%</div>
+                <div style="margin-top: 20px; font-size: 1.5em;">
+                    ${results.fail === 0 ? '🎉 ALL TESTS PASSED! 🎉' : '⚠️ SOME TESTS FAILED ⚠️'}
+                </div>
+            `
+        }
+        
+        // Run tests on load
+        runTests()
+    </script>
+</body>
+</html>
+
