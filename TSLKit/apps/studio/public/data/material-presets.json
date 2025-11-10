@@ -1,0 +1,88 @@
+[
+  {
+    "id": "material.holographic",
+    "name": "Holographic Surface",
+    "kind": "material",
+    "description": "Multi-layer interference material showcasing vibrant color shifts.",
+    "tags": ["spectral", "iridescent", "premium"],
+    "previewColor": "#5eead4",
+    "parameters": [
+      {
+        "name": "metalness",
+        "label": "Metalness",
+        "type": "number",
+        "defaultValue": 0.85,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      },
+      {
+        "name": "roughness",
+        "label": "Roughness",
+        "type": "number",
+        "defaultValue": 0.12,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      },
+      {
+        "name": "tint",
+        "label": "Tint",
+        "type": "color",
+        "defaultValue": "#60a5fa"
+      }
+    ],
+    "noiseSpec": {
+      "type": "domainWarp",
+      "frequency": 3.2,
+      "amplitude": 0.8,
+      "warp": 1.4,
+      "seed": 42,
+      "octaves": 4
+    },
+    "documentation": "https://docs.tsl.studio/presets/holographic-surface"
+  },
+  {
+    "id": "material.ceramic",
+    "name": "Ceramic Glaze",
+    "kind": "material",
+    "description": "Smooth ceramic shader with micro-crazing using layered FBM noise.",
+    "tags": ["ceramic", "product", "clean"],
+    "previewColor": "#facc15",
+    "parameters": [
+      {
+        "name": "roughness",
+        "label": "Roughness",
+        "type": "number",
+        "defaultValue": 0.35,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      },
+      {
+        "name": "metalness",
+        "label": "Metalness",
+        "type": "number",
+        "defaultValue": 0.05,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      },
+      {
+        "name": "tint",
+        "label": "Tint",
+        "type": "color",
+        "defaultValue": "#fde68a"
+      }
+    ],
+    "noiseSpec": {
+      "type": "fbm",
+      "frequency": 1.4,
+      "amplitude": 0.45,
+      "warp": 0.2,
+      "seed": 8,
+      "octaves": 5
+    },
+    "documentation": "https://docs.tsl.studio/presets/ceramic-glaze"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "tutorials.material-holographic",
+    "title": "Designing a Holographic Surface",
+    "excerpt": "Use the agent API to dial in diffraction tinting and record snapshots for docs.",
+    "difficulty": "intermediate",
+    "presetId": "material.holographic",
+    "durationMinutes": 18
+  },
+  {
+    "id": "tutorials.post-cinematic",
+    "title": "Cinematic Triad Look Pipeline",
+    "excerpt": "Compose bloom, film curves, and vignette controls into a reusable stack.",
+    "difficulty": "advanced",
+    "presetId": "post.cinematic-triad",
+    "durationMinutes": 22
+  },
+  {
+    "id": "tutorials.xr-pulse",
+    "title": "XR Pulse Post Stack",
+    "excerpt": "Animate chromatic pulses and ghosting values using Leva live controls.",
+    "difficulty": "beginner",
+    "presetId": "post.xr-pulse",
+    "durationMinutes": 12
+  }
+]
