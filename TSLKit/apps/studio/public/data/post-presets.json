@@ -1,0 +1,78 @@
+[
+  {
+    "id": "post.cinematic-triad",
+    "name": "Cinematic Triad",
+    "kind": "post",
+    "description": "Bloom, lens dirt, and film curve tuned for high-contrast reels.",
+    "tags": ["bloom", "lens", "tone-mapping"],
+    "previewColor": "#f472b6",
+    "parameters": [
+      {
+        "name": "bloomIntensity",
+        "label": "Bloom",
+        "type": "number",
+        "defaultValue": 0.9,
+        "min": 0,
+        "max": 2,
+        "step": 0.05
+      },
+      {
+        "name": "filmGrain",
+        "label": "Film Grain",
+        "type": "number",
+        "defaultValue": 0.35,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      },
+      {
+        "name": "enableVignette",
+        "label": "Vignette",
+        "type": "boolean",
+        "defaultValue": true
+      }
+    ],
+    "postStack": {
+      "stages": ["luma-bloom", "lens-dirt", "filmic-curve", "vignette"]
+    },
+    "documentation": "https://docs.tsl.studio/presets/cinematic-triad"
+  },
+  {
+    "id": "post.xr-pulse",
+    "name": "XR Pulse",
+    "kind": "post",
+    "description": "Pulsating chromatic aberration with rolling shutter ghosting.",
+    "tags": ["xr", "chromatic", "glitch"],
+    "previewColor": "#38bdf8",
+    "parameters": [
+      {
+        "name": "pulseRate",
+        "label": "Pulse Rate",
+        "type": "number",
+        "defaultValue": 1.2,
+        "min": 0.1,
+        "max": 4,
+        "step": 0.1
+      },
+      {
+        "name": "ghosting",
+        "label": "Ghosting",
+        "type": "number",
+        "defaultValue": 0.45,
+        "min": 0,
+        "max": 1,
+        "step": 0.01
+      },
+      {
+        "name": "enableAberration",
+        "label": "Chromatic Aberration",
+        "type": "boolean",
+        "defaultValue": true
+      }
+    ],
+    "postStack": {
+      "stages": ["pulse-map", "rolling-shutter", "chromatic-aberration"]
+    },
+    "documentation": "https://docs.tsl.studio/presets/xr-pulse"
+  }
+]
