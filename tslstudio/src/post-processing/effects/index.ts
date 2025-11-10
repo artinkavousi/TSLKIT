@@ -10,4 +10,5 @@ export * from './bloom'
 export * from './vignette'
 export * from './chromatic-aberration'
 export * from './fxaa'
+export * from './dof'
 
