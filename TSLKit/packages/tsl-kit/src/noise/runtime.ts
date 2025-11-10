@@ -1,6 +1,17 @@
-import { Node, ShaderNodeObject, add, float, mul, vec3 } from 'three/tsl';
+import { Node, ShaderNodeObject, add, float, mul, vec2, vec3, vec4 } from 'three/tsl';
 
-import { domainWarpedFbm, fbm, voronoiDistance, curlNoise3d, simplexNoise3d } from './nodes/index.js';
+import {
+  curlNoise3d,
+  curlNoise4d,
+  domainWarpedFbm,
+  fbm,
+  perlinNoise3d,
+  simplexNoise2d,
+  simplexNoise3d,
+  simplexNoise4d,
+  turbulence,
+  voronoiDistance
+} from './nodes/index.js';
 import { buildNoiseNode } from './registry.js';
 import type { NoiseRuntimeNode, NoiseSpec, NormalizedNoiseSpec } from './types.js';
 
@@ -26,12 +37,37 @@ function evaluateNormalizedSpec(spec: NormalizedNoiseSpec, position: Vec3Node): 
   switch (spec.type) {
     case 'simplex':
       return mul(simplexNoise3d(scaledPosition), amplitude);
+    case 'simplex2d':
+      return mul(simplexNoise2d(vec2(scaledPosition.xy)), amplitude);
+    case 'simplex4d': {
+      const w = float(spec.seed * 0.01);
+      return mul(simplexNoise4d(vec4(scaledPosition, w)), amplitude);
+    }
     case 'curl':
       return mul(curlNoise3d(scaledPosition), amplitude);
+    case 'curl4d': {
+      const w = float(spec.seed * 0.01);
+      return curlNoise4d(vec4(scaledPosition, w)).mul(amplitude);
+    }
     case 'fbm':
       return fbm(scaledPosition, spec.octaves, 1.0, spec.amplitude);
+    case 'perlin':
+      return mul(perlinNoise3d(scaledPosition), amplitude);
     case 'voronoi':
       return mul(voronoiDistance(add(scaledPosition, vec3(spec.seed * 0.01))), amplitude);
+    case 'turbulence': {
+      const time = float(spec.seed * 0.01);
+      const turbulenceOffset = turbulence(
+        vec2(scaledPosition.xy),
+        time,
+        float(spec.octaves),
+        float(0.7),
+        float(spec.warp),
+        float(spec.frequency),
+        float(1.4)
+      );
+      return vec3(turbulenceOffset, 0.0).mul(amplitude);
+    }
     case 'domainWarp':
       return domainWarpedFbm(scaledPosition, spec.octaves, 1.0, spec.amplitude, 2.0, 0.5, spec.warp);
     default:
