@@ -1,7 +1,3 @@
-I'll rewrite this prompt to be clearer, more structured, and actionable:
-
----
-
 # Refined Prompt: TSLStudio WebGPU Engine Development Plan
 
 ## Objective
@@ -64,12 +60,13 @@ Build a complete TSL/Node toolkit delivering:
 
 ### 4. Context Documents (Review & Synthesize)
 Existing proposals and architecture docs:
-- `proposal.md` — Original requirements
+DOCS\proposal v1
+- `.cursor\proposalchat.md` — Original requirements
 - `# 📚 TSLStudio readme comprewhensive plan.md` — 20-week roadmap
 - `TSLStudio — Comprehensive Development Plan v1.0.md` — Phased approach
 - `tsl-toolkit-architecture.md` — Technical architecture
 - `tsl-toolkit-plan.md` — Implementation plan
-
+DOCS\proposal v1\RESOURCE_INVENTORY.md and DOCS\proposal v1\TODO.md  an examples of repository inventory docs
 **Task:** Synthesize these into ONE unified, actionable plan.
 
 ---
@@ -132,6 +129,9 @@ Research and document:
 
 ** comprehensive markdown documents:**
 
+RESOURCE_port_modules
+Available Resources Analysis
+
 
 `TSLStudio engine PRD`
    - Technical specification
@@ -145,7 +145,7 @@ Research and document:
    - Resource mapping
    - Progress tracking
 
-Both should be:
+all  should be:
 - ✅ Detailed and specific (no vague descriptions)
 - ✅ Actionable (clear next steps)
 - ✅ Realistic (achievable timelines)

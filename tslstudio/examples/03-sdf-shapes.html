@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSLStudio - SDF Shapes Example</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #000;
+    }
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+    #info {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      max-width: 300px;
+    }
+    #info h1 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+    #info p {
+      margin: 5px 0;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <h1>🔷 Signed Distance Fields (SDF)</h1>
+    <p>Crisp 2D shapes using distance fields with smooth blending.</p>
+    <p><strong>Module:</strong> tsl/sdf</p>
+    <p><strong>Functions:</strong> sdSphere, sdBox2d, sdfSmoothUnion</p>
+  </div>
+  
+  <script type="module">
+    import * as THREE from 'three';
+    import { WebGPURenderer } from 'three/webgpu';
+    import { Fn, uniform, uv, vec2, vec3, float, sin, cos, step } from 'three/tsl';
+    import { sdSphere, sdBox2d, sdfSmoothUnion } from '../dist/index.js';
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    
+    // WebGPU Renderer
+    const renderer = new WebGPURenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.body.appendChild(renderer.domElement);
+    await renderer.init();
+
+    // Create material with SDF shapes
+    const timeUniform = uniform(0);
+    
+    const sdfMaterial = new THREE.NodeMaterial();
+    sdfMaterial.fragmentNode = Fn(() => {
+      // Center UV coordinates
+      const coords = uv().sub(0.5).mul(2.0);
+      
+      // Animated sphere
+      const spherePos = vec2(
+        sin(timeUniform).mul(0.5),
+        cos(timeUniform).mul(0.3)
+      );
+      const sphere = sdSphere(coords.sub(spherePos), float(0.3));
+      
+      // Rotating box
+      const angle = timeUniform.mul(0.5);
+      const c = cos(angle);
+      const s = sin(angle);
+      const rotated = vec2(
+        coords.x.mul(c).sub(coords.y.mul(s)),
+        coords.x.mul(s).add(coords.y.mul(c))
+      );
+      const box = sdBox2d(rotated, float(0.25));
+      
+      // Smooth union of shapes
+      const combined = sdfSmoothUnion(sphere, box, float(0.2));
+      
+      // Color based on distance
+      const mask = step(combined, float(0));
+      const edge = float(1).sub(step(combined, float(0.02)));
+      
+      // Gradient colors
+      const bgColor = vec3(0.1, 0.1, 0.2);
+      const shapeColor = vec3(0.2, 0.6, 1.0);
+      const edgeColor = vec3(1.0, 0.5, 0.2);
+      
+      const finalColor = bgColor.mul(float(1).sub(mask))
+        .add(shapeColor.mul(mask).mul(float(1).sub(edge)))
+        .add(edgeColor.mul(edge));
+      
+      return finalColor;
+    })();
+
+    // Create fullscreen quad
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mesh = new THREE.Mesh(geometry, sdfMaterial);
+    scene.add(mesh);
+
+    // Animation
+    function animate() {
+      timeUniform.value += 0.016;
+      renderer.render(scene, camera);
+    }
+    renderer.setAnimationLoop(animate);
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
+

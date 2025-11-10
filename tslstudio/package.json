@@ -1,0 +1,107 @@
+{
+  "name": "@tslstudio/core",
+  "version": "0.1.0",
+  "description": "Complete TSL/WebGPU engine for Three.js r181+",
+  "type": "module",
+  "main": "./dist/tslstudio.js",
+  "module": "./dist/tslstudio.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/tslstudio.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./tsl": {
+      "import": "./dist/tsl/index.js",
+      "types": "./dist/tsl/index.d.ts"
+    },
+    "./tsl/noise": {
+      "import": "./dist/tsl/noise/index.js",
+      "types": "./dist/tsl/noise/index.d.ts"
+    },
+    "./tsl/sdf": {
+      "import": "./dist/tsl/sdf/index.js",
+      "types": "./dist/tsl/sdf/index.d.ts"
+    },
+    "./tsl/lighting": {
+      "import": "./dist/tsl/lighting/index.js",
+      "types": "./dist/tsl/lighting/index.d.ts"
+    },
+    "./materials": {
+      "import": "./dist/materials/index.js",
+      "types": "./dist/materials/index.d.ts"
+    },
+    "./postprocessing": {
+      "import": "./dist/postprocessing/index.js",
+      "types": "./dist/postprocessing/index.d.ts"
+    },
+    "./compute": {
+      "import": "./dist/compute/index.js",
+      "types": "./dist/compute/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json}\"",
+    "typecheck": "tsc --noEmit",
+    "docs": "typedoc src/index.ts"
+  },
+  "keywords": [
+    "three.js",
+    "webgpu",
+    "tsl",
+    "shaders",
+    "3d",
+    "graphics",
+    "procedural",
+    "materials",
+    "postprocessing",
+    "compute"
+  ],
+  "author": "TSLStudio",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tslstudio/core"
+  },
+  "peerDependencies": {
+    "three": "^0.181.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/three": "^0.181.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "@vitest/ui": "^1.0.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.1.0",
+    "typedoc": "^0.25.4",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.5",
+    "vite-plugin-dts": "^3.6.4",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "three": "^0.181.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSLStudio - FBM Example</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #000;
+    }
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+    #info {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      max-width: 300px;
+    }
+    #info h1 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+    #info p {
+      margin: 5px 0;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <h1>⛰️ Fractional Brownian Motion (FBM)</h1>
+    <p>Multi-octave fractal noise for natural-looking terrain and clouds.</p>
+    <p><strong>Module:</strong> tsl/noise</p>
+    <p><strong>Function:</strong> fbm</p>
+    <p><strong>Octaves:</strong> 6</p>
+  </div>
+  
+  <script type="module">
+    import * as THREE from 'three';
+    import { WebGPURenderer } from 'three/webgpu';
+    import { Fn, uniform, uv, vec3, float } from 'three/tsl';
+    import { fbm } from '../dist/index.js';
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    
+    // WebGPU Renderer
+    const renderer = new WebGPURenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.body.appendChild(renderer.domElement);
+    await renderer.init();
+
+    // Create material with FBM
+    const timeUniform = uniform(0);
+    
+    const fbmMaterial = new THREE.NodeMaterial();
+    fbmMaterial.fragmentNode = Fn(() => {
+      const coords = uv().sub(0.5).mul(4.0);
+      const pos3d = vec3(coords.x, coords.y, timeUniform.mul(0.2));
+      
+      // FBM with 6 octaves
+      const noise = fbm(
+        pos3d,
+        float(6.0),      // octaves
+        float(1.0),      // frequency
+        float(1.0),      // amplitude
+        float(2.0),      // lacunarity
+        float(0.5)       // gain/persistence
+      );
+      
+      const value = noise.mul(0.5).add(0.5);
+      
+      // Color gradient: dark blue to white
+      const darkBlue = vec3(0.1, 0.2, 0.4);
+      const white = vec3(1.0);
+      const color = darkBlue.mul(float(1).sub(value)).add(white.mul(value));
+      
+      return color;
+    })();
+
+    // Create fullscreen quad
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mesh = new THREE.Mesh(geometry, fbmMaterial);
+    scene.add(mesh);
+
+    // Animation
+    function animate() {
+      timeUniform.value += 0.016;
+      renderer.render(scene, camera);
+    }
+    renderer.setAnimationLoop(animate);
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
+

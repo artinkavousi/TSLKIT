@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSLStudio Examples</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      color: white;
+      margin-bottom: 50px;
+    }
+    
+    h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .subtitle {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+    
+    .example-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .example-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    
+    .example-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+    }
+    
+    .example-title {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    
+    .example-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .example-body {
+      padding: 20px;
+    }
+    
+    .example-description {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    
+    .example-functions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .function-badge {
+      background: #f0f0f0;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: 'Courier New', monospace;
+      color: #667eea;
+    }
+    
+    .example-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.3s ease;
+    }
+    
+    .example-button:hover {
+      opacity: 0.9;
+    }
+    
+    footer {
+      text-align: center;
+      color: white;
+      padding: 30px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 12px;
+    }
+    
+    .info-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .info-box h2 {
+      color: #667eea;
+      margin-bottom: 15px;
+    }
+    
+    .info-box p {
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+    
+    .warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎨 TSLStudio Examples</h1>
+      <p class="subtitle">Three.js r181+ TSL/WebGPU Shader Library</p>
+    </header>
+
+    <div class="info-box">
+      <h2>📖 About TSLStudio</h2>
+      <p>
+        TSLStudio is a comprehensive library of TSL (Three.js Shading Language) node functions
+        for procedural generation, signed distance fields, lighting, and advanced visual effects.
+      </p>
+      <p>
+        All examples use <strong>WebGPU</strong> rendering with <strong>Three.js r181+</strong>.
+        These are real-time, GPU-accelerated shaders running entirely in your browser.
+      </p>
+      <div class="warning">
+        <strong>⚠️ WebGPU Required:</strong> Make sure you're using a WebGPU-compatible browser
+        (Chrome Canary, Edge Canary) with WebGPU enabled.
+      </div>
+    </div>
+
+    <div class="examples-grid">
+      <!-- Example 1 -->
+      <div class="example-card" onclick="location.href='01-simplex-noise.html'">
+        <div class="example-header">
+          <div class="example-title">01. Simplex Noise 3D</div>
+          <div class="example-subtitle">Procedural Noise</div>
+        </div>
+        <div class="example-body">
+          <p class="example-description">
+            Real-time animated 3D simplex noise pattern. The foundation for all procedural generation.
+          </p>
+          <div class="example-functions">
+            <span class="function-badge">simplexNoise3d</span>
+          </div>
+          <a href="01-simplex-noise.html" class="example-button">View Example →</a>
+        </div>
+      </div>
+
+      <!-- Example 2 -->
+      <div class="example-card" onclick="location.href='02-fbm-noise.html'">
+        <div class="example-header">
+          <div class="example-title">02. FBM Noise</div>
+          <div class="example-subtitle">Fractal Noise</div>
+        </div>
+        <div class="example-body">
+          <p class="example-description">
+            Multi-octave Fractional Brownian Motion for natural terrain and cloud patterns.
+          </p>
+          <div class="example-functions">
+            <span class="function-badge">fbm</span>
+          </div>
+          <a href="02-fbm-noise.html" class="example-button">View Example →</a>
+        </div>
+      </div>
+
+      <!-- Example 3 -->
+      <div class="example-card" onclick="location.href='03-sdf-shapes.html'">
+        <div class="example-header">
+          <div class="example-title">03. SDF Shapes</div>
+          <div class="example-subtitle">Distance Fields</div>
+        </div>
+        <div class="example-body">
+          <p class="example-description">
+            Crisp 2D shapes using signed distance fields with smooth boolean operations.
+          </p>
+          <div class="example-functions">
+            <span class="function-badge">sdSphere</span>
+            <span class="function-badge">sdBox2d</span>
+            <span class="function-badge">sdfSmoothUnion</span>
+          </div>
+          <a href="03-sdf-shapes.html" class="example-button">View Example →</a>
+        </div>
+      </div>
+
+      <!-- Example 4 -->
+      <div class="example-card" onclick="location.href='04-color-palette.html'">
+        <div class="example-header">
+          <div class="example-title">04. Cosine Palette</div>
+          <div class="example-subtitle">Color Generation</div>
+        </div>
+        <div class="example-body">
+          <p class="example-description">
+            Procedural color gradients using the Iquilezles cosine palette technique.
+          </p>
+          <div class="example-functions">
+            <span class="function-badge">cosinePalette</span>
+            <span class="function-badge">simplexNoise3d</span>
+          </div>
+          <a href="04-color-palette.html" class="example-button">View Example →</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>TSLStudio v0.1.0</strong> - Stage 1 Foundation</p>
+      <p>70+ Functions | 6 Modules | WebGPU Powered</p>
+      <p style="margin-top: 15px; font-size: 14px;">
+        <a href="https://github.com/yourusername/tslstudio" style="color: white; opacity: 0.8;">GitHub</a> •
+        <a href="../README.md" style="color: white; opacity: 0.8;">Documentation</a> •
+        <a href="./README.md" style="color: white; opacity: 0.8;">Examples Guide</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
+
