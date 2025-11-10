@@ -177,8 +177,10 @@
     
     <script type="module">
         import * as THREE from 'three';
-        import { pass, color, positionGeometry, Fn, vec3, mul, sin, cos, exp, float, mix, floor } from 'three/tsl';
         import WebGPU from 'three/addons/capabilities/WebGPU.js';
+        
+        // TSL functions are in THREE.TSL
+        const { Fn, vec3, sin, cos, float, mix, floor, positionGeometry } = THREE.TSL;
         
         console.log('🚀 Starting TSLStudio Browser Test...');
         

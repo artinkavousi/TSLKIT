@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js Import Diagnostic</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: monospace;
+            padding: 20px;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        .info { color: #ff0; }
+    </style>
+</head>
+<body>
+    <h1>Three.js r181 WebGPU Import Diagnostic</h1>
+    <div id="output"></div>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.webgpu.js",
+            "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.webgpu.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        function log(msg, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = msg;
+            output.appendChild(div);
+        }
+        
+        try {
+            // Import Three.js
+            log('Importing Three.js...', 'info');
+            const THREE = await import('three');
+            log('✅ Three.js imported successfully', 'success');
+            
+            // Check what's available
+            log('\n📦 Checking THREE exports...', 'info');
+            
+            const tslFunctions = [
+                'Fn', 'vec2', 'vec3', 'vec4', 'float', 'int', 
+                'positionGeometry', 'normalGeometry', 'uv',
+                'sin', 'cos', 'mix', 'floor', 'fract'
+            ];
+            
+            for (const fn of tslFunctions) {
+                const exists = fn in THREE;
+                if (exists) {
+                    log(`✅ THREE.${fn} exists (type: ${typeof THREE[fn]})`, 'success');
+                } else {
+                    log(`❌ THREE.${fn} NOT found`, 'error');
+                }
+            }
+            
+            // Check for node materials
+            log('\n📦 Checking Node Materials...', 'info');
+            const materials = [
+                'NodeMaterial',
+                'MeshStandardNodeMaterial', 
+                'MeshBasicNodeMaterial',
+                'MeshPhysicalNodeMaterial'
+            ];
+            
+            for (const mat of materials) {
+                const exists = mat in THREE;
+                if (exists) {
+                    log(`✅ THREE.${mat} exists`, 'success');
+                } else {
+                    log(`❌ THREE.${mat} NOT found`, 'error');
+                }
+            }
+            
+            // Check WebGPU
+            log('\n📦 Checking WebGPU...', 'info');
+            if ('WebGPURenderer' in THREE) {
+                log('✅ THREE.WebGPURenderer exists', 'success');
+            } else {
+                log('❌ THREE.WebGPURenderer NOT found', 'error');
+            }
+            
+            // List some THREE exports
+            log('\n📦 Sample THREE exports (first 30):', 'info');
+            const keys = Object.keys(THREE).slice(0, 30);
+            log(keys.join(', '), 'info');
+            
+        } catch (error) {
+            log(`❌ Error: ${error.message}`, 'error');
+            log(`Stack: ${error.stack}`, 'error');
+        }
+    </script>
+</body>
+</html>
+

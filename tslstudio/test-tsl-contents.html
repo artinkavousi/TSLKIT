@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THREE.TSL Contents</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: monospace;
+            padding: 20px;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        .info { color: #ff0; }
+    </style>
+</head>
+<body>
+    <h1>THREE.TSL Contents</h1>
+    <div id="output"></div>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.webgpu.js"
+        }
+    }
+    </script>
+    
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        function log(msg, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = msg;
+            output.appendChild(div);
+        }
+        
+        try {
+            const THREE = await import('three');
+            log('✅ THREE imported', 'success');
+            
+            log('\n📦 THREE.TSL contents:', 'info');
+            
+            const tsl = THREE.TSL;
+            if (!tsl) {
+                log('❌ THREE.TSL is undefined!', 'error');
+            } else {
+                log('✅ THREE.TSL exists!', 'success');
+                
+                const tslKeys = Object.keys(tsl);
+                log(`\nTotal exports: ${tslKeys.length}`, 'info');
+                
+                // Check for specific functions we need
+                const needed = [
+                    'Fn', 'vec2', 'vec3', 'vec4', 'float', 'int',
+                    'sin', 'cos', 'mix', 'floor', 'fract', 'abs',
+                    'positionGeometry', 'normalGeometry', 'uv'
+                ];
+                
+                log('\n✅ Checking needed TSL functions:', 'info');
+                for (const fn of needed) {
+                    if (fn in tsl) {
+                        log(`  ✅ TSL.${fn} (type: ${typeof tsl[fn]})`, 'success');
+                    } else {
+                        log(`  ❌ TSL.${fn} NOT found`, 'error');
+                    }
+                }
+                
+                // Show all keys
+                log('\n📝 All TSL exports:', 'info');
+                for (let i = 0; i < Math.min(100, tslKeys.length); i++) {
+                    const key = tslKeys[i];
+                    log(`  ${i+1}. ${key}`, 'info');
+                }
+                
+                if (tslKeys.length > 100) {
+                    log(`  ... and ${tslKeys.length - 100} more`, 'info');
+                }
+            }
+            
+        } catch (error) {
+            log(`❌ Error: ${error.message}`, 'error');
+            log(`Stack: ${error.stack}`, 'error');
+        }
+    </script>
+</body>
+</html>
+

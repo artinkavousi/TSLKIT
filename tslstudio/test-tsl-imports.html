@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TSL Import Diagnostic</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: monospace;
+            padding: 20px;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        .info { color: #ff0; }
+    </style>
+</head>
+<body>
+    <h1>TSL Import Diagnostic</h1>
+    <div id="output"></div>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.webgpu.js",
+            "three/nodes": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.webgpu.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        function log(msg, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = msg;
+            output.appendChild(div);
+        }
+        
+        try {
+            log('Test 1: Import from "three"', 'info');
+            const THREE = await import('three');
+            log('✅ THREE imported', 'success');
+            
+            // Try to access TSL from THREE directly
+            log('\n📦 Checking THREE.TSL...', 'info');
+            if (THREE.default && THREE.default.TSL) {
+                log('✅ Found THREE.default.TSL', 'success');
+            } else if (THREE.TSL) {
+                log('✅ Found THREE.TSL', 'success');
+            } else {
+                log('❌ THREE.TSL not found', 'error');
+            }
+            
+            // Check for individual TSL exports in THREE
+            log('\n📦 Looking for TSL functions in THREE...', 'info');
+            const tslKeys = Object.keys(THREE).filter(k => 
+                k.includes('Node') || 
+                k.includes('node') ||
+                k === 'Fn' ||
+                k === 'vec2' || k === 'vec3' || k === 'vec4' ||
+                k === 'float' || k === 'int' ||
+                k === 'sin' || k === 'cos'
+            );
+            
+            log(`Found ${tslKeys.length} potential TSL exports in THREE:`, 'info');
+            log(tslKeys.slice(0, 20).join(', '), 'info');
+            
+            // Try importing from three/nodes
+            log('\n📦 Test 2: Import from "three/nodes"', 'info');
+            try {
+                const nodes = await import('three/nodes');
+                log('✅ "three/nodes" imported', 'success');
+                
+                const nodeKeys = Object.keys(nodes).slice(0, 30);
+                log(`Exported keys: ${nodeKeys.join(', ')}`, 'info');
+                
+                // Check for TSL functions
+                const tslFunctions = ['Fn', 'vec3', 'float', 'sin', 'cos', 'mix'];
+                for (const fn of tslFunctions) {
+                    if (fn in nodes) {
+                        log(`✅ ${fn} found in nodes`, 'success');
+                    } else {
+                        log(`❌ ${fn} NOT in nodes`, 'error');
+                    }
+                }
+            } catch (e) {
+                log(`❌ Error importing "three/nodes": ${e.message}`, 'error');
+            }
+            
+            // Check THREE for specific node types
+            log('\n📦 Checking for specific Node classes...', 'info');
+            const nodeClasses = [
+                'FunctionNode',
+                'PositionNode', 
+                'NormalNode',
+                'UVNode',
+                'MathNode',
+                'OperatorNode'
+            ];
+            
+            for (const cls of nodeClasses) {
+                if (cls in THREE) {
+                    log(`✅ THREE.${cls} exists`, 'success');
+                } else {
+                    log(`❌ THREE.${cls} NOT found`, 'error');
+                }
+            }
+            
+        } catch (error) {
+            log(`❌ Error: ${error.message}`, 'error');
+            log(`Stack: ${error.stack}`, 'error');
+        }
+    </script>
+</body>
+</html>
+
