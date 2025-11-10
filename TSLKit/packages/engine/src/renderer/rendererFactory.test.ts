@@ -63,6 +63,7 @@ describe('createRenderer', () => {
     expect(result.isWebGPU).toBe(false);
     expect(result.renderer).toBeInstanceOf(WebGLRendererMock);
     expect(fallbackSpy).toHaveBeenCalled();
+    expect(result.framegraph.getQualityScale()).toBeCloseTo(1);
   });
 
   it('falls back to WebGL when WebGPU initialization fails', async () => {
@@ -77,6 +78,7 @@ describe('createRenderer', () => {
 
     expect(result.isWebGPU).toBe(false);
     expect(fallbackSpy).toHaveBeenCalledWith('Forced failure');
+    expect(result.framegraph.getQualityScale()).toBeCloseTo(1);
   });
 
   it('returns a WebGPU renderer when supported and initialization succeeds', async () => {
@@ -87,5 +89,6 @@ describe('createRenderer', () => {
 
     expect(result.isWebGPU).toBe(true);
     expect(result.renderer).toBeInstanceOf(WebGPURendererMock);
+    expect(result.framegraph.getQualityScale()).toBeCloseTo(1);
   });
 });

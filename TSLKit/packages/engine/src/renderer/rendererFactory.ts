@@ -1,5 +1,6 @@
 import { WebGLRenderer } from 'three';
 
+import { createFramegraph } from '../framegraph/framegraph.js';
 import { isWebGPUSupported } from '../capabilities/isWebGPUSupported.js';
 import type { RendererFactoryOptions, RendererFactoryResult } from './types.js';
 import { loadWebGPURenderer, type WebGPURendererConstructor } from './webgpuLoader.js';
@@ -13,9 +14,6 @@ function createWebGLFallback(options: RendererFactoryOptions): WebGLRenderer {
     alpha: options.alpha ?? false,
     powerPreference: options.powerPreference ?? 'high-performance'
   });
-
-  renderer.setPixelRatio(globalThis.devicePixelRatio ?? 1);
-  renderer.setSize(options.canvas.clientWidth, options.canvas.clientHeight, false);
 
   return renderer;
 }
@@ -31,9 +29,6 @@ async function initializeWebGPU(
     powerPreference: options.powerPreference ?? 'high-performance'
   });
 
-  renderer.setPixelRatio(globalThis.devicePixelRatio ?? 1);
-  renderer.setSize(options.canvas.clientWidth, options.canvas.clientHeight, false);
-
   const maybeInit = renderer.init;
   if (typeof maybeInit === 'function') {
     await maybeInit.call(renderer);
@@ -43,15 +38,29 @@ async function initializeWebGPU(
 }
 
 export async function createRenderer(options: RendererFactoryOptions): Promise<RendererFactoryResult> {
+  function withFramegraph(
+    renderer: WebGPURenderer | WebGLRenderer,
+    isWebGPU: boolean
+  ): RendererFactoryResult {
+    const framegraph = createFramegraph({
+      renderer,
+      canvas: options.canvas,
+      initialScale: options.qualityScale
+    });
+
+    return {
+      renderer,
+      isWebGPU,
+      framegraph
+    };
+  }
+
   if (isWebGPUSupported()) {
     try {
       const RendererCtor = await loadWebGPURenderer();
       const renderer = await initializeWebGPU(RendererCtor, options);
 
-      return {
-        renderer,
-        isWebGPU: true
-      };
+      return withFramegraph(renderer, true);
     } catch (error) {
       options.onFallback?.(
         error instanceof Error ? error.message : 'Failed to initialize WebGPU renderer.'
@@ -63,8 +72,5 @@ export async function createRenderer(options: RendererFactoryOptions): Promise<R
 
   const webglRenderer = createWebGLFallback(options);
 
-  return {
-    renderer: webglRenderer,
-    isWebGPU: false
-  };
+  return withFramegraph(webglRenderer, false);
 }

@@ -18,6 +18,10 @@
     "./schemas": {
       "types": "./dist/schemas/index.d.ts",
       "import": "./dist/schemas/index.js"
+    },
+    "./materials": {
+      "types": "./dist/materials/index.d.ts",
+      "import": "./dist/materials/index.js"
     }
   },
   "scripts": {

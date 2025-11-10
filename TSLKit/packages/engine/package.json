@@ -18,6 +18,18 @@
     "./capabilities": {
       "types": "./dist/capabilities/index.d.ts",
       "import": "./dist/capabilities/index.js"
+    },
+    "./framegraph": {
+      "types": "./dist/framegraph/index.d.ts",
+      "import": "./dist/framegraph/index.js"
+    },
+    "./loaders": {
+      "types": "./dist/loaders/index.d.ts",
+      "import": "./dist/loaders/index.js"
+    },
+    "./demo": {
+      "types": "./dist/demo/index.d.ts",
+      "import": "./dist/demo/index.js"
     }
   },
   "scripts": {
@@ -27,10 +39,18 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@tslstudio/tsl-kit": "0.0.1",
+    "@react-three/fiber": "8.15.16",
+    "leva": "0.10.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "6.23.1",
     "three": "0.181.1",
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@types/react": "18.2.66",
+    "@types/react-dom": "18.2.22",
     "typescript": "5.4.5"
   }
 }
