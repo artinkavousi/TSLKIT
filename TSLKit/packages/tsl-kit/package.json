@@ -15,6 +15,10 @@
       "types": "./dist/noise/index.d.ts",
       "import": "./dist/noise/index.js"
     },
+    "./materials": {
+      "types": "./dist/materials/index.d.ts",
+      "import": "./dist/materials/index.js"
+    },
     "./schemas": {
       "types": "./dist/schemas/index.d.ts",
       "import": "./dist/schemas/index.js"
@@ -27,6 +31,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "fast-xml-parser": "4.3.5",
     "three": "0.181.1",
     "zod": "3.23.8"
   },
