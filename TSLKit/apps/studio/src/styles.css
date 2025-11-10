@@ -136,6 +136,12 @@ body {
   backdrop-filter: blur(20px);
 }
 
+.card-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .card-preview {
   width: 100%;
   height: 8rem;
@@ -195,6 +201,12 @@ body {
   padding: 0.5rem 0.75rem;
   border-radius: 0.75rem;
   cursor: pointer;
+}
+
+.tutorial-topics {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(226, 232, 240, 0.8);
 }
 
 .tutorial-meta {

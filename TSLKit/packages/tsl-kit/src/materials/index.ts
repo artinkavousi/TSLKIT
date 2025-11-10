@@ -19,6 +19,7 @@ export { MaterialXLoader } from './materialx-loader.js';
 export {
   buildMaterialPreset,
   getMaterialMetadata,
+  getMaterialSchema,
   materialsRegistry,
   type MaterialPresetDefinition
 } from './registry.js';

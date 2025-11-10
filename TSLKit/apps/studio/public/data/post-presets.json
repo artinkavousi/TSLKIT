@@ -3,6 +3,7 @@
     "id": "post.cinematic-triad",
     "name": "Cinematic Triad",
     "kind": "post",
+    "version": "1.0.0",
     "description": "Bloom, lens dirt, and film curve tuned for high-contrast reels.",
     "tags": ["bloom", "lens", "tone-mapping"],
     "previewColor": "#f472b6",
@@ -14,7 +15,8 @@
         "defaultValue": 0.9,
         "min": 0,
         "max": 2,
-        "step": 0.05
+        "step": 0.05,
+        "description": "Scales the bloom highlight energy."
       },
       {
         "name": "filmGrain",
@@ -23,24 +25,42 @@
         "defaultValue": 0.35,
         "min": 0,
         "max": 1,
-        "step": 0.01
+        "step": 0.01,
+        "description": "Amount of additive grain overlay."
       },
       {
         "name": "enableVignette",
         "label": "Vignette",
         "type": "boolean",
-        "defaultValue": true
+        "defaultValue": true,
+        "description": "Toggle vignette darkening."
       }
     ],
     "postStack": {
-      "stages": ["luma-bloom", "lens-dirt", "filmic-curve", "vignette"]
+      "stages": ["luma-bloom", "lens-dirt", "filmic-curve", "vignette"],
+      "supportsRealtime": true,
+      "supportsDeferred": true,
+      "hasAsyncPasses": false,
+      "renderScale": 1,
+      "outputs": ["compositedColor"]
     },
+    "schema": {
+      "module": "post",
+      "name": "postStackPreset",
+      "version": "1.0.0",
+      "url": "https://docs.tsl.studio/schemas/post-stack-preset"
+    },
+    "createdAt": "2024-01-05T00:00:00.000Z",
+    "updatedAt": "2024-05-10T00:00:00.000Z",
+    "featureFlags": ["realtime"],
+    "suitability": ["cinematic", "product"],
     "documentation": "https://docs.tsl.studio/presets/cinematic-triad"
   },
   {
     "id": "post.xr-pulse",
     "name": "XR Pulse",
     "kind": "post",
+    "version": "1.0.0",
     "description": "Pulsating chromatic aberration with rolling shutter ghosting.",
     "tags": ["xr", "chromatic", "glitch"],
     "previewColor": "#38bdf8",
@@ -52,7 +72,8 @@
         "defaultValue": 1.2,
         "min": 0.1,
         "max": 4,
-        "step": 0.1
+        "step": 0.1,
+        "description": "Speed of chromatic pulsing."
       },
       {
         "name": "ghosting",
@@ -61,18 +82,35 @@
         "defaultValue": 0.45,
         "min": 0,
         "max": 1,
-        "step": 0.01
+        "step": 0.01,
+        "description": "Strength of rolling shutter ghosting."
       },
       {
         "name": "enableAberration",
         "label": "Chromatic Aberration",
         "type": "boolean",
-        "defaultValue": true
+        "defaultValue": true,
+        "description": "Toggles the chromatic aberration pass."
       }
     ],
     "postStack": {
-      "stages": ["pulse-map", "rolling-shutter", "chromatic-aberration"]
+      "stages": ["pulse-map", "rolling-shutter", "chromatic-aberration"],
+      "supportsRealtime": true,
+      "supportsDeferred": false,
+      "hasAsyncPasses": true,
+      "renderScale": 0.75,
+      "outputs": ["stylizedColor"]
     },
+    "schema": {
+      "module": "post",
+      "name": "postStackPreset",
+      "version": "1.0.0",
+      "url": "https://docs.tsl.studio/schemas/post-stack-preset"
+    },
+    "createdAt": "2024-02-12T00:00:00.000Z",
+    "updatedAt": "2024-05-02T00:00:00.000Z",
+    "featureFlags": ["xr", "async-compute"],
+    "suitability": ["live-events", "xr"],
     "documentation": "https://docs.tsl.studio/presets/xr-pulse"
   }
 ]

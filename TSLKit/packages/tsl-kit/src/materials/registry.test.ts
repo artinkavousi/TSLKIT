@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildMaterialPreset, getMaterialMetadata } from './index.js';
+import { buildMaterialPreset, getMaterialMetadata, getMaterialSchema } from './index.js';
 
 describe('materialsRegistry', () => {
   it('exposes built-in metadata', () => {
@@ -18,5 +18,13 @@ describe('materialsRegistry', () => {
     expect(spec.layers).toHaveLength(3);
     expect(spec.opacity).toBe(1);
     expect(material.isMeshPhysicalNodeMaterial).toBe(true);
+  });
+
+  it('provides schema accessors', () => {
+    const schema = getMaterialSchema('tsl.material.concrete');
+    expect(schema).toBeDefined();
+
+    const collection = getMaterialSchema();
+    expect(typeof collection).toBe('object');
   });
 });

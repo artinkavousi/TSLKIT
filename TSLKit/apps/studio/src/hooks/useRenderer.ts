@@ -33,7 +33,11 @@ function applyOverrides(material: MeshStandardMaterial, preset: Preset, override
     const value = overrides[parameter.name] ?? parameter.defaultValue;
     if (parameter.type === 'color') {
       material.color = new Color(value as string);
-    } else if (parameter.type === 'number' || parameter.type === 'boolean') {
+    } else if (
+      parameter.type === 'number' ||
+      parameter.type === 'boolean' ||
+      parameter.type === 'select'
+    ) {
       if (parameter.name in material) {
         (material as unknown as Record<string, unknown>)[parameter.name] = value;
       }

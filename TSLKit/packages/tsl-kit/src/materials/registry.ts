@@ -71,6 +71,18 @@ export class MaterialRegistry {
   list(): MaterialPresetMetadata[] {
     return Array.from(this.definitions.values()).map((definition) => definition.metadata);
   }
+
+  getSchema(type: string): z.ZodTypeAny | undefined {
+    return this.definitions.get(type)?.schema;
+  }
+
+  listSchemas(): Record<string, z.ZodTypeAny> {
+    const entries: Record<string, z.ZodTypeAny> = {};
+    this.definitions.forEach((definition, key) => {
+      entries[key] = definition.schema;
+    });
+    return entries;
+  }
 }
 
 export const materialsRegistry = new MaterialRegistry();
@@ -100,4 +112,18 @@ export function getMaterialMetadata(type?: string): MaterialPresetMetadata | Mat
   }
 
   return materialsRegistry.list();
+}
+
+export function getMaterialSchema(type?: string): z.ZodTypeAny | Record<string, z.ZodTypeAny> {
+  if (type) {
+    const schema = materialsRegistry.getSchema(type);
+
+    if (!schema) {
+      throw new Error(`Unknown material preset: ${type}`);
+    }
+
+    return schema;
+  }
+
+  return materialsRegistry.listSchemas();
 }

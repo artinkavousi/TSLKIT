@@ -7,6 +7,7 @@ describe('tsl-kit public API', () => {
     expect(typeof Kit.evaluateNoiseSpec).toBe('function');
     expect(typeof Kit.smoothUnion).toBe('function');
     expect(typeof Kit.sdSphere).toBe('function');
-    expect(typeof Kit.noiseSchema).toBeDefined();
+    expect(typeof Kit.getNoiseSchema).toBe('function');
+    expect(Kit.materialPresetSchema).toBeDefined();
   });
 });

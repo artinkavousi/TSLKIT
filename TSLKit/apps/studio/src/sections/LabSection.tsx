@@ -34,6 +34,13 @@ export function LabSection({
         accumulator[parameter.name] = parameter.defaultValue;
       } else if (parameter.type === 'boolean') {
         accumulator[parameter.name] = parameter.defaultValue;
+      } else if (parameter.type === 'select') {
+        const options = parameter.options ?? [];
+        const optionValues = options.map((option) => option.value);
+        accumulator[parameter.name] = {
+          value: (parameter.defaultValue as string | number | undefined) ?? optionValues[0] ?? '',
+          options: optionValues
+        };
       }
 
       return accumulator;

@@ -38,16 +38,54 @@ export function InspectorSection({ preset }: InspectorSectionProps): JSX.Element
             <dl className="definition-list">
               <dt>Name</dt>
               <dd>{preset.name}</dd>
+              <dt>Version</dt>
+              <dd>{preset.version}</dd>
               <dt>Kind</dt>
               <dd>{preset.kind}</dd>
               <dt>Description</dt>
               <dd>{preset.description}</dd>
               <dt>Tags</dt>
               <dd>{preset.tags.join(', ')}</dd>
+              <dt>Schema</dt>
+              <dd>
+                {preset.schema.module} · {preset.schema.name} v{preset.schema.version}
+              </dd>
+              {preset.createdAt ? (
+                <Fragment>
+                  <dt>Published</dt>
+                  <dd>{new Date(preset.createdAt).toLocaleDateString()}</dd>
+                </Fragment>
+              ) : null}
+              {preset.updatedAt ? (
+                <Fragment>
+                  <dt>Updated</dt>
+                  <dd>{new Date(preset.updatedAt).toLocaleDateString()}</dd>
+                </Fragment>
+              ) : null}
+              {preset.suitability?.length ? (
+                <Fragment>
+                  <dt>Suitability</dt>
+                  <dd>{preset.suitability.join(', ')}</dd>
+                </Fragment>
+              ) : null}
+              {preset.featureFlags?.length ? (
+                <Fragment>
+                  <dt>Feature Flags</dt>
+                  <dd>{preset.featureFlags.join(', ')}</dd>
+                </Fragment>
+              ) : null}
               {preset.postStack ? (
                 <Fragment>
                   <dt>Post Stages</dt>
                   <dd>{preset.postStack.stages.join(' → ')}</dd>
+                  <dt>Render Scale</dt>
+                  <dd>{preset.postStack.renderScale.toFixed(2)}</dd>
+                  <dt>Realtime Ready</dt>
+                  <dd>{preset.postStack.supportsRealtime ? 'Yes' : 'No'}</dd>
+                  <dt>Deferred Ready</dt>
+                  <dd>{preset.postStack.supportsDeferred ? 'Yes' : 'No'}</dd>
+                  <dt>Async Passes</dt>
+                  <dd>{preset.postStack.hasAsyncPasses ? 'Yes' : 'No'}</dd>
                 </Fragment>
               ) : null}
               {parsedNoise ? (

@@ -29,9 +29,13 @@ export function TutorialsSection({ tutorials, onSelectPreset }: TutorialsSection
                 <div className="tutorial-meta">
                   <span className="chip">{difficultyLabels[tutorial.difficulty]}</span>
                   <span className="chip">{tutorial.durationMinutes} min</span>
+                  <span className="chip">{tutorial.focus.toUpperCase()}</span>
                 </div>
               </header>
               <p>{tutorial.excerpt}</p>
+              {tutorial.topics.length ? (
+                <p className="tutorial-topics">Topics: {tutorial.topics.join(', ')}</p>
+              ) : null}
               <button type="button" onClick={() => onSelectPreset(tutorial.presetId)}>
                 Load Linked Preset
               </button>

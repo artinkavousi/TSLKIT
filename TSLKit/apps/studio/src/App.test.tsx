@@ -25,13 +25,23 @@ vi.mock('./api/agent.js', () => {
             id: 'mat.basic',
             name: 'Basic Material',
             kind: 'material',
+            version: '1.0.0',
             description: 'Test material',
             tags: ['test'],
             previewColor: '#ffffff',
             parameters: [],
             noiseSpec: {
               type: 'simplex'
-            }
+            },
+            schema: {
+              module: 'materials',
+              name: 'materialPreset',
+              version: '1.0.0'
+            },
+            suitability: ['realtime'],
+            featureFlags: [],
+            createdAt: '2024-05-01T00:00:00.000Z',
+            updatedAt: '2024-05-01T00:00:00.000Z'
           }
         ];
       }
@@ -41,11 +51,28 @@ vi.mock('./api/agent.js', () => {
           id: 'post.cinematic',
           name: 'Cinematic Stack',
           kind: 'post',
+          version: '1.0.0',
           description: 'Test post stack',
           tags: ['post'],
           previewColor: '#ff00ff',
           parameters: [],
-          postStack: { stages: ['bloom'] }
+          postStack: {
+            stages: ['bloom'],
+            supportsRealtime: true,
+            supportsDeferred: false,
+            hasAsyncPasses: false,
+            renderScale: 1,
+            outputs: []
+          },
+          schema: {
+            module: 'post',
+            name: 'postStackPreset',
+            version: '1.0.0'
+          },
+          suitability: ['cinematic'],
+          featureFlags: ['realtime'],
+          createdAt: '2024-05-01T00:00:00.000Z',
+          updatedAt: '2024-05-01T00:00:00.000Z'
         }
       ];
     }
@@ -58,7 +85,16 @@ vi.mock('./api/agent.js', () => {
           excerpt: 'Learn the basics.',
           difficulty: 'beginner' as const,
           presetId: 'mat.basic',
-          durationMinutes: 5
+          durationMinutes: 5,
+          topics: ['materials'],
+          focus: 'materials' as const,
+          steps: [],
+          resources: [],
+          schema: {
+            module: 'materials',
+            name: 'tutorialEntry',
+            version: '1.0.0'
+          }
         }
       ];
     }

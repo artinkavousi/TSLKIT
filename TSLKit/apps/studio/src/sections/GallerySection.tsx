@@ -11,7 +11,10 @@ function renderPresetCard(preset: Preset, onSelectPreset: (presetId: string) => 
     <article key={preset.id} className="card" style={{ borderColor: preset.previewColor }}>
       <header>
         <h3>{preset.name}</h3>
-        <span className="chip">{preset.kind === 'material' ? 'Material' : 'Post Stack'}</span>
+        <div className="card-meta">
+          <span className="chip">{preset.kind === 'material' ? 'Material' : 'Post Stack'}</span>
+          <span className="chip">v{preset.version}</span>
+        </div>
       </header>
       <div className="card-preview" style={{ background: preset.previewColor }} aria-hidden="true" />
       <p>{preset.description}</p>

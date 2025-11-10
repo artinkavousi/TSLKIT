@@ -5,7 +5,25 @@
     "excerpt": "Use the agent API to dial in diffraction tinting and record snapshots for docs.",
     "difficulty": "intermediate",
     "presetId": "material.holographic",
-    "durationMinutes": 18
+    "durationMinutes": 18,
+    "topics": ["materials", "noise"],
+    "focus": "materials",
+    "steps": [
+      { "title": "Load Preset", "summary": "Request the holographic preset and review schema hints." },
+      { "title": "Tune Parameters", "summary": "Adjust metalness, tint, and warp frequency live." }
+    ],
+    "resources": [
+      {
+        "label": "Schema Reference",
+        "url": "https://docs.tsl.studio/schemas/material-preset"
+      }
+    ],
+    "schema": {
+      "module": "materials",
+      "name": "tutorialEntry",
+      "version": "1.0.0",
+      "url": "https://docs.tsl.studio/schemas/tutorial-entry"
+    }
   },
   {
     "id": "tutorials.post-cinematic",
@@ -13,7 +31,25 @@
     "excerpt": "Compose bloom, film curves, and vignette controls into a reusable stack.",
     "difficulty": "advanced",
     "presetId": "post.cinematic-triad",
-    "durationMinutes": 22
+    "durationMinutes": 22,
+    "topics": ["post", "rendering"],
+    "focus": "post",
+    "steps": [
+      { "title": "Stack Overview", "summary": "Inspect the stage order and render scale metadata." },
+      { "title": "Fine Tuning", "summary": "Balance bloom intensity with vignette coverage." }
+    ],
+    "resources": [
+      {
+        "label": "Post Stack Schema",
+        "url": "https://docs.tsl.studio/schemas/post-stack-preset"
+      }
+    ],
+    "schema": {
+      "module": "post",
+      "name": "tutorialEntry",
+      "version": "1.0.0",
+      "url": "https://docs.tsl.studio/schemas/tutorial-entry"
+    }
   },
   {
     "id": "tutorials.xr-pulse",
@@ -21,6 +57,23 @@
     "excerpt": "Animate chromatic pulses and ghosting values using Leva live controls.",
     "difficulty": "beginner",
     "presetId": "post.xr-pulse",
-    "durationMinutes": 12
+    "durationMinutes": 12,
+    "topics": ["xr", "post"],
+    "focus": "post",
+    "steps": [
+      { "title": "Realtime Preview", "summary": "Enable async passes and preview ghosting artifacts." }
+    ],
+    "resources": [
+      {
+        "label": "Async Compute Guidelines",
+        "url": "https://docs.tsl.studio/guides/async-compute"
+      }
+    ],
+    "schema": {
+      "module": "post",
+      "name": "tutorialEntry",
+      "version": "1.0.0",
+      "url": "https://docs.tsl.studio/schemas/tutorial-entry"
+    }
   }
 ]

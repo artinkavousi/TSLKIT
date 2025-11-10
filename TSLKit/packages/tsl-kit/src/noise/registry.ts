@@ -7,6 +7,7 @@ import type {
   NoiseType,
   NormalizedNoiseSpec
 } from './types.js';
+import { noiseSpecSchema } from '../schemas/noise.js';
 
 const NOISE_DEFAULTS: Record<NoiseType, NormalizedNoiseSpec> = {
   simplex: {
@@ -428,4 +429,8 @@ export function getNoiseMetadata(type?: NoiseType): NoiseMetadata | NoiseMetadat
   }
 
   return noiseRegistry.list();
+}
+
+export function getNoiseSchema(): typeof noiseSpecSchema {
+  return noiseSpecSchema;
 }
