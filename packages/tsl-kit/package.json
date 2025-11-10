@@ -27,10 +27,11 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "three": "0.164.0",
+    "three": "0.181.1",
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "1.5.0"
   }
 }

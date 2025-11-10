@@ -1,2 +1,4 @@
 export * from './noise';
 export * from './schemas';
+export * from './lighting';
+export * from './sdf';

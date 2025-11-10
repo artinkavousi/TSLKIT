@@ -9,6 +9,15 @@
 
 ---
 
+## 🚧 Latest Progress (Nov 10, 2025 – Phase 1 Continuation)
+- Ported reusable lighting nodes (ambient, diffuse, directional, hemisphere, fresnel) into `packages/tsl-kit/src/lighting`, added exports, and covered them with Vitest.
+- Added a runtime-friendly noise API (`packages/tsl-kit/src/noise/runtime.ts`) plus metadata-driven shader builders and schema coverage.
+- Ported SDF helpers (smooth min/mod, remap, compose transform) along with 2D/3D primitives and blend operations under `packages/tsl-kit/src/sdf`, including unit tests.
+- Upgraded the monorepo to Three.js `0.181.1` and ensured `@tslstudio/tsl-kit` has a local Vitest dev dependency so each package can be tested in isolation.
+- Refreshed `WORK_COMPLETE_SUMMARY.md` to capture the new backlog snapshot and progress for future Codex runs.
+
+---
+
 ## 🏆 Final Achievement Statistics
 
 | Metric | Target | Achieved | Status |
