@@ -41,6 +41,11 @@ TSLKIT/
 │   └── proposal v2/
 │       └── TSLStudio_PRD_v2.md
 │
+├── packages/
+│   ├── engine/              # WebGPU renderer orchestration (new)
+│   └── tsl-kit/             # Typed noise + schema utilities (new)
+├── apps/
+│   └── studio/              # Placeholder for Stage 2 documentation site
 └── Documentation/          # Status reports
     ├── TSLSTUDIO_V0.1.0_RELEASE.md
     └── TSLSTUDIO_STAGE1_FINAL.md
@@ -58,6 +63,21 @@ npx vite examples
 ```
 
 See [tslstudio/QUICK_START.md](tslstudio/QUICK_START.md) for detailed instructions.
+
+### 🧱 Stage 2 Monorepo Bootstrap (Work in Progress)
+
+The new `packages/` workspace kickstarts the Stage 2 roadmap from the PRD:
+
+- `@tslstudio/engine` ships an async WebGPU renderer factory with graceful WebGL fallback detection.
+- `@tslstudio/tsl-kit` exposes typed noise metadata, schema descriptors, and an extensible registry ready for future ports.
+
+Run the shared scripts from the repo root:
+
+```bash
+npm install
+npm run build
+npm test
+```
 
 ---
 
