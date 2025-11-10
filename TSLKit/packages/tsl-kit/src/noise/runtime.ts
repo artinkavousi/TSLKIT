@@ -1,11 +1,4 @@
-import {
-  Node,
-  ShaderNodeObject,
-  add,
-  float,
-  mul,
-  vec3
-} from 'three/tsl';
+import { Node, ShaderNodeObject, add, float, mul, vec3 } from 'three/tsl';
 
 import { domainWarpedFbm, fbm, voronoiDistance, curlNoise3d, simplexNoise3d } from './nodes/index.js';
 import { buildNoiseNode } from './registry.js';
@@ -14,16 +7,16 @@ import type { NoiseRuntimeNode, NoiseSpec, NormalizedNoiseSpec } from './types.j
 type Vec3Node = ShaderNodeObject<Node>;
 
 function toVec3(position: Vec3Node, spec: NormalizedNoiseSpec): ReturnType<typeof vec3> {
-  const prepared = vec3(position).toVar();
-  if (spec.frequency !== 1) {
-    prepared.mulAssign(spec.frequency);
+  const basePosition = vec3(position);
+  const frequencyAdjusted = spec.frequency !== 1 ? basePosition.mul(spec.frequency) : basePosition;
+
+  if (spec.seed === 0) {
+    return frequencyAdjusted;
   }
 
-  if (spec.seed !== 0) {
-    prepared.addAssign(spec.seed / 997);
-  }
+  const seedOffset = vec3(float(spec.seed / 997));
 
-  return prepared;
+  return add(frequencyAdjusted, seedOffset);
 }
 
 function evaluateNormalizedSpec(spec: NormalizedNoiseSpec, position: Vec3Node): ShaderNodeObject<Node> {
