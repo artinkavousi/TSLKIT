@@ -47,9 +47,9 @@
   
   <script type="module">
     import * as THREE from 'three';
-    import { WebGPURenderer } from 'three/webgpu';
-    import { Fn, uniform, uv, timerLocal, vec3 } from 'three/tsl';
-    import { simplexNoise3d } from '../dist/index.js';
+    import { WebGPURenderer, MeshBasicNodeMaterial } from 'three/webgpu';
+    import { Fn, uniform, uv, vec3 } from 'three/tsl';
+    import { simplexNoise3d } from '../src/index.ts';
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -66,7 +66,7 @@
     const timeUniform = uniform(0);
     const scaleUniform = uniform(5.0);
     
-    const noiseMaterial = new THREE.NodeMaterial();
+    const noiseMaterial = new MeshBasicNodeMaterial();
     noiseMaterial.fragmentNode = Fn(() => {
       const coords = uv().sub(0.5).mul(scaleUniform);
       const pos3d = vec3(coords.x, coords.y, timeUniform.mul(0.3));

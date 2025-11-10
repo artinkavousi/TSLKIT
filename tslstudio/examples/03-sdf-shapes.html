@@ -49,7 +49,8 @@
     import * as THREE from 'three';
     import { WebGPURenderer } from 'three/webgpu';
     import { Fn, uniform, uv, vec2, vec3, float, sin, cos, step } from 'three/tsl';
-    import { sdSphere, sdBox2d, sdfSmoothUnion } from '../dist/index.js';
+    import { MeshBasicNodeMaterial } from 'three/webgpu';
+    import { sdSphere, sdBox2d, sdfSmoothUnion } from '../src/index.ts';
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -65,7 +66,7 @@
     // Create material with SDF shapes
     const timeUniform = uniform(0);
     
-    const sdfMaterial = new THREE.NodeMaterial();
+    const sdfMaterial = new MeshBasicNodeMaterial();
     sdfMaterial.fragmentNode = Fn(() => {
       // Center UV coordinates
       const coords = uv().sub(0.5).mul(2.0);

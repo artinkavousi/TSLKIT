@@ -20,6 +20,10 @@ import {
 const mod289Vec3 = /*#__PURE__*/ Fn(([x_immutable]) => {
   const x = vec3(x_immutable).toVar()
   return x.sub(x.mul(1.0 / 289.0).floor().mul(289.0))
+}).setLayout({
+  name: 'mod289Vec3',
+  type: 'vec3',
+  inputs: [{ name: 'x', type: 'vec3' }]
 })
 
 /**
@@ -28,6 +32,10 @@ const mod289Vec3 = /*#__PURE__*/ Fn(([x_immutable]) => {
 const mod289Vec4 = /*#__PURE__*/ Fn(([x_immutable]) => {
   const x = vec4(x_immutable).toVar()
   return x.sub(x.mul(1.0 / 289.0).floor().mul(289.0))
+}).setLayout({
+  name: 'mod289Vec4',
+  type: 'vec4',
+  inputs: [{ name: 'x', type: 'vec4' }]
 })
 
 /**
@@ -43,6 +51,10 @@ export const mod289 = /*#__PURE__*/ overloadingFn([mod289Vec3, mod289Vec4])
 export const fade = /*#__PURE__*/ Fn(([t_immutable]) => {
   const t = vec3(t_immutable).toVar()
   return t.mul(t).mul(t).mul(t.mul(t.mul(6.0).sub(15.0)).add(10.0))
+}).setLayout({
+  name: 'fade',
+  type: 'vec3',
+  inputs: [{ name: 't', type: 'vec3' }]
 })
 
 /**
@@ -51,6 +63,10 @@ export const fade = /*#__PURE__*/ Fn(([t_immutable]) => {
 const permuteVec4 = /*#__PURE__*/ Fn(([x_immutable]) => {
   const x = vec4(x_immutable).toVar()
   return mod289Vec4(x.mul(34.0).add(1.0).mul(x))
+}).setLayout({
+  name: 'permuteVec4',
+  type: 'vec4',
+  inputs: [{ name: 'x', type: 'vec4' }]
 })
 
 /**
@@ -59,6 +75,10 @@ const permuteVec4 = /*#__PURE__*/ Fn(([x_immutable]) => {
 const permuteFloat = /*#__PURE__*/ Fn(([x_immutable]) => {
   const x = float(x_immutable).toVar()
   return mod289Vec4(vec4(x).mul(34.0).add(1.0).mul(vec4(x))).x
+}).setLayout({
+  name: 'permuteFloat',
+  type: 'float',
+  inputs: [{ name: 'x', type: 'float' }]
 })
 
 /**
@@ -73,6 +93,10 @@ export const permute = /*#__PURE__*/ overloadingFn([permuteVec4, permuteFloat])
 const taylorInvSqrtVec4 = /*#__PURE__*/ Fn(([r_immutable]) => {
   const r = vec4(r_immutable).toVar()
   return sub(1.79284291400159, mul(0.85373472095314, r))
+}).setLayout({
+  name: 'taylorInvSqrtVec4',
+  type: 'vec4',
+  inputs: [{ name: 'r', type: 'vec4' }]
 })
 
 /**
@@ -81,6 +105,10 @@ const taylorInvSqrtVec4 = /*#__PURE__*/ Fn(([r_immutable]) => {
 const taylorInvSqrtFloat = /*#__PURE__*/ Fn(([r_immutable]) => {
   const r = float(r_immutable).toVar()
   return sub(1.79284291400159, mul(0.85373472095314, r))
+}).setLayout({
+  name: 'taylorInvSqrtFloat',
+  type: 'float',
+  inputs: [{ name: 'r', type: 'float' }]
 })
 
 /**

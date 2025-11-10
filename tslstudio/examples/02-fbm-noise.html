@@ -50,7 +50,8 @@
     import * as THREE from 'three';
     import { WebGPURenderer } from 'three/webgpu';
     import { Fn, uniform, uv, vec3, float } from 'three/tsl';
-    import { fbm } from '../dist/index.js';
+    import { MeshBasicNodeMaterial } from 'three/webgpu';
+    import { fbm } from '../src/index.ts';
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -66,7 +67,7 @@
     // Create material with FBM
     const timeUniform = uniform(0);
     
-    const fbmMaterial = new THREE.NodeMaterial();
+    const fbmMaterial = new MeshBasicNodeMaterial();
     fbmMaterial.fragmentNode = Fn(() => {
       const coords = uv().sub(0.5).mul(4.0);
       const pos3d = vec3(coords.x, coords.y, timeUniform.mul(0.2));
