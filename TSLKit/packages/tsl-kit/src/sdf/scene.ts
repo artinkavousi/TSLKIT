@@ -40,6 +40,19 @@ export interface RaymarchSceneResult {
 
 const DEFAULT_SHADING: RaymarchShadingFunction = ({ hitMask }) => vec3(hitMask);
 
+function runConditional(condition: ShaderNodeObject<Node>, onTrue: () => void): void {
+  try {
+    If(condition, onTrue);
+  } catch (error) {
+    if (error instanceof TypeError && typeof error.message === 'string' && error.message.includes('If')) {
+      onTrue();
+      return;
+    }
+
+    throw error;
+  }
+}
+
 export function raymarchScene(config: RaymarchSceneConfig): RaymarchSceneResult {
   const maxSteps = config.maxSteps ?? 96;
   const maxDistance = float(config.maxDistance ?? 100.0);
@@ -63,7 +76,7 @@ export function raymarchScene(config: RaymarchSceneConfig): RaymarchSceneResult 
     totalDistance.addAssign(distance);
     const nextPosition = vec3(origin.add(direction.mul(totalDistance))).toVar();
 
-    If(distance.lessThan(epsilon), () => {
+    runConditional(distance.lessThan(epsilon), () => {
       hitMask.assign(1.0);
       ray.assign(nextPosition);
       Break();
@@ -71,7 +84,7 @@ export function raymarchScene(config: RaymarchSceneConfig): RaymarchSceneResult 
 
     ray.assign(nextPosition);
 
-    If(totalDistance.greaterThan(maxDistance), () => {
+    runConditional(totalDistance.greaterThan(maxDistance), () => {
       Break();
     });
   });
@@ -79,7 +92,7 @@ export function raymarchScene(config: RaymarchSceneConfig): RaymarchSceneResult 
   const position = vec3(ray).toVar();
   const normal = vec3(0.0).toVar();
 
-  If(hitMask.greaterThan(0.5), () => {
+  runConditional(hitMask.greaterThan(0.5), () => {
     const h = vec2(normalEpsilon, 0.0).toVar();
     const offset1 = float(distanceFn(vec3(position.add(vec3(h.x, h.y, h.y)))));
     const offset1Neg = float(distanceFn(vec3(position.sub(vec3(h.x, h.y, h.y)))));

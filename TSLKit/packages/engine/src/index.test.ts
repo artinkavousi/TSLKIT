@@ -16,5 +16,6 @@ describe('engine public API', () => {
     expect(typeof Engine.AdaptivePostChain).toBe('function');
     expect(typeof Engine.getDeviceCapabilities).toBe('function');
     expect(typeof Engine.createRenderer).toBe('function');
+    expect(typeof Engine.ComputeRunner).toBe('function');
   });
 });

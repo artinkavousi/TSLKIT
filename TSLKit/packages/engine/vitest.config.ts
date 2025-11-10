@@ -13,6 +13,7 @@ export default defineConfig({
         rootDir,
         'tests/stubs/threeWebgpuLegacy.ts',
       ),
+      '@tslstudio/tsl-kit/compute': resolve(rootDir, '../tsl-kit/src/compute/index.ts'),
     },
   },
   test: {
