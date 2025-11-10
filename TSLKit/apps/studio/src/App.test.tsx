@@ -22,15 +22,45 @@ vi.mock('./api/agent.js', () => {
       if (kind === 'material') {
         return [
           {
-            id: 'mat.basic',
-            name: 'Basic Material',
+            id: 'tsl.material.concrete',
+            name: 'Layered Concrete',
             kind: 'material',
-            description: 'Test material',
-            tags: ['test'],
-            previewColor: '#ffffff',
-            parameters: [],
+            description: 'Neutral concrete base with accent aggregate.',
+            tags: ['surface', 'architectural'],
+            previewColor: '#949494',
+            parameters: [
+              { name: 'accentWeight', label: 'Accent Mix', type: 'number', defaultValue: 0.25 }
+            ],
             noiseSpec: {
-              type: 'simplex'
+              type: 'fbm'
+            }
+          },
+          {
+            id: 'tsl.material.wood',
+            name: 'Polished Wood',
+            kind: 'material',
+            description: 'Rich hardwood grain with satin sheen.',
+            tags: ['surface', 'organic'],
+            previewColor: '#a3612e',
+            parameters: [
+              { name: 'ringWeight', label: 'Ring Mix', type: 'number', defaultValue: 0.35 }
+            ],
+            noiseSpec: {
+              type: 'rings'
+            }
+          },
+          {
+            id: 'tsl.material.satin',
+            name: 'Satin Fabric',
+            kind: 'material',
+            description: 'Shimmering textile preset for vibrant cloth.',
+            tags: ['surface', 'fabric'],
+            previewColor: '#d83fa5',
+            parameters: [
+              { name: 'sheenIntensity', label: 'Sheen', type: 'number', defaultValue: 0.6 }
+            ],
+            noiseSpec: {
+              type: 'fbm'
             }
           }
         ];
@@ -57,7 +87,7 @@ vi.mock('./api/agent.js', () => {
           title: 'Intro Tutorial',
           excerpt: 'Learn the basics.',
           difficulty: 'beginner' as const,
-          presetId: 'mat.basic',
+          presetId: 'tsl.material.concrete',
           durationMinutes: 5
         }
       ];

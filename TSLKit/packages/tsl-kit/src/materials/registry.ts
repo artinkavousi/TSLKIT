@@ -5,13 +5,25 @@ import {
   concreteMetadata,
   concreteSchema,
   createConcreteMaterial,
+  createBricksMaterial,
+  createMarbleMaterial,
   createOpacityTestMaterial,
   createRustMaterial,
+  createSatinMaterial,
+  createWoodMaterial,
   createWaterDropsMaterial,
+  bricksMetadata,
+  bricksSchema,
+  marbleMetadata,
+  marbleSchema,
   opacityTestMetadata,
   opacityTestSchema,
   rustMetadata,
   rustSchema,
+  satinMetadata,
+  satinSchema,
+  woodMetadata,
+  woodSchema,
   waterDropsMetadata,
   waterDropsSchema
 } from './presets/index.js';
@@ -32,10 +44,34 @@ const BUILT_IN_PRESETS: MaterialPresetDefinition<any>[] = [
     create: createConcreteMaterial
   },
   {
+    type: 'tsl.material.bricks',
+    metadata: bricksMetadata,
+    schema: bricksSchema,
+    create: createBricksMaterial
+  },
+  {
+    type: 'tsl.material.marble',
+    metadata: marbleMetadata,
+    schema: marbleSchema,
+    create: createMarbleMaterial
+  },
+  {
     type: 'tsl.material.rust',
     metadata: rustMetadata,
     schema: rustSchema,
     create: createRustMaterial
+  },
+  {
+    type: 'tsl.material.satin',
+    metadata: satinMetadata,
+    schema: satinSchema,
+    create: createSatinMaterial
+  },
+  {
+    type: 'tsl.material.wood',
+    metadata: woodMetadata,
+    schema: woodSchema,
+    create: createWoodMaterial
   },
   {
     type: 'tsl.material.waterDrops',
