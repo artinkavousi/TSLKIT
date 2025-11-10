@@ -9,9 +9,9 @@
 // Core framework
 export * from './core'
 
-// Effects will be added here as they are implemented
-// export * from './effects'
+// Effects
+export * from './effects'
 
-// Utilities will be added here
-// export * from './utils'
+// Utilities
+export * from './utils'
 
