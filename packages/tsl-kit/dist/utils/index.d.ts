@@ -15,7 +15,7 @@ export * from './screenAspectUV';
 export * from './repeatingPattern';
 export * from './cosinePalette';
 export * from './domainIndex';
-export * from './bloom';
+export { bloom as bloomEdge } from './bloom';
 export * from './bloomEdgePattern';
 export * from './median3';
 export * from './deviceCaps';
