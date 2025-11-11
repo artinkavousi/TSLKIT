@@ -36,11 +36,11 @@ export const simplexNoise3d = /*#__PURE__*/ Fn(([v_immutable]) => {
     const x1 = vec3(x0.sub(i1).add(mul(1.0, C.xxx))).toVar();
     const x2 = vec3(x0.sub(i2).add(mul(2.0, C.xxx))).toVar();
     const x3 = vec3(x0.sub(1).add(mul(3.0, C.xxx))).toVar();
-    i.assign(mod(i, 289.0));
-    const p = vec4(permute(permute(permute(i.z.add(vec4(0.0, i1.z, i2.z, 1.0)))
-        .add(i.y)
+    const i_mod = mod(i, 289.0).toVar();
+    const p = vec4(permute(permute(permute(i_mod.z.add(vec4(0.0, i1.z, i2.z, 1.0)))
+        .add(i_mod.y)
         .add(vec4(0.0, i1.y, i2.y, 1.0)))
-        .add(i.x)
+        .add(i_mod.x)
         .add(vec4(0.0, i1.x, i2.x, 1.0)))).toVar();
     const n_ = float(1.0 / 7.0).toVar();
     const ns = vec3(n_.mul(D.wyz).sub(D.xzx)).toVar();
@@ -57,17 +57,17 @@ export const simplexNoise3d = /*#__PURE__*/ Fn(([v_immutable]) => {
     const sh = vec4(step(h, vec4(0.0)).negate()).toVar();
     const a0 = vec4(b0.xzyw.add(s0.xzyw.mul(sh.xxyy))).toVar();
     const a1 = vec4(b1.xzyw.add(s1.xzyw.mul(sh.zzww))).toVar();
-    const p0 = vec3(a0.xy, h.x).toVar();
-    const p1 = vec3(a0.zw, h.y).toVar();
-    const p2 = vec3(a1.xy, h.z).toVar();
-    const p3 = vec3(a1.zw, h.w).toVar();
+    let p0 = vec3(a0.xy, h.x).toVar();
+    let p1 = vec3(a0.zw, h.y).toVar();
+    let p2 = vec3(a1.xy, h.z).toVar();
+    let p3 = vec3(a1.zw, h.w).toVar();
     const norm = vec4(taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)))).toVar();
-    p0.mulAssign(norm.x);
-    p1.mulAssign(norm.y);
-    p2.mulAssign(norm.z);
-    p3.mulAssign(norm.w);
-    const m = vec4(max(sub(0.6, vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3))), 0.0)).toVar();
-    m.assign(m.mul(m));
+    p0 = p0.mul(norm.x).toVar();
+    p1 = p1.mul(norm.y).toVar();
+    p2 = p2.mul(norm.z).toVar();
+    p3 = p3.mul(norm.w).toVar();
+    let m = vec4(max(sub(0.6, vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3))), 0.0)).toVar();
+    m = m.mul(m).toVar();
     return mul(42.0, dot(m.mul(m), vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3))));
 }).setLayout({
     name: 'snoise',

@@ -1,0 +1,122 @@
+{
+  "category": "shadows",
+  "description": "Advanced shadow mapping systems for Three.js WebGPU",
+  "copyDate": "2025-11-11",
+  "updated": "2025-11-11",
+  "modules": [
+    {
+      "name": "CSMShadowNode",
+      "file": "CSMShadowNode.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/csm/CSMShadowNode.js",
+      "author": "Three.js Contributors",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "description": "Cascaded Shadow Maps (CSM) implementation - industry-standard shadow technique with multiple cascades",
+      "lines": "~600",
+      "features": [
+        "3+ cascades support",
+        "Fade between cascades",
+        "Uniform/Logarithmic/Practical split modes",
+        "Custom split callback",
+        "Frustum splitting",
+        "Shadow bias per cascade"
+      ],
+      "dependencies": [
+        "CSMFrustum.js (same directory)",
+        "ShadowBaseNode",
+        "DirectionalLight"
+      ],
+      "complexity": "Very High",
+      "priority": "Critical",
+      "estimatedEffort": "20 hours"
+    },
+    {
+      "name": "CSMFrustum",
+      "file": "CSMFrustum.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/csm/CSMFrustum.js",
+      "author": "Three.js Contributors",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "description": "Frustum management for Cascaded Shadow Maps - handles frustum splitting and cascade calculation",
+      "lines": "~200",
+      "features": [
+        "Frustum splitting",
+        "Projection matrix handling",
+        "Cascade vertex calculation",
+        "Space transformation"
+      ],
+      "dependencies": [
+        "Matrix4",
+        "Vector3",
+        "Frustum"
+      ],
+      "complexity": "High",
+      "priority": "Critical",
+      "estimatedEffort": "Included in CSM (dependency)"
+    },
+    {
+      "name": "TileShadowNode",
+      "file": "TileShadowNode.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/tsl/shadows/TileShadowNode.js",
+      "author": "Three.js Contributors",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "description": "Tiled shadow mapping for improved shadow quality by splitting shadow map into multiple tiles",
+      "lines": "~450",
+      "features": [
+        "Configurable tile grid (tilesX, tilesY)",
+        "Improved shadow resolution",
+        "Per-tile shadow cameras",
+        "MRT support",
+        "Array depth textures",
+        "Dynamic tile generation"
+      ],
+      "dependencies": [
+        "ShadowBaseNode",
+        "ArrayCamera",
+        "DepthTexture array",
+        "LwLight (internal helper)"
+      ],
+      "complexity": "Very High",
+      "priority": "High",
+      "estimatedEffort": "14 hours"
+    },
+    {
+      "name": "TileShadowNodeHelper",
+      "file": "TileShadowNodeHelper.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/tsl/shadows/TileShadowNodeHelper.js",
+      "author": "Three.js Contributors",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "description": "Visual helper for debugging and visualizing tile shadow maps",
+      "lines": "~100",
+      "features": [
+        "Tile visualization",
+        "Debug rendering",
+        "Camera frustum display",
+        "Shadow bounds visualization"
+      ],
+      "dependencies": [
+        "TileShadowNode",
+        "LineSegments",
+        "MeshBasicMaterial"
+      ],
+      "complexity": "Medium",
+      "priority": "Medium",
+      "estimatedEffort": "2 hours"
+    }
+  ],
+  "totalModules": 4,
+  "totalEstimatedEffort": "36+ hours",
+  "notes": [
+    "CSMShadowNode requires CSMFrustum as dependency",
+    "TileShadowNodeHelper is optional for debugging",
+    "Both CSM and Tile systems require WebGPU renderer",
+    "MRT (Multiple Render Targets) support required for tile shadows",
+    "Array depth textures required for tile shadows"
+  ]
+}

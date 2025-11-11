@@ -1,0 +1,57 @@
+{
+  "category": "raymarching",
+  "description": "Official Three.js raymarching utilities for SDF rendering",
+  "copyDate": "2025-11-11",
+  "modules": [
+    {
+      "name": "Raymarching",
+      "file": "Raymarching.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/tsl/utils/Raymarching.js",
+      "author": "Three.js Contributors",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "description": "Official raymarching helpers for box-constrained raymarching with AABB intersection",
+      "features": [
+        "RaymarchingBox function - main API",
+        "hitBox AABB intersection",
+        "Box-constrained raymarching",
+        "Automatic step calculation",
+        "Early ray termination",
+        "Varying support (vOrigin, vDirection)"
+      ],
+      "useCases": [
+        "Volume rendering",
+        "SDF raymarching",
+        "Cloud rendering",
+        "Fog effects",
+        "Procedural volumes"
+      ],
+      "api": {
+        "RaymarchingBox": {
+          "params": [
+            "steps: number|Node - The number of raymarching steps",
+            "callback: Function|FunctionNode - Callback executed at each step"
+          ],
+          "callbackParams": {
+            "positionRay": "vec3 - Current ray position in object space"
+          }
+        },
+        "hitBox": {
+          "params": [
+            "orig: vec3 - Ray origin",
+            "dir: vec3 - Ray direction"
+          ],
+          "returns": "vec2 - (t0, t1) near and far intersection distances"
+        }
+      },
+      "dependencies": [
+        "varying",
+        "modelWorldMatrixInverse",
+        "cameraPosition",
+        "positionGeometry"
+      ]
+    }
+  ]
+}
+

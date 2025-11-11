@@ -1,0 +1,58 @@
+/**
+ * Curl Noise 4D Demo
+ * 4D curl noise for advanced fluid effects
+ */
+
+import * as THREE from 'three/webgpu';
+import { vec3, vec4, positionLocal, uniform, Fn } from 'three/tsl';
+import { curlNoise4d } from '@tsl-kit/noise';
+import { DemoBase } from './_demoBase.js';
+
+export async function init(canvas, controlsContainer) {
+  const demo = new DemoBase(canvas, controlsContainer);
+  await demo.init();
+
+  const params = {
+    frequency: 2.0,
+    amplitude: 1.0,
+    speed: 0.5,
+    colorize: true
+  };
+
+  const timeUniform = uniform(0);
+  const geometry = new THREE.SphereGeometry(1, 128, 128);
+  const material = new THREE.MeshBasicNodeMaterial();
+
+  function updateMaterial() {
+    const pos = positionLocal.mul(params.frequency);
+    const noise4d = vec4(pos.x, pos.y, pos.z, timeUniform);
+    const curl = curlNoise4d(noise4d).mul(params.amplitude);
+
+    material.colorNode = Fn(() => {
+      if (params.colorize) {
+        return vec3(curl.xyz).mul(0.5).add(0.5);
+      }
+      return vec3(curl.length().mul(0.5).add(0.5));
+    })();
+    material.needsUpdate = true;
+  }
+
+  updateMaterial();
+  const mesh = new THREE.Mesh(geometry, material);
+  demo.scene.add(mesh);
+
+  const curlFolder = demo.gui.addFolder('Curl Noise 4D');
+  curlFolder.add(params, 'frequency', 0.5, 5.0).onChange(updateMaterial);
+  curlFolder.add(params, 'amplitude', 0.1, 2.0).onChange(updateMaterial);
+  curlFolder.add(params, 'speed', 0.0, 2.0);
+  curlFolder.add(params, 'colorize').onChange(updateMaterial);
+  curlFolder.open();
+
+  demo.animate(() => {
+    timeUniform.value += 0.016 * params.speed;
+    mesh.rotation.y += 0.005;
+  });
+
+  return () => demo.cleanup();
+}
+

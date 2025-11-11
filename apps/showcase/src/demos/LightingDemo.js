@@ -1,202 +1,128 @@
+/**
+ * STANDALONE LIGHTING DEMO
+ * Showcasing fresnel effect with live controls
+ */
+
 import * as THREE from 'three/webgpu';
-import { vec3, normalWorld, positionWorld, cameraPosition, color, mix, dot, max, normalize } from 'three/tsl';
-import { createFresnelNode } from '@tsl-kit/lighting/fresnel';
-import { createHemisphereLight } from '@tsl-kit/lighting/hemisphere';
-import { ambientLightNode } from '@tsl-kit/lighting/ambient';
-import { diffuseNode } from '@tsl-kit/lighting/diffuse';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { vec3, normalWorld, positionWorld, cameraPosition, normalize, mix, float } from 'three/tsl';
+import { fresnel } from '@tsl-kit/lighting';
 
-export class LightingDemo {
-  static createFresnelDemo(pane) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 3);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0a0f);
 
-    const params = {
-      power: 3.0,
-      fresnelColor: '#00ffff',
-      baseColor: '#1a1a2e',
-      intensity: 1.5,
-      showWireframe: false
-    };
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.z = 3;
 
-    const material = new THREE.MeshBasicNodeMaterial();
-    
-    const updateMaterial = () => {
-      const viewDir = normalize(cameraPosition.sub(positionWorld));
-      const normal = normalWorld;
-      
-      const fresnel = createFresnelNode(viewDir, normal, params.power);
-      const fresnelCol = color(params.fresnelColor);
-      const baseCol = color(params.baseColor);
-      
-      material.colorNode = mix(baseCol, fresnelCol.mul(params.intensity), fresnel);
-      material.wireframe = params.showWireframe;
-    };
+const renderer = new THREE.WebGPURenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-    updateMaterial();
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
 
-    const geometry = new THREE.TorusKnotGeometry(0.8, 0.3, 128, 32);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+const settings = {
+  power: 3.0,
+  fresnelR: 0,
+  fresnelG: 255,
+  fresnelB: 255,
+  baseR: 26,
+  baseG: 26,
+  baseB: 46,
+  intensity: 1.5
+};
 
-    pane.addBinding(params, 'power', { min: 0.1, max: 10, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'intensity', { min: 0, max: 5, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'fresnelColor').on('change', updateMaterial);
-    pane.addBinding(params, 'baseColor').on('change', updateMaterial);
-    pane.addBinding(params, 'showWireframe').on('change', updateMaterial);
+// Create torus knot with fresnel material
+const geometry = new THREE.TorusKnotGeometry(0.8, 0.3, 128, 32);
+const material = new THREE.MeshBasicNodeMaterial();
 
-    return {
-      scene,
-      camera,
-      update: (delta) => {
-        mesh.rotation.x += delta * 0.3;
-        mesh.rotation.y += delta * 0.2;
-      },
-      dispose: () => {
-        geometry.dispose();
-        material.dispose();
-      }
-    };
-  }
-
-  static createHemisphereDemo(pane) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 3);
-
-    const params = {
-      skyColor: '#4488ff',
-      groundColor: '#ff8844',
-      intensity: 1.0,
-      showNormals: false
-    };
-
-    const material = new THREE.MeshBasicNodeMaterial();
-    
-    const updateMaterial = () => {
-      const normal = normalWorld;
-      const skyCol = color(params.skyColor);
-      const groundCol = color(params.groundColor);
-      
-      const hemisphereLight = createHemisphereLight(normal, groundCol, skyCol);
-      
-      if (params.showNormals) {
-        material.colorNode = normal.mul(0.5).add(0.5);
-      } else {
-        material.colorNode = hemisphereLight.mul(params.intensity);
-      }
-    };
-
-    updateMaterial();
-
-    const geometry = new THREE.SphereGeometry(1, 64, 64);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    pane.addBinding(params, 'intensity', { min: 0, max: 3, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'skyColor').on('change', updateMaterial);
-    pane.addBinding(params, 'groundColor').on('change', updateMaterial);
-    pane.addBinding(params, 'showNormals', { label: 'Show Normals (Debug)' }).on('change', updateMaterial);
-
-    return {
-      scene,
-      camera,
-      update: (delta) => {
-        mesh.rotation.y += delta * 0.3;
-      },
-      dispose: () => {
-        geometry.dispose();
-        material.dispose();
-      }
-    };
-  }
-
-  static createCustomLightingDemo(pane) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 3);
-
-    const params = {
-      lightColor: '#ffffff',
-      ambientIntensity: 0.3,
-      diffuseIntensity: 1.0,
-      lightPosX: 2,
-      lightPosY: 2,
-      lightPosZ: 2,
-      materialColor: '#8b5cf6',
-      showLightHelper: true
-    };
-
-    // Light helper
-    const lightHelper = new THREE.Mesh(
-      new THREE.SphereGeometry(0.1, 16, 16),
-      new THREE.MeshBasicMaterial({ color: 0xffffff })
-    );
-    scene.add(lightHelper);
-
-    const material = new THREE.MeshBasicNodeMaterial();
-    
-    const updateMaterial = () => {
-      const normal = normalWorld;
-      const matColor = color(params.materialColor);
-      const lightCol = color(params.lightColor);
-      
-      // Ambient
-      const ambient = ambientLightNode(lightCol, params.ambientIntensity);
-      
-      // Diffuse
-      const lightPos = vec3(params.lightPosX, params.lightPosY, params.lightPosZ);
-      const lightDir = normalize(lightPos.sub(positionWorld));
-      const diffuse = diffuseNode(lightCol, lightDir, normal).mul(params.diffuseIntensity);
-      
-      // Combine
-      const finalColor = matColor.mul(ambient.add(diffuse));
-      material.colorNode = finalColor;
-
-      // Update light helper
-      lightHelper.position.set(params.lightPosX, params.lightPosY, params.lightPosZ);
-      lightHelper.visible = params.showLightHelper;
-    };
-
-    updateMaterial();
-
-    const geometry = new THREE.TorusGeometry(0.8, 0.3, 64, 64);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    const lightFolder = pane.addFolder({ title: 'Light Properties' });
-    lightFolder.addBinding(params, 'lightColor').on('change', updateMaterial);
-    lightFolder.addBinding(params, 'ambientIntensity', { min: 0, max: 2, step: 0.1 }).on('change', updateMaterial);
-    lightFolder.addBinding(params, 'diffuseIntensity', { min: 0, max: 3, step: 0.1 }).on('change', updateMaterial);
-
-    const posFolder = pane.addFolder({ title: 'Light Position' });
-    posFolder.addBinding(params, 'lightPosX', { min: -5, max: 5, step: 0.1 }).on('change', updateMaterial);
-    posFolder.addBinding(params, 'lightPosY', { min: -5, max: 5, step: 0.1 }).on('change', updateMaterial);
-    posFolder.addBinding(params, 'lightPosZ', { min: -5, max: 5, step: 0.1 }).on('change', updateMaterial);
-
-    pane.addBinding(params, 'materialColor').on('change', updateMaterial);
-    pane.addBinding(params, 'showLightHelper').on('change', updateMaterial);
-
-    return {
-      scene,
-      camera,
-      update: (delta) => {
-        mesh.rotation.x += delta * 0.2;
-        mesh.rotation.y += delta * 0.3;
-      },
-      dispose: () => {
-        geometry.dispose();
-        material.dispose();
-        lightHelper.geometry.dispose();
-        lightHelper.material.dispose();
-      }
-    };
-  }
+function updateMaterial() {
+  const viewDir = normalize(cameraPosition.sub(positionWorld));
+  const normal = normalWorld;
+  
+  const fresnelValue = fresnel(viewDir, normal, float(settings.power));
+  const fresnelCol = vec3(settings.fresnelR / 255, settings.fresnelG / 255, settings.fresnelB / 255);
+  const baseCol = vec3(settings.baseR / 255, settings.baseG / 255, settings.baseB / 255);
+  
+  material.colorNode = mix(baseCol, fresnelCol.mul(settings.intensity), fresnelValue);
 }
 
+updateMaterial();
+
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+// GUI
+const gui = new GUI({ title: '💡 Lighting Demo (Fresnel)' });
+
+const fresnelFolder = gui.addFolder('Fresnel Parameters');
+fresnelFolder.add(settings, 'power', 0.1, 10, 0.1).name('Power').onChange(updateMaterial);
+fresnelFolder.add(settings, 'intensity', 0, 5, 0.1).name('Intensity').onChange(updateMaterial);
+fresnelFolder.open();
+
+const fresnelColorFolder = gui.addFolder('Fresnel Color');
+fresnelColorFolder.add(settings, 'fresnelR', 0, 255, 1).name('R').onChange(updateMaterial);
+fresnelColorFolder.add(settings, 'fresnelG', 0, 255, 1).name('G').onChange(updateMaterial);
+fresnelColorFolder.add(settings, 'fresnelB', 0, 255, 1).name('B').onChange(updateMaterial);
+fresnelColorFolder.open();
+
+const baseColorFolder = gui.addFolder('Base Color');
+baseColorFolder.add(settings, 'baseR', 0, 255, 1).name('R').onChange(updateMaterial);
+baseColorFolder.add(settings, 'baseG', 0, 255, 1).name('G').onChange(updateMaterial);
+baseColorFolder.add(settings, 'baseB', 0, 255, 1).name('B').onChange(updateMaterial);
+baseColorFolder.open();
+
+// Stats
+const stats = document.createElement('div');
+stats.style.cssText = 'position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.8);color:#0f0;padding:15px;font-family:monospace;font-size:12px;border-radius:5px;';
+document.body.appendChild(stats);
+
+let fps = 0;
+let frameCount = 0;
+let lastTime = performance.now();
+
+function updateStats() {
+  const now = performance.now();
+  frameCount++;
+  
+  if (now - lastTime >= 1000) {
+    fps = Math.round((frameCount * 1000) / (now - lastTime));
+    frameCount = 0;
+    lastTime = now;
+  }
+  
+  stats.innerHTML = `
+    <div style="font-size:14px;color:#0f0;margin-bottom:5px;">💡 LIGHTING DEMO</div>
+    <div><strong>FPS:</strong> ${fps}</div>
+    <div><strong>Effect:</strong> Fresnel</div>
+  `;
+}
+
+// Animation
+function animate() {
+  requestAnimationFrame(animate);
+  
+  mesh.rotation.x += 0.003;
+  mesh.rotation.y += 0.002;
+  
+  controls.update();
+  updateStats();
+  renderer.render(scene, camera);
+}
+
+// Handle resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Start
+(async () => {
+  await renderer.init();
+  console.log('%c💡 LIGHTING DEMO', 'font-size:20px;color:#0f0;font-weight:bold');
+  console.log('%cDemonstrating Fresnel effect with live controls', 'font-size:12px;color:#888');
+  animate();
+})();

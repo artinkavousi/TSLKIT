@@ -19,6 +19,18 @@ import { TempNode } from 'three/webgpu';
  * @augments TempNode
  */
 declare class GaussianBlurNode extends TempNode {
+    textureNode: any;
+    directionNode: any;
+    sigma: number;
+    _invSize: any;
+    _passDirection: any;
+    _horizontalRT: any;
+    _verticalRT: any;
+    _textureNode: any;
+    _material: any;
+    resolutionScale: number;
+    premultipliedAlpha: boolean;
+    updateBeforeType: any;
     static get type(): string;
     /**
      * Constructs a new gaussian blur node.
@@ -30,13 +42,16 @@ declare class GaussianBlurNode extends TempNode {
      * @param {boolean} [options.premultipliedAlpha=false] - Whether to use premultiplied alpha for the blur effect.
      * @param {number} [options.resolutionScale=1] - The resolution of the effect. 0.5 means half the resolution of the texture node.
      */
-    constructor(textureNode: any, directionNode?: null, sigma?: number, options?: {});
+    constructor(textureNode: any, directionNode?: any, sigma?: number, options?: {
+        premultipliedAlpha?: boolean;
+        resolutionScale?: number;
+    });
     setSize(width: any, height: any): void;
     updateBefore(frame: any): void;
     getTextureNode(): any;
     setup(builder: any): any;
     dispose(): void;
-    _getCoefficients(kernelRadius: any): number[];
+    _getCoefficients(kernelRadius: any): any[];
 }
 export default GaussianBlurNode;
 /**

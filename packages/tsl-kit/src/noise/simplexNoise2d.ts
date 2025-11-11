@@ -52,10 +52,10 @@ export const simplexNoise2d = /*#__PURE__*/ Fn<[ShaderNodeObject<Node>]>(([v_imm
     const C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
     const i = vec2(floor(v.add(dot(v, C.yy)))).toVar();
     const x0 = vec2(v.sub(i).add(dot(i, C.xx))).toVar();
-    const i1 = vec2().toVar();
-    i1.assign(select(x0.x.greaterThan(x0.y), vec2(1.0, 0.0), vec2(0.0, 1.0)));
+    const i1 = select(x0.x.greaterThan(x0.y), vec2(1.0, 0.0), vec2(0.0, 1.0)).toVar();
     const x12 = vec4(x0.xyxy.add(C.xxzz)).toVar();
-    x12.xy.subAssign(i1);
+    const x12_xy = x12.xy.sub(i1).toVar();
+    const x12_zw = x12.zw.toVar();
     i.assign(mod(i, 289.0));
     const p = vec3(
         permute2d(
@@ -64,17 +64,17 @@ export const simplexNoise2d = /*#__PURE__*/ Fn<[ShaderNodeObject<Node>]>(([v_imm
                 .add(vec3(0.0, i1.x, 1.0)),
         ),
     ).toVar();
-    const m = vec3(max(sub(0.5, vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw))), 0.0)).toVar();
-    m.assign(m.mul(m));
-    m.assign(m.mul(m));
+    let m = vec3(max(sub(0.5, vec3(dot(x0, x0), dot(x12_xy, x12_xy), dot(x12_zw, x12_zw))), 0.0)).toVar();
+    m = m.mul(m).toVar();
+    m = m.mul(m).toVar();
     const x = vec3(mul(2.0, fract(p.mul(C.www))).sub(1.0)).toVar();
     const h = vec3(abs(x).sub(0.5)).toVar();
     const ox = vec3(floor(x.add(0.5))).toVar();
     const a0 = vec3(x.sub(ox)).toVar();
-    m.mulAssign(sub(1.79284291400159, mul(0.85373472095314, a0.mul(a0).add(h.mul(h)))));
-    const g = vec3().toVar();
-    g.x.assign(a0.x.mul(x0.x).add(h.x.mul(x0.y)));
-    g.yz.assign(a0.yz.mul(x12.xz).add(h.yz.mul(x12.yw)));
+    m = m.mul(sub(1.79284291400159, mul(0.85373472095314, a0.mul(a0).add(h.mul(h))))).toVar();
+    const g_x = a0.x.mul(x0.x).add(h.x.mul(x0.y)).toVar();
+    const g_yz = a0.yz.mul(x12_xy).add(h.yz.mul(x12_zw)).toVar();
+    const g = vec3(g_x, g_yz.x, g_yz.y).toVar();
 
     return mul(130.0, dot(m, g));
 }).setLayout({

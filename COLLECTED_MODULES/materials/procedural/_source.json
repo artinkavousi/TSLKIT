@@ -1,0 +1,93 @@
+{
+  "category": "materials/procedural",
+  "description": "Procedural materials using TSL - complete material systems with advanced noise and composition",
+  "copyDate": "2025-11-11",
+  "modules": [
+    {
+      "name": "WoodNodeMaterial",
+      "file": "WoodNodeMaterial.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/materials/WoodNodeMaterial.js",
+      "author": "Three.js Contributors (ported from Blender wood shader)",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "description": "Complete procedural wood material with 10 wood types and 4 finish options, demonstrating advanced TSL composition",
+      "woodTypes": [
+        "teak",
+        "walnut",
+        "white_oak",
+        "pine",
+        "poplar",
+        "maple",
+        "red_oak",
+        "cherry",
+        "cedar",
+        "mahogany"
+      ],
+      "finishes": [
+        "raw - No clearcoat",
+        "matte - Clearcoat with high roughness",
+        "semigloss - Clearcoat with medium roughness",
+        "gloss - Clearcoat with low roughness"
+      ],
+      "features": [
+        "Voronoi cell structure",
+        "FBM (Fractal Brownian Motion) warping",
+        "Ring patterns with variance",
+        "Splotch detail noise",
+        "Soft light blending",
+        "Physical clearcoat support",
+        "Transformation matrix support",
+        "19 customizable parameters"
+      ],
+      "tslUtilities": [
+        "mapRange - Value remapping utility",
+        "voronoi3d - 3D Voronoi noise (WGSL)",
+        "softLightMix - Soft light blend mode",
+        "noiseFbm - Fractal Brownian Motion (float)",
+        "noiseFbm3d - Fractal Brownian Motion (vec3)",
+        "woodCenter - Wood center calculation",
+        "spaceWarp - Spatial warping",
+        "woodRings - Ring pattern generation",
+        "woodDetail - Detail noise",
+        "cellStructure - Voronoi cell pattern"
+      ],
+      "parameters": {
+        "centerSize": "Wood center size",
+        "largeWarpScale": "Large warp scale",
+        "largeGrainStretch": "Grain stretch",
+        "smallWarpStrength": "Small warp strength",
+        "smallWarpScale": "Small warp scale",
+        "fineWarpStrength": "Fine detail warp",
+        "fineWarpScale": "Fine warp scale",
+        "ringThickness": "Ring pattern thickness",
+        "ringBias": "Ring edge sharpness",
+        "ringSizeVariance": "Ring size variation",
+        "ringVarianceScale": "Variance scale",
+        "barkThickness": "Bark detail amount",
+        "splotchScale": "Splotch pattern scale",
+        "splotchIntensity": "Splotch intensity",
+        "cellScale": "Cell structure scale",
+        "cellSize": "Cell size",
+        "darkGrainColor": "Dark grain color",
+        "lightGrainColor": "Light grain color",
+        "transformationMatrix": "Transformation matrix"
+      },
+      "usage": {
+        "preset": "const material = WoodNodeMaterial.fromPreset('walnut', 'gloss');",
+        "custom": "const material = new WoodNodeMaterial({ centerSize: 1.2, ringThickness: 1/40, ... });",
+        "override": "const params = GetWoodPreset('walnut', 'raw'); const material = new WoodNodeMaterial({ ...params, ringThickness: 1/50 });"
+      },
+      "complexity": "Very High",
+      "estimatedEffort": "12 hours",
+      "dependencies": [
+        "MeshPhysicalMaterial",
+        "TSL core functions",
+        "mx_noise_float",
+        "mx_noise_vec3",
+        "WGSL support (for voronoi3d)"
+      ]
+    }
+  ]
+}
+

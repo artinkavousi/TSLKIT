@@ -1,284 +1,144 @@
+/**
+ * STANDALONE NOISE DEMO
+ * Showcasing simplex noise 3D with live controls
+ */
+
 import * as THREE from 'three/webgpu';
-import { vec3, positionLocal, time, mul, sin, cos } from 'three/tsl';
-import { simplexNoise3d } from '@tsl-kit/noise/simplexNoise3d';
-import { perlinNoise3d } from '@tsl-kit/noise/perlinNoise3d';
-import { curlNoise3d } from '@tsl-kit/noise/curlNoise3d';
-import { fbm, ridgedFbm, domainWarpedFbm } from '@tsl-kit/noise/fbm';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { uniform, uv, vec3, vec4, sin, cos } from 'three/tsl';
+import { simplexNoise3d } from '@tsl-kit/noise';
 
-export class NoiseDemo {
-  static createSimplexDemo(pane) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 3);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0a0f);
 
-    // Parameters
-    const params = {
-      frequency: 2.0,
-      amplitude: 1.0,
-      speed: 0.5,
-      colorize: true,
-      animated: true
-    };
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.z = 3;
 
-    // Add lighting
-    const light = new THREE.DirectionalLight(0xffffff, 3);
-    light.position.set(2, 2, 2);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0x404040, 2));
+const renderer = new THREE.WebGPURenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-    // Create material with simplex noise
-    const material = new THREE.MeshBasicNodeMaterial();
-    
-    const updateMaterial = () => {
-      const animTime = params.animated ? time.mul(params.speed) : 0;
-      const pos = positionLocal.mul(params.frequency);
-      const noisePos = vec3(pos.x, pos.y, pos.z.add(animTime));
-      const noise = simplexNoise3d(noisePos).mul(params.amplitude);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
 
-      if (params.colorize) {
-        // Colorize based on noise value
-        const r = noise.add(1).div(2);
-        const g = sin(noise.mul(3.14159)).add(1).div(2);
-        const b = cos(noise.mul(3.14159)).add(1).div(2);
-        material.colorNode = vec3(r, g, b);
-      } else {
-        material.colorNode = vec3(noise.add(1).div(2));
-      }
-    };
+const settings = {
+  frequency: 2.0,
+  amplitude: 1.0,
+  speed: 0.5,
+  colorize: true,
+  animate: true
+};
 
-    updateMaterial();
+// Manual time tracking
+const timeUniform = uniform(0);
 
-    // Create geometry
-    const geometry = new THREE.SphereGeometry(1, 128, 128);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+// Create sphere with noise material
+const geometry = new THREE.SphereGeometry(1, 128, 128);
+const material = new THREE.MeshBasicNodeMaterial();
 
-    // Tweakpane controls
-    pane.addBinding(params, 'frequency', { min: 0.1, max: 10, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'amplitude', { min: 0, max: 5, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'speed', { min: 0, max: 2, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'colorize').on('change', updateMaterial);
-    pane.addBinding(params, 'animated').on('change', updateMaterial);
-
-    pane.addButton({ title: 'Reset Camera' }).on('click', () => {
-      camera.position.set(0, 0, 3);
-      camera.lookAt(0, 0, 0);
-    });
-
-    return {
-      scene,
-      camera,
-      update: (delta) => {
-        mesh.rotation.y += delta * 0.2;
-      },
-      dispose: () => {
-        geometry.dispose();
-        material.dispose();
-      }
-    };
-  }
-
-  static createPerlinDemo(pane) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 3);
-
-    const params = {
-      frequency: 3.0,
-      amplitude: 0.8,
-      speed: 0.3,
-      turbulence: false,
-      animated: true
-    };
-
-    const light = new THREE.DirectionalLight(0xffffff, 3);
-    light.position.set(2, 2, 2);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0x404040, 2));
-
-    const material = new THREE.MeshBasicNodeMaterial();
-    
-    const updateMaterial = () => {
-      const animTime = params.animated ? time.mul(params.speed) : 0;
-      const pos = positionLocal.mul(params.frequency);
-      const noisePos = vec3(pos.x, pos.y, pos.z.add(animTime));
-      let noise = perlinNoise3d(noisePos).mul(params.amplitude);
-
-      if (params.turbulence) {
-        noise = noise.abs();
-      }
-
-      const normalized = noise.add(1).div(2);
-      material.colorNode = vec3(normalized, normalized.mul(0.8), normalized.mul(1.2));
-    };
-
-    updateMaterial();
-
-    const geometry = new THREE.TorusKnotGeometry(0.8, 0.3, 128, 32);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    pane.addBinding(params, 'frequency', { min: 0.1, max: 10, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'amplitude', { min: 0, max: 2, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'speed', { min: 0, max: 2, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'turbulence').on('change', updateMaterial);
-    pane.addBinding(params, 'animated').on('change', updateMaterial);
-
-    return {
-      scene,
-      camera,
-      update: (delta) => {
-        mesh.rotation.x += delta * 0.3;
-        mesh.rotation.y += delta * 0.2;
-      },
-      dispose: () => {
-        geometry.dispose();
-        material.dispose();
-      }
-    };
-  }
-
-  static createCurlDemo(pane) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 3);
-
-    const params = {
-      frequency: 2.0,
-      speed: 0.5,
-      strength: 1.0,
-      animated: true
-    };
-
-    const light = new THREE.DirectionalLight(0xffffff, 3);
-    light.position.set(2, 2, 2);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0x404040, 2));
-
-    const material = new THREE.MeshBasicNodeMaterial();
-    
-    const updateMaterial = () => {
-      const animTime = params.animated ? time.mul(params.speed) : 0;
-      const pos = positionLocal.mul(params.frequency);
-      const noisePos = vec3(pos.x, pos.y, pos.z.add(animTime));
-      const curl = curlNoise3d(noisePos).mul(params.strength);
-
-      // Colorize based on curl direction
-      const normalized = curl.add(1).div(2);
-      material.colorNode = normalized;
-    };
-
-    updateMaterial();
-
-    const geometry = new THREE.IcosahedronGeometry(1, 64);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    pane.addBinding(params, 'frequency', { min: 0.1, max: 10, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'strength', { min: 0, max: 3, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'speed', { min: 0, max: 2, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'animated').on('change', updateMaterial);
-
-    return {
-      scene,
-      camera,
-      update: (delta) => {
-        mesh.rotation.y += delta * 0.3;
-      },
-      dispose: () => {
-        geometry.dispose();
-        material.dispose();
-      }
-    };
-  }
-
-  static createFBMDemo(pane) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 3);
-
-    const params = {
-      type: 'standard',
-      octaves: 4,
-      frequency: 2.0,
-      amplitude: 1.0,
-      lacunarity: 2.0,
-      gain: 0.5,
-      speed: 0.3,
-      animated: true
-    };
-
-    const light = new THREE.DirectionalLight(0xffffff, 3);
-    light.position.set(2, 2, 2);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0x404040, 2));
-
-    const material = new THREE.MeshBasicNodeMaterial();
-    
-    const updateMaterial = () => {
-      const animTime = params.animated ? time.mul(params.speed) : 0;
-      const pos = positionLocal.mul(params.frequency);
-      const noisePos = vec3(pos.x, pos.y, pos.z.add(animTime));
-
-      let noise;
-      if (params.type === 'standard') {
-        noise = fbm(noisePos, params.octaves, params.frequency, params.amplitude, params.lacunarity, params.gain);
-      } else if (params.type === 'ridged') {
-        noise = ridgedFbm(noisePos, params.octaves, params.frequency, params.amplitude, params.lacunarity, params.gain);
-      } else {
-        noise = domainWarpedFbm(noisePos, params.octaves, params.frequency, params.amplitude, params.lacunarity, params.gain, 0.1);
-      }
-
-      const normalized = noise.add(1).div(2);
-      material.colorNode = vec3(
-        normalized,
-        normalized.mul(0.7).add(0.3),
-        normalized.mul(0.5).add(0.5)
-      );
-    };
-
-    updateMaterial();
-
-    const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5, 64, 64, 64);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    pane.addBinding(params, 'type', {
-      options: {
-        'Standard FBM': 'standard',
-        'Ridged FBM': 'ridged',
-        'Domain Warped': 'warped'
-      }
-    }).on('change', updateMaterial);
-
-    pane.addBinding(params, 'octaves', { min: 1, max: 8, step: 1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'frequency', { min: 0.1, max: 10, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'amplitude', { min: 0, max: 2, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'lacunarity', { min: 1, max: 4, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'gain', { min: 0, max: 1, step: 0.05 }).on('change', updateMaterial);
-    pane.addBinding(params, 'speed', { min: 0, max: 2, step: 0.1 }).on('change', updateMaterial);
-    pane.addBinding(params, 'animated').on('change', updateMaterial);
-
-    return {
-      scene,
-      camera,
-      update: (delta) => {
-        mesh.rotation.x += delta * 0.1;
-        mesh.rotation.y += delta * 0.15;
-      },
-      dispose: () => {
-        geometry.dispose();
-        material.dispose();
-      }
-    };
+function updateNoiseShader() {
+  const animTime = timeUniform.mul(uniform(settings.speed));
+  const uvCoord = uv();
+  
+  // Convert UV to 3D position
+  const theta = uvCoord.x.mul(Math.PI * 2);
+  const phi = uvCoord.y.mul(Math.PI);
+  const pos = vec3(
+    sin(phi).mul(cos(theta)),
+    sin(phi).mul(sin(theta)),
+    cos(phi)
+  ).mul(uniform(settings.frequency));
+  
+  // Add time animation
+  const noisePos = vec3(pos.x, pos.y, pos.z.add(animTime));
+  const noise = simplexNoise3d(noisePos).mul(uniform(settings.amplitude));
+  
+  if (settings.colorize) {
+    const r = noise.add(1).div(2);
+    const g = sin(noise.mul(3.14159)).add(1).div(2);
+    const b = cos(noise.mul(3.14159)).add(1).div(2);
+    material.colorNode = vec4(r, g, b, 1.0);
+  } else {
+    const gray = noise.add(1).div(2);
+    material.colorNode = vec4(gray, gray, gray, 1.0);
   }
 }
 
+updateNoiseShader();
+
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+// Lighting
+const light = new THREE.DirectionalLight(0xffffff, 3);
+light.position.set(2, 2, 2);
+scene.add(light);
+scene.add(new THREE.AmbientLight(0x404040, 2));
+
+// GUI
+const gui = new GUI({ title: '🌊 Noise Demo (Simplex 3D)' });
+const noiseFolder = gui.addFolder('Noise Parameters');
+noiseFolder.add(settings, 'frequency', 0.1, 10, 0.1).name('Frequency').onChange(updateNoiseShader);
+noiseFolder.add(settings, 'amplitude', 0, 5, 0.1).name('Amplitude').onChange(updateNoiseShader);
+noiseFolder.add(settings, 'speed', 0, 2, 0.1).name('Speed').onChange(updateNoiseShader);
+noiseFolder.add(settings, 'colorize').name('Colorize').onChange(updateNoiseShader);
+noiseFolder.add(settings, 'animate').name('Animate');
+noiseFolder.open();
+
+// Stats
+const stats = document.createElement('div');
+stats.style.cssText = 'position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.8);color:#0f0;padding:15px;font-family:monospace;font-size:12px;border-radius:5px;';
+document.body.appendChild(stats);
+
+let fps = 0;
+let frameCount = 0;
+let lastTime = performance.now();
+
+function updateStats() {
+  const now = performance.now();
+  frameCount++;
+  
+  if (now - lastTime >= 1000) {
+    fps = Math.round((frameCount * 1000) / (now - lastTime));
+    frameCount = 0;
+    lastTime = now;
+  }
+  
+  stats.innerHTML = `
+    <div style="font-size:14px;color:#0f0;margin-bottom:5px;">🌊 NOISE DEMO</div>
+    <div><strong>FPS:</strong> ${fps}</div>
+    <div><strong>Noise:</strong> Simplex 3D</div>
+  `;
+}
+
+// Animation
+function animate() {
+  requestAnimationFrame(animate);
+  
+  if (settings.animate) {
+    timeUniform.value += 0.016 * settings.speed;
+  }
+  
+  mesh.rotation.y += 0.002;
+  
+  controls.update();
+  updateStats();
+  renderer.render(scene, camera);
+}
+
+// Handle resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Start
+(async () => {
+  await renderer.init();
+  console.log('%c🌊 NOISE DEMO', 'font-size:20px;color:#0f0;font-weight:bold');
+  console.log('%cDemonstrating Simplex Noise 3D with live controls', 'font-size:12px;color:#888');
+  animate();
+})();

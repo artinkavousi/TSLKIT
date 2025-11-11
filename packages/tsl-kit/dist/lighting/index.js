@@ -9,4 +9,7 @@ export * from './fresnel';
 export * from './ambient';
 export * from './diffuse';
 export * from './hemisphere';
+export * from './directional';
+export * from './utils';
+export * from './TiledLightsNode';
 //# sourceMappingURL=index.js.map

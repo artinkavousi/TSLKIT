@@ -1,32 +1,103 @@
 {
   "category": "lighting",
-  "sources": [
+  "description": "Lighting utilities and helper functions for TSL-based lighting calculations",
+  "author": "Maxime Heckel",
+  "license": "MIT",
+  "source": "portfolio-main",
+  "url": "https://github.com/MaximeHeckel/blog.maximeheckel.com",
+  "copyDate": "2024-11-10",
+  "updated": "2025-11-11",
+  "modules": [
     {
-      "source_repo": "portfolio-main",
-      "path": "RESOURCES/REPOSITORIES/portfolio examples/portfolio-main/src/utils/webgpu/nodes/lighting/",
-      "author": "Maxime Heckel",
-      "license": "MIT",
-      "url": "https://github.com/MaximeHeckel/portfolio",
-      "modules": [
-        "ambient.ts",
-        "diffuse.ts",
-        "directional.ts",
-        "fresnel.ts",
-        "hemisphere.ts"
-      ],
-      "copied": "2025-11-10"
+      "name": "ambient",
+      "file": "ambient.ts",
+      "description": "Ambient lighting calculation",
+      "complexity": "Simple",
+      "priority": "High"
     },
     {
-      "source_repo": "fragments-boilerplate-main",
-      "path": "RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/utils/",
-      "author": "Maxime Heckel",
+      "name": "diffuse",
+      "file": "diffuse.ts",
+      "description": "Diffuse lighting with Lambert and Oren-Nayar models",
+      "complexity": "Simple",
+      "priority": "High"
+    },
+    {
+      "name": "directional",
+      "file": "directional.ts",
+      "description": "Directional light with shadow support",
+      "complexity": "Medium",
+      "priority": "High"
+    },
+    {
+      "name": "fresnel",
+      "file": "fresnel.ts",
+      "description": "Fresnel effect using Schlick's approximation",
+      "complexity": "Medium",
+      "priority": "High"
+    },
+    {
+      "name": "hemisphere",
+      "file": "hemisphere.ts",
+      "description": "Hemisphere lighting (sky + ground)",
+      "complexity": "Simple",
+      "priority": "High"
+    },
+    {
+      "name": "lighting-utils",
+      "file": "lighting-utils.ts",
+      "description": "Additional lighting helper functions",
+      "source": "fragments-boilerplate",
+      "complexity": "Simple",
+      "priority": "High"
+    },
+    {
+      "name": "TiledLightsNode",
+      "file": "TiledLightsNode.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/tsl/lighting/TiledLightsNode.js",
+      "author": "Three.js Contributors",
       "license": "MIT",
-      "url": "https://github.com/MaximeHeckel/fragments-boilerplate",
-      "modules": [
-        "lighting-utils.ts"
+      "url": "https://github.com/mrdoob/three.js",
+      "copyDate": "2025-11-11",
+      "description": "Tiled/clustered lighting system for massive point light counts (1000+) using compute shaders",
+      "complexity": "Very High",
+      "priority": "High",
+      "estimatedEffort": "16 hours",
+      "features": [
+        "Support for 1000+ point lights",
+        "Screen-space tiling (configurable tile size, default 32x32)",
+        "Compute shader-based light culling",
+        "AABB intersection testing per tile",
+        "Texture-based light storage",
+        "Instanced compute dispatch",
+        "circleIntersectsAABB utility function"
       ],
-      "copied": "2025-11-10"
+      "parameters": {
+        "maxLights": "Maximum number of lights (default: 1024)",
+        "tileSize": "Tile size in pixels (default: 32)"
+      },
+      "useCases": [
+        "Large interior scenes with many lights",
+        "City lighting at night",
+        "Particle-based lights",
+        "Concerts/stadium lighting",
+        "Complex architectural lighting"
+      ],
+      "dependencies": [
+        "LightsNode (extends)",
+        "Compute shaders",
+        "DataTexture",
+        "Storage attributes",
+        "directPointLight (TSL)"
+      ],
+      "algorithm": {
+        "step1": "Create screen-space tiles (e.g., 32x32 pixels)",
+        "step2": "Store light data in texture (position, color, distance, decay)",
+        "step3": "Compute shader: For each tile, test which lights intersect",
+        "step4": "Store light indices per tile in storage buffer",
+        "step5": "Fragment shader: Look up tile, iterate only relevant lights"
+      }
     }
   ]
 }
-

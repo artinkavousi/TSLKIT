@@ -1,26 +1,26 @@
 /**
- * @tslstudio/tsl-kit
+ * TSL Kit - Three.js Shading Language Toolkit
  *
- * TSL/WebGPU toolkit for Three.js r181+
+ * A comprehensive library of TSL (Three.js Shading Language) utilities,
+ * effects, and systems for WebGPU rendering.
  *
- * A comprehensive library of noise functions, lighting utilities, materials,
- * post-processing effects, SDF operations, and utilities for building
- * advanced WebGPU applications with Three.js.
- *
- * @author TSLStudio
- * @license MIT
+ * @module @tslstudio/tsl-kit
  * @version 0.1.0
  */
 // Noise functions
 export * from './noise';
-// Lighting utilities
+// Lighting systems
 export * from './lighting';
-// General utilities
-export * from './utils';
-// Signed Distance Fields
+// SDF (Signed Distance Fields) 
 export * from './sdf';
 // Post-processing effects
 export * from './postfx';
-// Compute systems
+// Compute shaders & systems
 export * from './compute';
+// Utility functions  
+// export * from './utils' // TODO: Fix duplicate 'bloom' export conflict with postfx
+// Shadow systems (NEW - CSM, Tile Shadows)
+export * from './shadows';
+// Math utilities (NEW - Bayer dithering, etc)
+export * from './math';
 //# sourceMappingURL=index.js.map

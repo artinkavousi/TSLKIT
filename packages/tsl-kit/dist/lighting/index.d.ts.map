@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../src/lighting/index.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAEH,cAAc,WAAW,CAAA;AACzB,cAAc,WAAW,CAAA;AACzB,cAAc,WAAW,CAAA;AACzB,cAAc,cAAc,CAAA"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../src/lighting/index.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAEH,cAAc,WAAW,CAAA;AACzB,cAAc,WAAW,CAAA;AACzB,cAAc,WAAW,CAAA;AACzB,cAAc,cAAc,CAAA;AAC5B,cAAc,eAAe,CAAA;AAC7B,cAAc,SAAS,CAAA;AACvB,cAAc,mBAAmB,CAAA"}

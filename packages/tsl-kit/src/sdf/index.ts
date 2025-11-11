@@ -8,4 +8,5 @@
 
 export * from './shapes'
 export * from './operations'
+export * from './raymarching'
 

@@ -15,7 +15,8 @@ import { Fn, pow } from 'three/tsl';
  * ```
  */
 export const bloom = Fn(([pattern, edge, exponent]) => {
-    pattern.assign(pow(edge.div(pattern), exponent));
-    return pattern;
+    const result = pattern.toVar();
+    result.assign(pow(edge.div(result), exponent));
+    return result;
 });
 //# sourceMappingURL=bloom.js.map

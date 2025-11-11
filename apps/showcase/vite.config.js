@@ -9,8 +9,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@tsl-kit': resolve(__dirname, '../../packages/tsl-kit/src'),
-      'three/tsl': resolve(__dirname, './src/utils/three-tsl-wrapper.js')
+      '@tsl-kit': resolve(__dirname, '../../packages/tsl-kit/src')
     }
   },
   optimizeDeps: {

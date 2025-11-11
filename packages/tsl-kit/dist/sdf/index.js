@@ -7,4 +7,5 @@
  */
 export * from './shapes';
 export * from './operations';
+export * from './raymarching';
 //# sourceMappingURL=index.js.map

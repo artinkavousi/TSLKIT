@@ -88,11 +88,11 @@ export interface QualitySettings {
  */
 export async function checkWebGPUSupport(): Promise<boolean> {
   try {
-    if (!navigator.gpu) {
+    if (!(navigator as any).gpu) {
       return false
     }
 
-    const adapter = await navigator.gpu.requestAdapter()
+    const adapter = await (navigator as any).gpu.requestAdapter()
     return adapter !== null
   } catch (error) {
     console.warn('WebGPU support check failed:', error)
@@ -114,11 +114,11 @@ export async function checkWebGPUSupport(): Promise<boolean> {
  * ```
  */
 export async function getDeviceLimits(): Promise<DeviceLimits> {
-  if (!navigator.gpu) {
+  if (!(navigator as any).gpu) {
     throw new Error('WebGPU is not supported')
   }
 
-  const adapter = await navigator.gpu.requestAdapter()
+  const adapter = await (navigator as any).gpu.requestAdapter()
   if (!adapter) {
     throw new Error('Failed to get WebGPU adapter')
   }
@@ -162,7 +162,7 @@ export async function getDeviceLimits(): Promise<DeviceLimits> {
  * ```
  */
 export async function getDeviceCapabilities(): Promise<DeviceCapabilities> {
-  if (!navigator.gpu) {
+  if (!(navigator as any).gpu) {
     return {
       supported: false,
       adapter: 'none',
@@ -173,7 +173,7 @@ export async function getDeviceCapabilities(): Promise<DeviceCapabilities> {
     }
   }
 
-  const adapter = await navigator.gpu.requestAdapter()
+  const adapter = await (navigator as any).gpu.requestAdapter()
   if (!adapter) {
     return {
       supported: false,

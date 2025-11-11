@@ -1,0 +1,35 @@
+{
+  "category": "math",
+  "description": "Mathematical utilities for TSL/WebGPU including dithering and noise alternatives",
+  "copyDate": "2025-11-11",
+  "modules": [
+    {
+      "name": "Bayer",
+      "file": "Bayer.js",
+      "source": "three.js-r181",
+      "originalPath": "examples/jsm/tsl/math/Bayer.js",
+      "author": "Three.js Contributors",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "description": "Bayer16 dithering matrix - 16x16 texture with Bayer Matrix pattern for dithering effects and blue noise alternative",
+      "features": [
+        "16x16 Bayer matrix texture",
+        "Base64 embedded texture",
+        "Blue noise alternative",
+        "Dithering effects",
+        "Raymarching banding reduction"
+      ],
+      "useCases": [
+        "Volume rendering (reduce banding)",
+        "Raymarching (fewer steps, better quality)",
+        "Dithering effects",
+        "Screen-space effects"
+      ],
+      "dependencies": [
+        "TextureLoader",
+        "textureLoad (TSL)"
+      ]
+    }
+  ]
+}
+

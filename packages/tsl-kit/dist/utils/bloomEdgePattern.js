@@ -25,9 +25,10 @@ import { bloom } from './bloom.js';
  * ```
  */
 export const bloomEdgePattern = Fn(([pattern, repeat, edge, exponent, _time = float(0)]) => {
-    pattern.assign(repeatingPattern(pattern, repeat, _time));
-    pattern.assign(abs(pattern));
-    pattern.assign(bloom(pattern, edge, exponent));
-    return pattern;
+    const result = pattern.toVar();
+    result.assign(repeatingPattern(result, repeat, _time));
+    result.assign(abs(result));
+    result.assign(bloom(result, edge, exponent));
+    return result;
 });
 //# sourceMappingURL=bloomEdgePattern.js.map

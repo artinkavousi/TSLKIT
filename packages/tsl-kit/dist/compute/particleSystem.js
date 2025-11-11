@@ -43,27 +43,27 @@ export function createGridInitCompute(arrays, options) {
     const amount = Math.sqrt(particleCount);
     const offset = float(amount / 2);
     return Fn(() => {
-        const position = arrays.positions.element(instanceIndex);
+        const position = arrays.positions.element(instanceIndex).toVar();
         const x = instanceIndex.mod(amount);
         const z = instanceIndex.div(amount);
-        position.x = offset.sub(x).mul(separation);
-        position.z = offset.sub(z).mul(separation);
+        position.x.assign(offset.sub(x).mul(separation));
+        position.z.assign(offset.sub(z).mul(separation));
         if (randomizeHeight) {
             const randY = hash(instanceIndex.add(1));
-            position.y = randY.mul(5);
+            position.y.assign(randY.mul(5));
         }
         else {
-            position.y = 0;
+            position.y.assign(0);
         }
         if (randomizeColor && arrays.colors) {
-            const color = arrays.colors.element(instanceIndex);
+            const color = arrays.colors.element(instanceIndex).toVar();
             const randX = hash(instanceIndex);
             const randY = hash(instanceIndex.add(2));
             const randZ = hash(instanceIndex.add(3));
             color.assign(vec3(randX, randY.mul(0.5), randZ));
         }
         if (arrays.sizes) {
-            const size = arrays.sizes.element(instanceIndex);
+            const size = arrays.sizes.element(instanceIndex).toVar();
             size.assign(vec3(1.0));
         }
     });

@@ -27,6 +27,19 @@ let _rendererState
  */
 class GaussianBlurNode extends TempNode {
 
+	textureNode: any
+	directionNode: any
+	sigma: number
+	_invSize: any
+	_passDirection: any
+	_horizontalRT: any
+	_verticalRT: any
+	_textureNode: any
+	_material: any
+	resolutionScale: number
+	premultipliedAlpha: boolean
+	updateBeforeType: any
+
 	static get type() {
 
 		return 'GaussianBlurNode'
@@ -43,7 +56,7 @@ class GaussianBlurNode extends TempNode {
 	 * @param {boolean} [options.premultipliedAlpha=false] - Whether to use premultiplied alpha for the blur effect.
 	 * @param {number} [options.resolutionScale=1] - The resolution of the effect. 0.5 means half the resolution of the texture node.
 	 */
-	constructor( textureNode, directionNode = null, sigma = 4, options = {} ) {
+	constructor( textureNode, directionNode = null, sigma = 4, options: { premultipliedAlpha?: boolean, resolutionScale?: number } = {} ) {
 
 		super( 'vec4' )
 
