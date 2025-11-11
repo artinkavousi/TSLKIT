@@ -8,6 +8,7 @@ const rootDir = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
+      '@tslstudio/tsl-kit/post': resolve(rootDir, '../tsl-kit/src/post/index.ts'),
       'three/webgpu': resolve(rootDir, 'tests/stubs/threeWebgpu.ts'),
       'three/examples/jsm/renderers/webgpu/WebGPURenderer.js': resolve(
         rootDir,

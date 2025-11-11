@@ -75,7 +75,7 @@ vi.mock('./api/agent.js', () => {
           tags: ['post'],
           previewColor: '#ff00ff',
           parameters: [],
-          postStack: { stages: ['bloom'] }
+          postStack: { passes: [{ type: 'bloom.standard', intensity: 1.1 }, { type: 'tonemap.aces' }] }
         }
       ];
     }

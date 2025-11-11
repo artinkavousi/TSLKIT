@@ -1,3 +1,5 @@
+import type { PostEffectSpec } from '@tslstudio/tsl-kit/post';
+
 export type PresetKind = 'material' | 'post';
 
 export type PresetParameterType = 'number' | 'color' | 'boolean';
@@ -30,7 +32,7 @@ export interface Preset {
     warp?: number;
   };
   postStack?: {
-    stages: string[];
+    passes: PostEffectSpec[];
   };
   documentation?: string;
 }
