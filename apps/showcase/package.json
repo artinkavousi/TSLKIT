@@ -1,0 +1,19 @@
+{
+  "name": "@tslstudio/showcase",
+  "version": "1.0.0",
+  "description": "Interactive showcase for TSL-Kit modules with Tweakpane controls",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.181.0",
+    "tweakpane": "^4.0.5"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  }
+}
+

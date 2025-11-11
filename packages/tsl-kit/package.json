@@ -1,0 +1,59 @@
+{
+  "name": "@tslstudio/tsl-kit",
+  "version": "0.1.0",
+  "description": "TSL/WebGPU toolkit for Three.js r181+ with noise, lighting, materials, post-processing, and compute modules",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./noise": {
+      "import": "./dist/noise/index.js",
+      "types": "./dist/noise/index.d.ts"
+    },
+    "./lighting": {
+      "import": "./dist/lighting/index.js",
+      "types": "./dist/lighting/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts"
+    },
+    "./sdf": {
+      "import": "./dist/sdf/index.js",
+      "types": "./dist/sdf/index.d.ts"
+    },
+    "./postfx": {
+      "import": "./dist/postfx/index.js",
+      "types": "./dist/postfx/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo \"Tests will be added\" && exit 0"
+  },
+  "keywords": [
+    "three.js",
+    "webgpu",
+    "tsl",
+    "shaders",
+    "noise",
+    "materials",
+    "post-processing"
+  ],
+  "author": "TSLStudio",
+  "license": "MIT",
+  "peerDependencies": {
+    "three": "^0.181.0"
+  },
+  "devDependencies": {
+    "three": "^0.181.0",
+    "typescript": "^5.0.0"
+  }
+}
+

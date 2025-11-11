@@ -1,0 +1,41 @@
+{
+  "category": "noise",
+  "sources": [
+    {
+      "source_repo": "portfolio-main",
+      "path": "RESOURCES/REPOSITORIES/portfolio examples/portfolio-main/src/utils/webgpu/nodes/noise/",
+      "author": "Maxime Heckel",
+      "license": "MIT",
+      "url": "https://github.com/MaximeHeckel/portfolio",
+      "modules": [
+        "classicNoise3d.ts",
+        "curlNoise3d.ts",
+        "curlNoise4d.ts",
+        "simplexNoise2d.ts",
+        "simplexNoise3d.ts",
+        "simplexNoise4d.ts",
+        "voronoi.ts"
+      ],
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "fragments-boilerplate-main",
+      "path": "RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/noise/",
+      "author": "Maxime Heckel",
+      "license": "MIT",
+      "url": "https://github.com/MaximeHeckel/fragments-boilerplate",
+      "modules": [
+        "common.ts",
+        "curl_noise_3d.ts",
+        "curl_noise_4d.ts",
+        "fbm.ts",
+        "perlin_noise_3d.ts",
+        "simplex_noise_3d.ts",
+        "simplex_noise_4d.ts",
+        "turbulence.ts"
+      ],
+      "copied": "2025-11-10"
+    }
+  ]
+}
+

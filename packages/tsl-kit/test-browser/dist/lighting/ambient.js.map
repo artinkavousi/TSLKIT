@@ -1,0 +1,1 @@
+{"version":3,"file":"ambient.js","sourceRoot":"","sources":["../../src/lighting/ambient.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;;;;;;;;;GAsBG;AAEH,OAAO,EAAE,EAAE,EAAE,MAAM,WAAW,CAAA;AAE9B,MAAM,CAAC,MAAM,gBAAgB,GAAG,aAAa,CAAC,EAAE,CAAC,CAAC,CAAC,UAAU,EAAE,SAAS,CAAC,EAAE,EAAE;IAC3E,OAAO,UAAU,CAAC,GAAG,CAAC,SAAS,CAAC,CAAA;AAClC,CAAC,CAAC,CAAA"}

@@ -1,0 +1,69 @@
+{
+  "category": "postfx",
+  "sources": [
+    {
+      "source_repo": "fragments-boilerplate-main",
+      "path": "RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/post_processing/",
+      "author": "Maxime Heckel",
+      "license": "MIT",
+      "url": "https://github.com/MaximeHeckel/fragments-boilerplate",
+      "modules": [
+        "canvas_weave_effect.ts",
+        "grain_texture_effect.ts",
+        "lcd_effect.ts",
+        "pixellation_effect.ts",
+        "speckled_noise_effect.ts",
+        "vignette_effect.ts"
+      ],
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "ssr-gtao-keio",
+      "path": "RESOURCES/REPOSITORIES/TSLwebgpuExamples/ssr-gtao-keio/src/",
+      "author": "N8Programs",
+      "license": "MIT",
+      "url": "https://github.com/N8python/ssr-gtao-keio",
+      "modules": [
+        "ssr-gtao/ssr-gtao.js"
+      ],
+      "notes": "MRT-driven SSR + GTAO + SMAA implementation",
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "ssgi-ssr-painter",
+      "path": "RESOURCES/REPOSITORIES/TSLwebgpuExamples/ssgi-ssr-painter/src/",
+      "author": "N8Programs",
+      "license": "MIT",
+      "url": "https://github.com/N8python/ssgi-ssr-painter",
+      "modules": [
+        "ssgi-ssr/ssgi-ssr.js"
+      ],
+      "notes": "SSGI + SSR + TRAA with painting UI",
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "three.js-r181",
+      "path": "RESOURCES/three.js-r181/examples/jsm/tsl/display/",
+      "author": "Three.js Contributors",
+      "license": "MIT",
+      "url": "https://github.com/mrdoob/three.js",
+      "modules": [
+        "official/BloomNode.js",
+        "official/DepthOfFieldNode.js",
+        "official/GTAONode.js",
+        "official/SSRNode.js",
+        "official/SSGINode.js",
+        "official/TRAANode.js",
+        "official/AnamorphicNode.js",
+        "official/ChromaticAberrationNode.js",
+        "official/FXAANode.js",
+        "official/SMAANode.js",
+        "official/MotionBlur.js",
+        "official/LensflareNode.js"
+      ],
+      "notes": "Official Three.js r181 TSL display nodes",
+      "copied": "2025-11-10"
+    }
+  ]
+}
+

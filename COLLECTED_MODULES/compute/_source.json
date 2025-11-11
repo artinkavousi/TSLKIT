@@ -1,0 +1,70 @@
+{
+  "category": "compute",
+  "sources": [
+    {
+      "source_repo": "tsl-compute-particles",
+      "path": "RESOURCES/REPOSITORIES/TSLwebgpuExamples/tsl-compute-particles/src/",
+      "author": "N8Programs",
+      "license": "MIT",
+      "url": "https://github.com/N8python/tsl-compute-particles",
+      "modules": [
+        "particles/tsl-compute-particles.js"
+      ],
+      "notes": "500k particle compute simulation with pointer interaction",
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "tsl-particle-waves",
+      "path": "RESOURCES/REPOSITORIES/TSLwebgpuExamples/tsl-particle-waves/src/",
+      "author": "N8Programs",
+      "license": "MIT",
+      "url": "https://github.com/N8python/tsl-particle-waves",
+      "modules": [
+        "waves/tsl-particle-waves.js"
+      ],
+      "notes": "200k instanced waves using time-driven compute kernels",
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "test-webgpu-master",
+      "path": "RESOURCES/REPOSITORIES/TSLwebgpuExamples/test-webgpu-master/src/",
+      "author": "Unknown",
+      "license": "MIT",
+      "modules": [
+        "test-webgpu/main.js",
+        "test-webgpu/Particles.js",
+        "test-webgpu/ParticlesCompute.js",
+        "test-webgpu/MeshCustomNodeMaterial.js"
+      ],
+      "notes": "Million+ particle pipelines with WGSL libraries",
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "roquefort-main",
+      "path": "RESOURCES/REPOSITORIES/TSLwebgpuExamples/roquefort-main/src/",
+      "author": "N8Programs",
+      "license": "MIT",
+      "url": "https://github.com/N8python/roquefort",
+      "modules": [
+        "fluids/main.js",
+        "fluids/config.js",
+        "fluids/gui.js",
+        "fluids/utils.js",
+        "fluids/view_controls.js",
+        "fluids/simulation/advect.js",
+        "fluids/simulation/common.js",
+        "fluids/simulation/divergence.js",
+        "fluids/simulation/emitters.js",
+        "fluids/simulation/gradient_subtract.js",
+        "fluids/simulation/pressure.js",
+        "fluids/simulation/vorticity.js",
+        "fluids/rendering/blur.js",
+        "fluids/rendering/lighting.js",
+        "fluids/rendering/render.js"
+      ],
+      "notes": "Complete 2D fluid solver (advect, divergence, pressure, vorticity, lighting)",
+      "copied": "2025-11-10"
+    }
+  ]
+}
+

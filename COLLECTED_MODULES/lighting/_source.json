@@ -1,0 +1,32 @@
+{
+  "category": "lighting",
+  "sources": [
+    {
+      "source_repo": "portfolio-main",
+      "path": "RESOURCES/REPOSITORIES/portfolio examples/portfolio-main/src/utils/webgpu/nodes/lighting/",
+      "author": "Maxime Heckel",
+      "license": "MIT",
+      "url": "https://github.com/MaximeHeckel/portfolio",
+      "modules": [
+        "ambient.ts",
+        "diffuse.ts",
+        "directional.ts",
+        "fresnel.ts",
+        "hemisphere.ts"
+      ],
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "fragments-boilerplate-main",
+      "path": "RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/utils/",
+      "author": "Maxime Heckel",
+      "license": "MIT",
+      "url": "https://github.com/MaximeHeckel/fragments-boilerplate",
+      "modules": [
+        "lighting-utils.ts"
+      ],
+      "copied": "2025-11-10"
+    }
+  ]
+}
+

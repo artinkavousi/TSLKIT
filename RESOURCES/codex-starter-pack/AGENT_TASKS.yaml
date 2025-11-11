@@ -1,0 +1,36 @@
+# AGENT_TASKS.yaml — Universal examples (edit per repo)
+
+- id: WEB-101
+  title: Add API pagination
+  acceptance:
+    - GET /items supports ?page & ?limit (default 25, max 100)
+    - Response: total, page, pages, data[]
+    - Unit + integration tests cover happy/edge paths
+    - Screenshots: artifacts/screens/items-desktop.png, items-mobile.png
+  commands:
+    - make setup
+    - make test
+    - make ui:start && make ui:shots
+  guardrails:
+    - Search codebase first; minimal diff; update DEV_DOC.md if API changed
+
+- id: UI-201
+  title: Fix CTA alignment on /pricing
+  acceptance:
+    - CTA centered at 1440×900 and 390×844
+    - No overflow; CLS ~ 0 on route change
+    - Screenshots: artifacts/screens/pricing-desktop.png, pricing-mobile.png
+  commands:
+    - make setup
+    - make ui:start && make ui:shots
+
+- id: QA-300
+  title: Establish baseline visual regression
+  acceptance:
+    - Baseline screenshots under tests/baseline
+    - Pixel diff fails when >0.2% mismatch
+    - CI uploads artifacts/screens and artifacts/diff
+  commands:
+    - make setup
+    - make ui:start && make ui:shots
+    - make ui:diff

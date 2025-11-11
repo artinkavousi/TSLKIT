@@ -1,0 +1,32 @@
+# AGENT_TASKS.yaml — TSLKIT / TSLStudio
+
+- id: TSL-001
+  title: PBR grid demo with NodeMaterials
+  acceptance:
+    - Renders 4×4 sphere grid with varying roughness/metalness
+    - Uses MeshPhysicalNodeMaterial (TSL) with IBL
+    - Screens: artifacts/screens/pbr-grid-desktop.png, pbr-grid-mobile.png
+    - Headless render test produces a non-empty PNG buffer
+  commands:
+    - make setup
+    - make ui:start && make ui:shots
+
+- id: TSL-010
+  title: PostFX chain (bloom + tone map) with toggle
+  acceptance:
+    - PostFX nodes integrated with simple UI toggle
+    - Two screenshots captured: postfx-off.png, postfx-on.png (noticeable difference)
+    - No WebGPU crash; WebGL fallback renders basic PBR
+  commands:
+    - make setup
+    - make ui:start && make ui:shots
+
+- id: TSL-030
+  title: Compute-driven particle fountain
+  acceptance:
+    - Compute update step updates positions each frame
+    - FPS ≥ 45 on baseline machine; headless render test passes
+    - Screenshot: artifacts/screens/particles-desktop.png
+  commands:
+    - make setup
+    - make ui:start && make ui:shots

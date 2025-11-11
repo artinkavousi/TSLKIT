@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Three.js Exports</title>
+</head>
+<body>
+    <h1>Three.js Export Investigation</h1>
+    <div id="output"></div>
+
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        async function checkExports() {
+            // Import three.webgpu.js directly
+            const module = await import('./three/three.webgpu.js');
+            
+            output.innerHTML += '<h2>Exports from three.webgpu.js:</h2>';
+            const exports = Object.keys(module).sort();
+            output.innerHTML += `<p>Total exports: ${exports.length}</p>`;
+            
+            // Check for TSL-related exports
+            const tslExports = exports.filter(key => 
+                key.includes('Node') || 
+                key === 'Fn' || 
+                key === 'vec3' || 
+                key === 'vec4' ||
+                key === 'float' ||
+                key.toLowerCase().includes('tsl')
+            );
+            
+            output.innerHTML += '<h3>TSL-related exports:</h3>';
+            output.innerHTML += `<pre>${tslExports.join('\n')}</pre>`;
+            
+            // Check if Fn exists
+            output.innerHTML += `<p>module.Fn type: ${typeof module.Fn}</p>`;
+            output.innerHTML += `<p>module.vec3 type: ${typeof module.vec3}</p>`;
+            output.innerHTML += `<p>module.float type: ${typeof module.float}</p>`;
+        }
+        
+        checkExports().catch(err => {
+            output.innerHTML += `<p style="color: red;">Error: ${err.message}</p>`;
+        });
+    </script>
+</body>
+</html>
+

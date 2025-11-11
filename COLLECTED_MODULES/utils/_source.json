@@ -1,0 +1,57 @@
+{
+  "category": "utils",
+  "sources": [
+    {
+      "source_repo": "portfolio-main",
+      "path": "RESOURCES/REPOSITORIES/portfolio examples/portfolio-main/src/utils/webgpu/nodes/",
+      "author": "Maxime Heckel",
+      "license": "MIT",
+      "url": "https://github.com/MaximeHeckel/portfolio",
+      "modules": [
+        "compose.ts",
+        "remap.ts",
+        "rotate-3d-y.ts",
+        "smooth-min.ts",
+        "smooth-mod.ts"
+      ],
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "fragments-boilerplate-main",
+      "path": "RESOURCES/REPOSITORIES/portfolio examples/fragments-boilerplate-main/src/tsl/utils/",
+      "author": "Maxime Heckel",
+      "license": "MIT",
+      "url": "https://github.com/MaximeHeckel/fragments-boilerplate",
+      "modules": [
+        "bloom.ts",
+        "bloom_edge_pattern.ts",
+        "cosine_palette.ts",
+        "domain_index.ts",
+        "median3.ts",
+        "repeating_pattern.ts",
+        "screen_aspect_uv.ts",
+        "tonemapping.ts",
+        "math/complex.ts",
+        "math/coordinates.ts"
+      ],
+      "copied": "2025-11-10"
+    },
+    {
+      "source_repo": "test-webgpu-master",
+      "path": "RESOURCES/REPOSITORIES/TSLwebgpuExamples/test-webgpu-master/src/",
+      "author": "Unknown",
+      "license": "MIT",
+      "modules": [
+        "pointer.js",
+        "wgsl/mat3-lookAt.wgsl",
+        "wgsl/mat3-rotationXYZ.wgsl",
+        "wgsl/mat4-compose.wgsl",
+        "wgsl/psrdnoise3.wgsl",
+        "wgsl/psrdnoise3-common.wgsl"
+      ],
+      "notes": "WGSL helper libraries for compute shaders",
+      "copied": "2025-11-10"
+    }
+  ]
+}
+

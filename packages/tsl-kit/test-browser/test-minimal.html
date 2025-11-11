@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Minimal Three.js TSL Test</title>
+</head>
+<body>
+    <h1>Minimal Test</h1>
+    <div id="output"></div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "./three/three.webgpu.js",
+            "three/tsl": "./three/three.webgpu.js",
+            "three/webgpu": "./three/three.webgpu.js"
+        }
+    }
+    </script>
+
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        async function test() {
+            try {
+                // Test 1: Import Three.js
+                output.innerHTML += '<p>Test 1: Importing Three.js...</p>';
+                const THREE = await import('three/webgpu');
+                output.innerHTML += `<p style="color: green;">✅ THREE imported: ${typeof THREE}</p>`;
+                output.innerHTML += `<p>THREE keys: ${Object.keys(THREE).slice(0, 10).join(', ')}...</p>`;
+                
+                // Test 2: Import TSL
+                output.innerHTML += '<p>Test 2: Importing TSL...</p>';
+                const TSL = await import('three/tsl');
+                output.innerHTML += `<p style="color: green;">✅ TSL imported: ${typeof TSL}</p>`;
+                output.innerHTML += `<p>TSL has Fn: ${typeof TSL.Fn}</p>`;
+                output.innerHTML += `<p>TSL has vec3: ${typeof TSL.vec3}</p>`;
+                
+                // Test 3: Import our module
+                output.innerHTML += '<p>Test 3: Importing our dist/utils/deviceCaps.js...</p>';
+                const deviceCaps = await import('./dist/utils/deviceCaps.js');
+                output.innerHTML += `<p style="color: green;">✅ deviceCaps imported</p>`;
+                output.innerHTML += `<p>checkWebGPUSupport: ${typeof deviceCaps.checkWebGPUSupport}</p>`;
+                
+                // Test 4: Try importing a TSL module
+                output.innerHTML += '<p>Test 4: Importing dist/noise/common.js...</p>';
+                const common = await import('./dist/noise/common.js');
+                output.innerHTML += `<p style="color: green;">✅ common.js imported</p>`;
+                output.innerHTML += `<p>mod289: ${typeof common.mod289}</p>`;
+                output.innerHTML += `<p>permute: ${typeof common.permute}</p>`;
+                
+            } catch (error) {
+                output.innerHTML += `<p style="color: red;">❌ Error: ${error.message}</p>`;
+                output.innerHTML += `<pre>${error.stack}</pre>`;
+            }
+        }
+        
+        test();
+    </script>
+</body>
+</html>
+

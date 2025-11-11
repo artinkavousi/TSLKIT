@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TSL Object Check</title>
+</head>
+<body>
+    <h1>TSL Object Properties</h1>
+    <div id="output"></div>
+
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        async function checkTSL() {
+            // Import THREE
+            const THREE = await import('./three/three.webgpu.js');
+            
+            output.innerHTML += `<p>THREE.TSL exists: ${!!THREE.TSL}</p>`;
+            output.innerHTML += `<p>THREE.TSL type: ${typeof THREE.TSL}</p>`;
+            
+            if (THREE.TSL) {
+                const tslKeys = Object.keys(THREE.TSL).sort();
+                output.innerHTML += `<p>TSL has ${tslKeys.length} properties</p>`;
+                
+                // Check for common TSL functions
+                output.innerHTML += '<h2>Common TSL Functions:</h2>';
+                const commonFuncs = ['Fn', 'vec2', 'vec3', 'vec4', 'float', 'int', 'color', 'mul', 'add', 'sub', 'dot', 'normalize'];
+                commonFuncs.forEach(func => {
+                    output.innerHTML += `<p>${func}: ${typeof THREE.TSL[func]}</p>`;
+                });
+                
+                // Show first 50 properties
+                output.innerHTML += '<h2>First 50 TSL properties:</h2>';
+                output.innerHTML += `<pre>${tslKeys.slice(0, 50).join('\n')}</pre>`;
+            }
+        }
+        
+        checkTSL().catch(err => {
+            output.innerHTML += `<p style="color: red;">Error: ${err.message}</p>`;
+            console.error(err);
+        });
+    </script>
+</body>
+</html>
+
