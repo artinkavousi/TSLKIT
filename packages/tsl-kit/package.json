@@ -1,7 +1,7 @@
 {
   "name": "@tslstudio/tsl-kit",
   "version": "0.1.0",
-  "description": "TSL/WebGPU toolkit for Three.js r181+ with noise, lighting, materials, post-processing, and compute modules",
+  "description": "TSL/WebGPU toolkit for Three.js r181+ with noise, lighting, materials, post-processing, compute, and fluid simulation",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -10,6 +10,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./core": {
+      "import": "./dist/core/index.js",
+      "types": "./dist/core/index.d.ts"
     },
     "./noise": {
       "import": "./dist/noise/index.js",
@@ -30,6 +34,50 @@
     "./postfx": {
       "import": "./dist/postfx/index.js",
       "types": "./dist/postfx/index.d.ts"
+    },
+    "./compute": {
+      "import": "./dist/compute/index.js",
+      "types": "./dist/compute/index.d.ts"
+    },
+    "./materials": {
+      "import": "./dist/materials/index.js",
+      "types": "./dist/materials/index.d.ts"
+    },
+    "./wgsl": {
+      "import": "./dist/wgsl/index.js",
+      "types": "./dist/wgsl/index.d.ts"
+    },
+    "./shadows": {
+      "import": "./dist/shadows/index.js",
+      "types": "./dist/shadows/index.d.ts"
+    },
+    "./math": {
+      "import": "./dist/math/index.js",
+      "types": "./dist/math/index.d.ts"
+    },
+    "./compute/fluids": {
+      "import": "./dist/compute/fluids/index.js",
+      "types": "./dist/compute/fluids/index.d.ts"
+    },
+    "./compute/forces": {
+      "import": "./dist/compute/forces/index.js",
+      "types": "./dist/compute/forces/index.d.ts"
+    },
+    "./postfx": {
+      "import": "./dist/postfx/index.js",
+      "types": "./dist/postfx/index.d.ts"
+    },
+    "./postfx/core": {
+      "import": "./dist/postfx/core/index.js",
+      "types": "./dist/postfx/core/index.d.ts"
+    },
+    "./postfx/passes": {
+      "import": "./dist/postfx/passes/index.js",
+      "types": "./dist/postfx/passes/index.d.ts"
+    },
+    "./dsl": {
+      "import": "./dist/dsl/index.js",
+      "types": "./dist/dsl/index.d.ts"
     }
   },
   "scripts": {
@@ -52,8 +100,11 @@
     "three": "^0.181.0"
   },
   "devDependencies": {
+    "@webgpu/types": "^0.1.51",
     "three": "^0.181.0",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "zod": "^4.1.12"
   }
 }
-

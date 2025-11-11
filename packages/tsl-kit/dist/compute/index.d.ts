@@ -6,4 +6,8 @@
  * @module compute
  */
 export * from './particleSystem';
+export * from './particleWaves';
+export * from './fluids';
+export * from './forces';
+export * from './presets';
 //# sourceMappingURL=index.d.ts.map

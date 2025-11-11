@@ -5,6 +5,9 @@
  *
  * @module postfx
  */
+export * from './core';
+export * from './passes';
+export * from './presets';
 export * from './bloom';
 export * from './tonemapping';
 export * from './gaussianBlur';

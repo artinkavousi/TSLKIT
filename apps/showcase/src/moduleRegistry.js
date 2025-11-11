@@ -7,6 +7,7 @@ export const moduleRegistry = {
   noise: {
     name: 'Noise Functions',
     icon: '🌊',
+    description: 'Procedural noise for textures and displacement',
     modules: [
       { id: 'simplexNoise2d', name: 'Simplex Noise 2D', description: 'Fast 2D noise for textures' },
       { id: 'simplexNoise3d', name: 'Simplex Noise 3D', description: 'Classic 3D simplex noise' },
@@ -24,6 +25,7 @@ export const moduleRegistry = {
   lighting: {
     name: 'Lighting Systems',
     icon: '💡',
+    description: 'Advanced lighting and shading models',
     modules: [
       { id: 'fresnel', name: 'Fresnel Effect', description: 'View-dependent edge glow' },
       { id: 'diffuse', name: 'Diffuse Lighting', description: 'Lambertian diffuse shading' },
@@ -38,6 +40,7 @@ export const moduleRegistry = {
   shadows: {
     name: 'Shadow Systems',
     icon: '🌑',
+    description: 'High-quality shadow mapping techniques',
     modules: [
       { id: 'csmShadows', name: 'CSM Shadows', description: 'Cascaded shadow maps for large scenes' },
       { id: 'csmFrustum', name: 'CSM Frustum', description: 'Frustum splitting utilities' }
@@ -46,7 +49,8 @@ export const moduleRegistry = {
   
   postfx: {
     name: 'Post-Processing',
-    icon: '🎨',
+    icon: '🎬',
+    description: 'Cinematic post-processing effects',
     modules: [
       { id: 'bloom', name: 'Bloom', description: 'Glow effect for bright areas' },
       { id: 'vignette', name: 'Vignette', description: 'Edge darkening effect' },
@@ -72,6 +76,7 @@ export const moduleRegistry = {
   sdf: {
     name: 'Signed Distance Fields',
     icon: '📐',
+    description: 'Procedural shapes and boolean operations',
     modules: [
       { id: 'sdSphere', name: 'SDF Sphere', description: 'Sphere distance field' },
       { id: 'sdBox2d', name: 'SDF Box 2D', description: '2D box/rectangle' },
@@ -90,6 +95,7 @@ export const moduleRegistry = {
   utils: {
     name: 'Utility Functions',
     icon: '🔧',
+    description: 'Helper functions and coordinate systems',
     modules: [
       { id: 'remap', name: 'Remap Value', description: 'Map value to new range' },
       { id: 'smoothMin', name: 'Smooth Minimum', description: 'Smooth min blending' },
@@ -108,6 +114,7 @@ export const moduleRegistry = {
   math: {
     name: 'Math Utilities',
     icon: '🔢',
+    description: 'Mathematical operations and algorithms',
     modules: [
       { id: 'bayerMatrix', name: 'Bayer Matrix', description: 'Ordered dithering matrix' },
       { id: 'bayerMatrixTexture', name: 'Bayer Texture', description: 'Texture-based dithering' }
@@ -117,8 +124,34 @@ export const moduleRegistry = {
   compute: {
     name: 'Compute Systems',
     icon: '⚡',
+    description: 'GPU-accelerated compute shaders and physics',
     modules: [
-      { id: 'particleSystem', name: 'Particle System', description: 'GPU-accelerated particles' }
+      { id: 'particleSystem', name: 'Particle System', description: 'GPU-accelerated particles', tags: ['particles', 'compute'] },
+      { id: 'particleWavesShowcase', name: 'Particle Waves', description: '200K particle wave simulation', tags: ['particles', 'waves'] },
+      { id: 'computeParticlesShowcase', name: 'Compute Particles', description: '10K animated particles', tags: ['particles', 'compute'] },
+      { id: 'fluidSimulationShowcase', name: 'Fluid Simulation', description: '3D Navier-Stokes solver', tags: ['fluid', 'physics'] }
+    ]
+  },
+  
+  materials: {
+    name: 'Materials',
+    icon: '🎭',
+    description: 'Advanced PBR and procedural materials',
+    modules: [
+      { id: 'woodMaterialShowcase', name: 'Procedural Wood', description: 'TSL-based wood with 6 presets', tags: ['procedural', 'pbr'] }
+    ]
+  },
+  
+  forces: {
+    name: 'Force Fields',
+    icon: '🌀',
+    description: 'Particle physics and force simulation',
+    modules: [
+      { id: 'gravityForce', name: 'Gravity', description: 'Earth-like gravitational force', tags: ['physics', 'forces'] },
+      { id: 'attractorForce', name: 'Attractor', description: 'Point attractor with falloff', tags: ['physics', 'forces'] },
+      { id: 'vortexForce', name: 'Vortex', description: 'Tornado-like spiral force', tags: ['physics', 'forces'] },
+      { id: 'curlNoiseForce', name: 'Curl Noise', description: 'Organic turbulent flow', tags: ['noise', 'forces'] },
+      { id: 'windForce', name: 'Wind', description: 'Directional wind with turbulence', tags: ['physics', 'forces'] }
     ]
   }
 };

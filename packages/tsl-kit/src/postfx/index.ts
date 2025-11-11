@@ -6,6 +6,15 @@
  * @module postfx
  */
 
+// Core post-processing infrastructure
+export * from './core';
+
+// Individual passes
+export * from './passes';
+
+// Post-processing presets
+export * from './presets';
+
 // Core post-processing
 export * from './bloom'
 export * from './tonemapping'

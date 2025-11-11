@@ -8,6 +8,9 @@
  * @version 0.1.0
  */
 
+// Core utilities (capabilities, device detection)
+export * from './core'
+
 // Noise functions
 export * from './noise'
 
@@ -31,3 +34,12 @@ export * from './shadows'
 
 // Math utilities (NEW - Bayer dithering, etc)
 export * from './math'
+
+// Materials (NEW - Procedural materials)
+export * from './materials'
+
+// WGSL Helpers (NEW - WGSL utility functions)
+export * from './wgsl'
+
+// JSON DSL (NEW - Agent-addressable shader programming)
+export * from './dsl'

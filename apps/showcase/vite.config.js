@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import { wgslPlugin } from './vite-plugin-wgsl.js';
 
 export default defineConfig({
+  plugins: [wgslPlugin()],
   server: {
     port: 5173,
     open: false,
@@ -14,6 +16,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['@tsl-kit']
-  }
+  },
+  assetsInclude: ['**/*.wgsl']
 });
 

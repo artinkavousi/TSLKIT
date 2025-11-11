@@ -512,10 +512,18 @@
     // Initialize
     buildSidebar();
 
-    // Load first available module by default
-    const firstAvailable = allModules.find(m => isDemoAvailable(m.id));
-    if (firstAvailable) {
-      loadModule(firstAvailable.id);
+    // Check URL parameter for initial demo
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedDemo = urlParams.get('demo');
+    
+    if (requestedDemo && isDemoAvailable(requestedDemo)) {
+      loadModule(requestedDemo);
+    } else {
+      // Load first available module by default
+      const firstAvailable = allModules.find(m => isDemoAvailable(m.id));
+      if (firstAvailable) {
+        loadModule(firstAvailable.id);
+      }
     }
   </script>
 </body>

@@ -67,6 +67,12 @@ import * as csmFrustum from './individual/csmFrustum.js';
 import * as particleSystem from './individual/particleSystem.js';
 
 // Demo map - add new demos here
+// Phase 1A & 1B - New Additions (Individual Module Format)
+import * as woodMaterialShowcase from './individual/woodMaterialShowcase.js';
+import * as particleWavesShowcase from './individual/particleWavesShowcase.js';
+import * as computeParticlesShowcase from './individual/computeParticlesShowcase.js';
+import * as fluidSimulationShowcase from './individual/fluidSimulationShowcase.js';
+
 export const demoMap = {
   // Noise
   simplexNoise2d,
@@ -144,7 +150,13 @@ export const demoMap = {
   bayerMatrixTexture,
   
   // Compute
-  particleSystem
+  particleSystem,
+  
+  // Phase 1A & 1B - New Showcases
+  woodMaterialShowcase,
+  particleWavesShowcase,
+  computeParticlesShowcase,
+  fluidSimulationShowcase
 };
 
 export function getDemoModule(moduleId) {

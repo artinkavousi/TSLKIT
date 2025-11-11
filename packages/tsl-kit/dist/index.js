@@ -7,6 +7,8 @@
  * @module @tslstudio/tsl-kit
  * @version 0.1.0
  */
+// Core utilities (capabilities, device detection)
+export * from './core';
 // Noise functions
 export * from './noise';
 // Lighting systems
@@ -23,4 +25,10 @@ export * from './utils';
 export * from './shadows';
 // Math utilities (NEW - Bayer dithering, etc)
 export * from './math';
+// Materials (NEW - Procedural materials)
+export * from './materials';
+// WGSL Helpers (NEW - WGSL utility functions)
+export * from './wgsl';
+// JSON DSL (NEW - Agent-addressable shader programming)
+export * from './dsl';
 //# sourceMappingURL=index.js.map
