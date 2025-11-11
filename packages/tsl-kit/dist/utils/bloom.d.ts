@@ -7,6 +7,11 @@
  * @param exponent - The bloom exponent (controls falloff)
  * @returns The bloomed edge value
  *
+ * @remarks
+ * When importing from the aggregated `@tslstudio/tsl-kit` package, this
+ * utility is exposed under the `bloomEdge` name to avoid clashing with the
+ * post-processing bloom effect export.
+ *
  * @example
  * ```ts
  * import { bloom } from '@tsl-kit/utils/bloom.js';

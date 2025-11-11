@@ -12,6 +12,7 @@ export * from './lighting';
 export * from './sdf';
 export * from './postfx';
 export * from './compute';
+export * from './utils';
 export * from './shadows';
 export * from './math';
 //# sourceMappingURL=index.d.ts.map

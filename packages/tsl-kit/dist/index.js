@@ -17,8 +17,8 @@ export * from './sdf';
 export * from './postfx';
 // Compute shaders & systems
 export * from './compute';
-// Utility functions  
-// export * from './utils' // TODO: Fix duplicate 'bloom' export conflict with postfx
+// Utility functions
+export * from './utils';
 // Shadow systems (NEW - CSM, Tile Shadows)
 export * from './shadows';
 // Math utilities (NEW - Bayer dithering, etc)
