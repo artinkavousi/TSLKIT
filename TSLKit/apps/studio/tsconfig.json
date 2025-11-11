@@ -5,7 +5,13 @@
     "baseUrl": "./",
     "paths": {
       "@/": ["src/"],
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@tslstudio/engine": ["../packages/engine/src/index.ts"],
+      "@tslstudio/engine/post": ["../packages/engine/src/post/index.ts"],
+      "@tslstudio/tsl-kit": ["../packages/tsl-kit/src/index.ts"],
+      "@tslstudio/tsl-kit/post": ["../packages/tsl-kit/src/post/index.ts"],
+      "@tslstudio/tsl-kit/noise": ["../packages/tsl-kit/src/noise/index.ts"],
+      "@tslstudio/tsl-kit/schemas": ["../packages/tsl-kit/src/schemas/index.ts"]
     },
     "noEmit": true,
     "declaration": false,

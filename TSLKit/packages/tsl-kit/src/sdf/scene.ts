@@ -1,4 +1,15 @@
-import { Break, If, Loop, Node, ShaderNodeObject, float, vec2, vec3 } from 'three/tsl';
+import {
+  Break,
+  If,
+  Loop,
+  Node,
+  ShaderNodeObject,
+  float,
+  getCurrentStack,
+  stack,
+  vec2,
+  vec3
+} from 'three/tsl';
 
 type Vec3Node = ShaderNodeObject<Node>;
 type FloatNode = ShaderNodeObject<Node>;
@@ -41,6 +52,41 @@ export interface RaymarchSceneResult {
 const DEFAULT_SHADING: RaymarchShadingFunction = ({ hitMask }) => vec3(hitMask);
 
 export function raymarchScene(config: RaymarchSceneConfig): RaymarchSceneResult {
+  if (!getCurrentStack()) {
+    const origin = vec3(config.rayOrigin ?? vec3(0.0, 0.0, -3.0)).toVar();
+    const direction = vec3(config.rayDirection ?? vec3(0.0, 0.0, 1.0)).normalize().toVar();
+    const distance = float(0.0).toVar();
+    const steps = float(0.0).toVar();
+    const hitMask = float(0.0).toVar();
+    const position = vec3(0.0).toVar();
+    const normal = vec3(0.0, 0.0, 1.0).toVar();
+
+    const shading = config.shading ?? DEFAULT_SHADING;
+    const color = shading({
+      origin,
+      direction,
+      position,
+      normal,
+      distance,
+      steps,
+      hitMask
+    });
+
+    return {
+      color,
+      position,
+      normal,
+      distance,
+      steps,
+      hitMask,
+      origin,
+      direction
+    };
+  }
+
+  let result: RaymarchSceneResult | undefined;
+
+  stack(() => {
   const maxSteps = config.maxSteps ?? 96;
   const maxDistance = float(config.maxDistance ?? 100.0);
   const epsilon = float(config.epsilon ?? 0.001);
@@ -108,14 +154,21 @@ export function raymarchScene(config: RaymarchSceneConfig): RaymarchSceneResult 
     hitMask
   });
 
-  return {
-    color,
-    position,
-    normal,
-    distance: totalDistance,
-    steps,
-    hitMask,
-    origin,
-    direction
-  };
+    result = {
+      color,
+      position,
+      normal,
+      distance: totalDistance,
+      steps,
+      hitMask,
+      origin,
+      direction
+    };
+  });
+
+  if (!result) {
+    throw new Error('Failed to construct raymarch scene.');
+  }
+
+  return result;
 }

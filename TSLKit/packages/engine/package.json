@@ -18,6 +18,10 @@
     "./capabilities": {
       "types": "./dist/capabilities/index.d.ts",
       "import": "./dist/capabilities/index.js"
+    },
+    "./post": {
+      "types": "./dist/post/index.d.ts",
+      "import": "./dist/post/index.js"
     }
   },
   "scripts": {

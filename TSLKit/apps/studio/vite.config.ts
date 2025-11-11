@@ -11,9 +11,11 @@ export default defineConfig({
     alias: {
       '@tslstudio/engine': path.resolve(projectRoot, '../..', 'packages/engine/src/index.ts'),
       '@tslstudio/engine/renderer': path.resolve(projectRoot, '../..', 'packages/engine/src/renderer/index.ts'),
+      '@tslstudio/engine/post': path.resolve(projectRoot, '../..', 'packages/engine/src/post/index.ts'),
       '@tslstudio/tsl-kit': path.resolve(projectRoot, '../..', 'packages/tsl-kit/src'),
       '@tslstudio/tsl-kit/noise': path.resolve(projectRoot, '../..', 'packages/tsl-kit/src/noise/index.ts'),
       '@tslstudio/tsl-kit/schemas': path.resolve(projectRoot, '../..', 'packages/tsl-kit/src/schemas/index.ts'),
+      '@tslstudio/tsl-kit/post': path.resolve(projectRoot, '../..', 'packages/tsl-kit/src/post/index.ts'),
       'three/examples/jsm/renderers/webgpu/WebGPURenderer.js': path.resolve(projectRoot, 'test-stubs/WebGPURenderer.ts')
     }
   },
@@ -25,7 +27,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
-    css: false
+    css: false,
+    exclude: ['tests/**/*.spec.ts']
   },
   server: {
     port: 5174

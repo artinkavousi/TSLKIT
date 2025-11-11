@@ -33,7 +33,13 @@
       }
     ],
     "postStack": {
-      "stages": ["luma-bloom", "lens-dirt", "filmic-curve", "vignette"]
+      "passes": [
+        { "type": "bloom.standard", "intensity": 1.1, "radius": 0.7, "threshold": 0.82 },
+        { "type": "bloom.anamorphic", "intensity": 0.8, "anamorphicRatio": 1.5 },
+        { "type": "motion.blur", "intensity": 0.6, "samples": 10 },
+        { "type": "tonemap.aces", "exposure": 1.1 },
+        { "type": "aa.fxaa", "spanMax": 6 }
+      ]
     },
     "documentation": "https://docs.tsl.studio/presets/cinematic-triad"
   },
@@ -71,7 +77,13 @@
       }
     ],
     "postStack": {
-      "stages": ["pulse-map", "rolling-shutter", "chromatic-aberration"]
+      "passes": [
+        { "type": "aa.taa", "blendFactor": 0.8, "jitterSpread": 0.3 },
+        { "type": "bloom.luma", "intensity": 1.2, "threshold": 0.6 },
+        { "type": "gi.ssgi", "intensity": 0.9, "temporalBlend": 0.7 },
+        { "type": "gi.gtao", "radius": 0.5, "falloff": 0.85 },
+        { "type": "tonemap.uncharted2", "exposure": 1.3 }
+      ]
     },
     "documentation": "https://docs.tsl.studio/presets/xr-pulse"
   }
